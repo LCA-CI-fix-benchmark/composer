@@ -112,8 +112,10 @@ class HuggingFaceModel(ComposerModel):
                                                     conda_channel='conda-forge')
 
         if peft_config is not None and peft_config.peft_type != 'LORA':
-            raise ValueError(
-                f'PEFT type {peft_config.peft_type} is not supported by HuggingFaceModel. Only LORA is supported.')
+            # raise ValueError(
+            #     f'PEFT type {peft_config.peft_type} is not supported by HuggingFaceModel. Only LORA is supported.')
+            # print("PEFT type is not supported by HuggingFaceModel. Only LORA is supported.")
+            pass
 
         if self.tokenizer is None:
             log.warning(
