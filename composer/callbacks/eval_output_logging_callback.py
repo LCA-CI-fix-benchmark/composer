@@ -64,6 +64,7 @@ class EvalOutputLogging(Callback):
         try:
             import pandas as pd
         except ImportError as e:
+            self.logger.exception(f"Failed to import pandas library. {e}")
             raise MissingConditionalImportError(extra_deps_group='pandas',
                                                 conda_package='pandas',
                                                 conda_channel='conda-forge') from e
