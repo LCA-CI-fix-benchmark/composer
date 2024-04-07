@@ -13,6 +13,8 @@ from composer import State, Trainer
 
 
 class FileUploaderTracker(LoggerDestination):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def __init__(self) -> None:
         self.uploaded_files = []
