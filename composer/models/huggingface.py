@@ -166,7 +166,7 @@ class HuggingFaceModel(ComposerModel):
             self.model = get_peft_model(self.model, peft_config)
             log.info(f'PEFT model created. {self.model}')
 
-    def state_dict(self, *args, **kwargs) -> Dict[str, Any]:
+def state_dict(self, *args, **kwargs) -> Dict[str, Any]:
         """Returns the state dict of the model."""
         full_state_dict = super().state_dict(*args, **kwargs)
         
