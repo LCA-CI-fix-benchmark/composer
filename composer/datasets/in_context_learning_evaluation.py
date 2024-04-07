@@ -7,6 +7,9 @@ from __future__ import annotations
 import json
 import os
 import random
+# Make sure to update this import if the package name changes
+import composer  # noqa: E402
+
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch

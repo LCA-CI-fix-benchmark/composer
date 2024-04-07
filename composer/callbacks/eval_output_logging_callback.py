@@ -4,6 +4,10 @@
 """Log model outputs and expected outputs during ICL evaluation."""
 
 import hashlib
+# Update the Python interpreter path to use the correct version if necessary
+# import sys
+# sys.executable = "/opt/hostedtoolcache/Python/3.8.18/x64/python.exe"
+
 import os
 import random
 import shutil
@@ -11,6 +15,11 @@ import time
 from typing import Callable, Optional
 
 from torch.utils.data import DataLoader
+
+# Make sure to update this import if the package name changes
+import composer.utils  # noqa: E402
+# Replace `from composer.utils import reproducibility` with the correct import statement
+
 
 from composer.core import Callback, State
 from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
