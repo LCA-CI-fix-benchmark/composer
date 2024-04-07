@@ -12,7 +12,8 @@ from composer.loggers import LoggerDestination
 from composer import State, Trainer
 
 
-class FileUploaderTracker(LoggerDestination):
+class FileUploaderTracker:
+    pass
 
     def __init__(self) -> None:
         self.uploaded_files = []
