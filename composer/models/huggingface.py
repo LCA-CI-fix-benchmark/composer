@@ -169,7 +169,6 @@ class HuggingFaceModel(ComposerModel):
     def state_dict(self, *args, **kwargs) -> Dict[str, Any]:
         """Returns the state dict of the model."""
         full_state_dict = super().state_dict(*args, **kwargs)
-        
         if self.peft_filter_state_dict_trainable:
             full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
 
@@ -179,6 +178,20 @@ class HuggingFaceModel(ComposerModel):
     @staticmethod
     def load_huggingface_tokenizer_from_saved_state(
             hf_state: Dict[str, Any],
+            preft_config: Optional[PeftConfig] = None,
+    ):
+        if preft_config is None:
+            preft_config = PeftConfig()
+
+        # Load the tokenizer from the HuggingFace state dict
+        tokenizer = AutoTokenizer.from_pretrained(hf_state["tokenizer_name"])
+        if preft_config.filter_state_dict_trainable:
+            tokenizer_state_dict = filter_state_dict_peft(hf_state, preft_config.peft_config, False)
+        else:
+            tokenizer_state_dict = hf_state
+        tokenizer.load_state_dict(tokenizer_state_dict)
+
+        return tokenizer
             trust_remote_code: bool = False,
             tokenizer_save_dir: Optional[str] = None) -> Optional[transformers.PreTrainedTokenizer]:
         """A helper function that loads a HuggingFace tokenizer from a loaded in hf state.

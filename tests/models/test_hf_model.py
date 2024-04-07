@@ -1220,12 +1220,26 @@ def test_peft_init_not_installed(tiny_gpt2_model, gpt2_peft_config):
 
     with patch('composer.models.huggingface._peft_installed', False):
         with pytest.raises(ImportError):
-            from composer.models import HuggingFaceModel
-            _ = HuggingFaceModel(tiny_gpt2_model, peft_config=gpt2_peft_config)
+    from composer.models import HuggingFaceModel
+    _ = HuggingFaceModel(tiny_gpt2_model, peft_config=gpt2_peft_config)
 
 @pytest.mark.parametrize('just_lora', [True, False])
-def test_peft_trains_and_loads(tiny_gpt2_model, tiny_gpt2_tokenizer, gpt2_peft_config, tmp_path, just_lora):
+@pytest.mark.parametrize('peft_config', [None, peft_config_fixture])
+def test_peft_trains_and_loads(tiny_gpt2_model, tiny_gpt2_tokenizer, gpt2_peft_config, tmp_path, just_lora, peft_config):
     pytest.importorskip('peft')
+    # Test the HuggingFaceModel with a PEFT-filtered state dict
+    hf_model = HuggingFaceModel(tiny_gpt2_model, peft_config=peft_config)
+
+    # Test that the PEFT-filtered state dict is loaded correctly
+    if peft_config is not None:
+        # Create a temporary file to save the HuggingFaceModel
+        with tempfile.TemporaryDirectory() as temp_dir:
+            hf_model.save_pretrained(temp_dir)
+
+            # Test that the PEFT-filtered state dict is loaded correctly
+            hf_state = torch.load(os.path.join(temp_dir, 'pytorch_model.bin'))
+            hf_state = filter_peft_state_dict(hf_state, peft_config)
+            hf_model.load_state_dict(hf_state)
 
     trainer = get_lm_trainer(
         tiny_gpt2_model,
