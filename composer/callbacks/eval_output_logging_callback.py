@@ -56,13 +56,14 @@ class EvalOutputLogging(Callback):
         self.table = {}
         self.output_directory = output_directory if output_directory else os.getcwd()
         self.hash = hashlib.sha256()
-        self.destination_file = None
+        self.destination_file = state.destination_file
 
     def _write_tables_to_output_dir(self, state: State):
 
         
         try:
             import pandas as pd
+            pd.to_csv(state.destination_file)  # Write tables to the destination file
         except ImportError as e:
             raise MissingConditionalImportError(extra_deps_group='pandas',
                                                 conda_package='pandas',
