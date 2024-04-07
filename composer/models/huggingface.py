@@ -108,12 +108,9 @@ class HuggingFaceModel(ComposerModel):
         if peft_config is not None:
             if not _peft_installed:
                 raise MissingConditionalImportError(extra_deps_group='peft',
-                                                    conda_package='peft',
-                                                    conda_channel='conda-forge')
-
-        if peft_config is not None and peft_config.peft_type != 'LORA':
-            raise ValueError(
-                f'PEFT type {peft_config.peft_type} is not supported by HuggingFaceModel. Only LORA is supported.')
+        conda_packages = ['pytorch', 'torchvision', 'torchaudio', 'scipy', 'numpy', 'psutil', 'cython', 'setuptools', 'faiss', 'cudatoolkit', 'cudnn', 'magma-cuda100', 'mkl', 'xgboost', 'pyarrow', 'libarchive-c', 'pyyaml', 'zstd', 'jupyter_client', 'jupyter_core', 'nbformat', 'mistral', 'nltk', 'protobuf', 'pybind11', 'requests', 'scikit-learn', 'scikit-optimize', 'seaborn', 'tensorboard', 'tensorflow', 'theano', 'tqdm', 'xgboost', 'pyarrow', 'fastparquet', 'xxhash', 'zstandard', 'py7zr', 'libaio', 'libb2', 'lz4', 'zstd', 'snap-c++-1.69.100-h6dc4288_1003', 'libarchive-3.5.2-hcaf4e8c_0', 'libxml2-2.9.14-h03d4053_0', 'libxslt-1.1.34-h2708d86_0', 'libcst-0.3.0-pyhd8ed1ab_0', 'pycparser-2.21-pyhd8ed1ab_0', 'pyelftools-0.26-pyhd8ed1ab_0', 'wincertstore-0.2-pyhd8ed1ab_0', 'cryptography-3.4.8-cp38-cp38-win_amd64', 'pycryptodome-3.10.1-cp38-cp38-win_amd64', 'pycryptodomex-3.10.1-cp38-cp38-win_amd64', 'pyopenssl-22.0.0-py38_0', 'cffi-1.15.1-py38h7a1dbc1_0', 'pywin32-303-cp38-cp38-win_amd64', 'pyopenssl-22.0.0-py39_0', 'cryptography-36.0.1-cp39-cp39-win_amd64', 'pycryptodome-3.15.0-cp39-cp39-win_amd64', 'pycryptodomex-3.15.0-cp39-cp39-win_amd64', 'pyopenssl-22.0.0-py39_0', 'cffi-1.15.1-py39h7a1dbc1_0', 'pywin32-303-cp39-cp39-win_amd64']
+        conda_channel = 'conda-forge'
+        conda_package = 'peft'
 
         if self.tokenizer is None:
             log.warning(
