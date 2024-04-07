@@ -6,10 +6,7 @@
 import hashlib
 import os
 import random
-import shutil
-import time
-from typing import Callable, Optional
-
+...
 from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
