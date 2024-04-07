@@ -170,8 +170,11 @@ class HuggingFaceModel(ComposerModel):
         """Returns the state dict of the model."""
         full_state_dict = super().state_dict(*args, **kwargs)
         
++       # Assuming filtering is only necessary when certain conditions are met,
++       # we'll toggle this with the `peft_filter_state_dict_trainable` attribute
         if self.peft_filter_state_dict_trainable:
-            full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
+-           full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
++           full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], True)
 
         return full_state_dict
 

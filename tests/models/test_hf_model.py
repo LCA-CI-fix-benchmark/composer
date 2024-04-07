@@ -1223,9 +1223,16 @@ def test_peft_init_not_installed(tiny_gpt2_model, gpt2_peft_config):
             from composer.models import HuggingFaceModel
             _ = HuggingFaceModel(tiny_gpt2_model, peft_config=gpt2_peft_config)
 
++           # Ensure that relevant modules are imported for the test
++           from peft import filter_state_dict_peft
+
 @pytest.mark.parametrize('just_lora', [True, False])
 def test_peft_trains_and_loads(tiny_gpt2_model, tiny_gpt2_tokenizer, gpt2_peft_config, tmp_path, just_lora):
++   # Make sure to import the relevant `importorskip` method
     pytest.importorskip('peft')
++   # Use fixtures to create the HuggingFace model with the provided PEFT config
++   model = HuggingFaceModel(tiny_gpt2_model, peft_config=gpt2_peft_config, just_lora=just_lora)
++   # Testing logic...
 
     trainer = get_lm_trainer(
         tiny_gpt2_model,
