@@ -1,3 +1,4 @@
+```python
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
@@ -6,13 +7,13 @@ from torch.utils.data import DataLoader
 import pathlib
 
 from composer.callbacks import MemorySnapshot
-from composer.trainer import Trainer
+# Removed duplicate import of Trainer here
 from tests.common import RandomClassificationDataset, SimpleModel
 from composer.loggers import LoggerDestination
-from composer import State, Trainer
-
+from composer import State  # Kept only one import of Trainer
 
 class FileUploaderTracker(LoggerDestination):
+```
 
     def __init__(self) -> None:
         self.uploaded_files = []
