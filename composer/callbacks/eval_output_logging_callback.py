@@ -59,11 +59,12 @@ class EvalOutputLogging(Callback):
         self.destination_file = None
 
     def _write_tables_to_output_dir(self, state: State):
-
-        
         try:
             import pandas as pd
-        except ImportError as e:
+            # Rest of the method code
+        except Exception as e:
+            print(f"An error occurred in _write_tables_to_output_dir: {e}")
+            raise
             raise MissingConditionalImportError(extra_deps_group='pandas',
                                                 conda_package='pandas',
                                                 conda_channel='conda-forge') from e
