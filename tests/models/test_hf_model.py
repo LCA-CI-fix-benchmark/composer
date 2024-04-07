@@ -33,6 +33,7 @@ from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_
 from tests.loggers.test_remote_uploader_downloader import DummyObjectStore
 
 if TYPE_CHECKING:
+    from typing import Any
     from peft import PeftConfig
 
 
