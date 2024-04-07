@@ -171,7 +171,7 @@ class HuggingFaceModel(ComposerModel):
         full_state_dict = super().state_dict(*args, **kwargs)
         
         if self.peft_filter_state_dict_trainable:
-            full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
+            full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], True)
 
         return full_state_dict
 
