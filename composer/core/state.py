@@ -36,7 +36,17 @@ if TYPE_CHECKING:
     import composer.core.types as types
     from composer.core.algorithm import Algorithm
     from composer.core.callback import Callback
-    from composer.core.evaluator import Evaluator
+    from compo                        # Backwards compatible loading of torchmetrics from version 0.16.0
+                        if isinstance(metric_computed_field, np.ndarray):
+                            metric_computed_field = torch.from_numpy(metric_computed_field)
+                            # Get the computed device for the metric
+                            metric_computed_device = serialized_value[metric_name].get('_computed_device', None)
+                            if metric_computed_device is not None:
+                                metric_computed_field = metric_computed_field.to(metric_computed_device)
+                        else:
+                            raise ValueError(
+                                'Error while loading train metric. Train metric from serialization is neither a Torchmetrics Metric object nor a dictionary.'
+                            )valuator import Evaluator
     from composer.core.passes import AlgorithmPass
     from composer.loggers import Logger
     from composer.profiler import Profiler

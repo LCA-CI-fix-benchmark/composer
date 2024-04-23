@@ -1,5 +1,10 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Idenimport torch
+from typing import Optional, Union, Tuple
+
+def my_function_name(input_data: torch.Tensor, device: Device) -> Optional[Union[torch.Tensor, dict, list, Tuple]]:
+    # Function implementation goes here
+    passifier: Apache-2.0
 
 """Inference-related utility functions for model export and optimizations.
 
