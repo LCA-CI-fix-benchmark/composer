@@ -1,8 +1,14 @@
 # Contributing to Composer
 
-Thanks for considering contributing to Composer!
+Thanks for considering contributing to CompTo test your changes locally, run:
 
-Issues tagged with [good first issue](https://github.com/mosaicml/composer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are great options to start contributing.
+1. `make test`  # Run CPU tests.
+1. `make test-gpu`  # Run GPU tests.
+1. `cd docs && make doctest`  # Run doctests.
+
+Some of our checks test distributed training as well. To test these, run:
+
+* `make test-dist WORLD_SIZE=2`  # Run 2-CPU distributed tests.ues tagged with [good first issue](https://github.com/mosaicml/composer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are great options to start contributing.
 
 If you have questions, join us on [Slack](https://join.slack.com/t/mosaicml-community/shared_invite/zt-w0tiddn9-WGTlRpfjcO9J5jyrMub1dg) -- we'll be happy to help you!
 

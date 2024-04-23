@@ -1,7 +1,8 @@
 # 🍰 Fused LayerNorm
 
 
-[\[How to Use\]](#how-to-use) - [\[Suggested Hyperparameters\]](#suggested-hyperparameters) - [\[Technical Details\]](#technical-details) - [\[Attribution\]](#attribution) - [\[API Reference\]](#api-reference)
+[\[How to Use\]](#how-to-use) - [\[Suggested Hyperpar2. Instead of requiring multiple CUDA kernel launches, it computes everything in a single
+   kernel launch, therefore improving GPU utilization.eters\]](#suggested-hyperparameters) - [\[Technical Details\]](#technical-details) - [\[Attribution\]](#attribution) - [\[API Reference\]](#api-reference)
 
  `Natural Language Processing`, `Math Equivalent`
 

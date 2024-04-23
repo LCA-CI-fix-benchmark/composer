@@ -14,8 +14,14 @@ import sys
 import tempfile
 import time
 import traceback
-from argparse import ArgumentParser
-from typing import Any, Dict, List
+from argparse import ArgumentP                else:
+                    # return code of 0 implies clean exit
+                    if process.returncode != 0:
+                        log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
+                        process_has_crashed = True
+                        break
+                    else:
+                        # exited cleanlyom typing import Any, Dict, List
 
 import psutil
 import torch
