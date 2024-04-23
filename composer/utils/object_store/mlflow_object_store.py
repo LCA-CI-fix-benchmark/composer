@@ -1,4 +1,9 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 MosaicML Composer au    retryable_server_codes = [
+        ErrorCode.Name(code) for code in [
+            DATA_LOSS,
+            INTERNAL_ERROR,
+            INVALID_STATE,
+        ]
 # SPDX-License-Identifier: Apache-2.0
 
 """MLflow Artifacts object store."""

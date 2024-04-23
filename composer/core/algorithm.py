@@ -1,7 +1,11 @@
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Base class for algorithms that improve a model's quality or efficiency."""
+"""Base class for algorithms                    int or None: exit code that will be stored in :class:`.Trace` and made accessible for debugging.
+        """
+        raise NotImplementedError(f'implement apply() required for {self.__class__.__name__}')exit code is made accessible for debugging.
+
+        Args:at improve a model's quality or efficiency."""
 
 from __future__ import annotations
 

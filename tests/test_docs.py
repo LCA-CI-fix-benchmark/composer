@@ -1,4 +1,12 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 M    if proc.returncode == 0:
+        return
+    error_msg = textwrap.dedent(f"""\
+        Command {proc.args} failed with exit code {proc.returncode}.
+        ----Begin stdout----
+        {proc.stdout}
+        ----Begin stderr----
+        {proc.stderr}
+    """)L Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
 # Pytest stub for running lint tests and doctests
