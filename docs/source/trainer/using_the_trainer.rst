@@ -11,8 +11,17 @@ The Composer :class:`.Trainer` implements a highly-optimized PyTorch training lo
    learning work, with reproducible results in time-to-train and
    accuracy.
 -  Integration with your favorite model hubs:
-   🤗 `Transformers`_, `TIMM`_, and `torchvision`_.
--  Iterate faster! We take care of performance and efficiency.
+   🤗 `Transformers`_, `TIMM`_, and `torchvision`_... testcode::
+
+    import torch.nn as nn
+    from composer.utils.reproducibility import configure_deterministic_mode, seed_all
+
+    configure_deterministic_mode()
+    seed_all(42)
+
+    model = MyModel()
+
+    def init_weights(m):faster! We take care of performance and efficiency.
 
 .. note::
 

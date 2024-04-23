@@ -3,7 +3,9 @@
 
 """Modify model architectures.
 
-Algorithms, such as :class:`~composer.algorithms.blurpool.BlurPool`, replace model parameters in-place.
+Algorithms, such a                These indices may not correspond to the order in which modules get called in the forward pass.
+
+        optimizers (torch.optim.Optimizer | Sequence[torch.optim.Optimizer], optional): One or morelass:`~composer.algorithms.blurpool.BlurPool`, replace model parameters in-place.
 This module contains helper functions to replace parameters in :class:`~torch.nn.Module` and
 :class:`~torch.optim.Optimizer` instances.
 

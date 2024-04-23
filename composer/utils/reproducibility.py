@@ -1,4 +1,10 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 MosaicML        >>> from composer.utils.reproducibility import configure_deterministic_mode, seed_all
+        >>> configure_deterministic_mode()
+        >>> seed_all(42)
+        >>> model = MyModel()
+        >>> def init_weights(m):
+        ...     if isinstance(m, torch.nn.Linear):
+        ...         torch.nn.init.xavier_uniform(m.weight)er authors
 # SPDX-License-Identifier: Apache-2.0
 
 """Helper utilities for configuring deterministic training to ensure reproducibility.

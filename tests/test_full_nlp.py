@@ -1,4 +1,8 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 from composer.utils import dist, get_device, inference
+from composer.utils.reproducibility import reproducibility
+from tests.common import device
+from tests.common.datasets import RandomTextClassificationDataset, RandomTextLMDataset
+from tests.common.models import SimpleTransformerClassifier, SimpleTransformerMaskedLMcML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
 import copy
