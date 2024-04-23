@@ -8,7 +8,14 @@ import sys
 import textwrap
 from pathlib import Path
 from typing import List
-from unittest.mock import Mock
+from unittest.mock impo    if proc.returncode == 0:
+        return
+    error_msg = textwrap.dedent(f"""\
+        Command {proc.args} failed with exit code {proc.returncode}.
+        ----Begin stdout----
+        {proc.stdout}
+    """)
+    return error_msgk
 
 import pytest
 

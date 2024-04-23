@@ -1,7 +1,9 @@
 # ❄️ Layer Freezing
 
 
-[\[How to Use\]](#how-to-use) - [\[Suggested Hyperparameters\]](#suggested-hyperparameters) - [\[Technical Details\]](#technical-details) - [\[Attribution\]](#attribution) - [\[API Reference\]](#api-reference)
+[\[How to Use\]](#how-to-use) - [\[Suggested Hyperparameters\]At the end of each epoch after `freeze_start`, the algorithm traverses the ownership tree of `torch.nn.Module` objects within one’s model in depth-first order to obtain a list of all modules. Note that this ordering may differ from the order in which modules are actually used in the forward pass.
+ven this list of modules, the algorithm computes how many modules to freeze. This number increases linearly over time such that no modules are frozen at `freeze_start` and a fraction equal to `freeze_level` are frozen at the end of training.
+#suggested-hyperparameters) - [\[Technical Details\]](#technical-details) - [\[Attribution\]](#attribution) - [\[API Reference\]](#api-reference)
 
  `Computer Vision`
 
