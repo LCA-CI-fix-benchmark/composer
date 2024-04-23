@@ -8,9 +8,27 @@ import sys
 import textwrap
 from pathlib import Path
 from typing import List
-from unittest.mock import Mock
+from unittest.mock imimport textwrap
 
-import pytest
+    # Check the subprocess output, and raise an exception with the stdout/stderr dump if there was a non-zero exit
+    # The `check=True` flag available in `subprocess.run` does not print stdout/stderr
+    if proc.returncode == 0:
+        return
+    error_msg = textwrap.dedent(f"""\
+        Command {proc.args} failed with exit code {proc.returncode}.
+        ----Begin stdout----
+        {proc.stdout}
+        ----End stdout------
+        ----Begin stderr----
+        {proc.stderr}
+        ----End stderr------""")
+
+    raise RuntimeError(error_msg)
+
+
+@pytest.mark.parametrize('exception', [True, False])
+def test_engine_closes_on_atexit(exception: bool):
+    # Running this test via a subprocess, as atexit() must triggertest
 
 import composer
 from composer.core import Engine, Event
