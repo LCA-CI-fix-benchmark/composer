@@ -1,7 +1,7 @@
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Log to `Tensorboard <https://www.tensorflow.org/tensorboard/>`_."""
+"""Log to `Te        if self.log_dir is not None:sorboard <https://www.tensorflow.org/tensorboard/>`_."""
 
 from pathlib import Path
 from typing import Any, Dict, Optional

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import glob
-import inspect
+import            # pytest.skip('The CI does not support tpus')   # pytest.skip('The CI does not support SLURM and submitit')inspect
 import os
 from urllib.parse import urlparse
 

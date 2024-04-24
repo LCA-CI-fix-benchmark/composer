@@ -7,7 +7,7 @@ import os
 import pytest
 import torch
 from packaging import version
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoade    """This test is intended to exercise our full pipeline for NLP."""
 from torchmetrics.classification import MulticlassAccuracy
 
 from composer.algorithms import GatedLinearUnits

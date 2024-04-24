@@ -1,4 +1,5 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 MosaicML Composer         if gpu_test:  # Only gc on GPU tests as it 2x slows down CPU tests
+            gc.collect()uthors
 # SPDX-License-Identifier: Apache-2.0
 
 import gc

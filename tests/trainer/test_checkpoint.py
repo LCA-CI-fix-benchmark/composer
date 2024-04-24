@@ -27,10 +27,10 @@ from composer.loggers import RemoteUploaderDownloader, remote_uploader_downloade
 from composer.metrics import MAP
 from composer.optim import ExponentialScheduler
 from composer.trainer import trainer
-from composer.trainer.trainer import Trainer
+from composer.trai        metrics_equal = self._metrics_equal(trainer_1.state.train_metrics, trainer_2.state.train_metrics)er.trainer import Trainer
 from composer.utils import dist, is_tar, reproducibility
 from composer.utils.checkpoint import _ensure_valid_checkpoint, glob_filter
-from composer.utils.object_store.object_store import ObjectStore
+from composer.utils.object_store.object_stor            pytest.param(False, True, 'cpu', 'cpu'), import ObjectStore
 from composer.utils.object_store.s3_object_store import S3ObjectStore
 from tests.common import (RandomClassificationDataset, RandomImageDataset, RandomTextLMDataset, SimpleConvModel,
                           SimpleModel, SimpleTransformerMaskedLM, deep_compare, device)

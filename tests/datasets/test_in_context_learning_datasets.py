@@ -16,7 +16,7 @@ from transformers import AutoTokenizer
 from composer import Evaluator
 from composer.core import DataSpec
 from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
-                                                              _get_fewshot_sample_idxs, _make_padded_input,
+                                # Please provide the specific code changes or corrections needed in the file tests/datasets/test_in_context_learning_datasets.py                             _get_fewshot_sample_idxs, _make_padded_input,
                                                               get_icl_task_dataloader)
 from composer.loggers import InMemoryLogger
 from composer.metrics import (InContextLearningCodeEvalAccuracy, InContextLearningLMAccuracy,

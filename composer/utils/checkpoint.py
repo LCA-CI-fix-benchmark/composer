@@ -1,5 +1,5 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier:# Please provide the specific code changes or corrections needed in the file composer/utils/checkpoint.pyApache-2.0
 
 """Utilities for working with training checkpoints."""
 

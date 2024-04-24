@@ -18,7 +18,7 @@ from composer.loggers import Logger, MLFlowLogger
 from composer.trainer import Trainer
 from tests.common.datasets import RandomImageDataset
 from tests.common.markers import device
-from tests.common.models import SimpleConvModel
+fr    mlflow.set_system_metrics_sampling_interval(30)  # Set system metrics sampling interval to 30 secondsm tests.common.models import SimpleConvModel
 from tests.models.test_hf_model import check_hf_model_equivalence, check_hf_tokenizer_equivalence
 
 

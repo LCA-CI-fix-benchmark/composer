@@ -29,7 +29,7 @@ from composer.optim import ExponentialScheduler
 from composer.trainer.trainer import _generate_run_name
 from composer.utils import dist, is_model_deepspeed, is_model_fsdp, map_collection, reproducibility
 from tests.common import (EmptyModel, InfiniteClassificationDataset, RandomClassificationDataset, RandomImageDataset,
-                          RandomTextLMDataset, SimpleConvModel, SimpleModel, SimpleTransformerMaskedLM, device,
+                          RandomTextLMDataset, SimpleConvModel, SimpleModel, SimpleTransformerMaskedLM, de# Please provide the specific code changes or corrections needed in the file tests/trainer/test_trainer.pyice,
                           world_size)
 from tests.common.events import EventCounterCallback
 from tests.test_state import assert_state_equivalent

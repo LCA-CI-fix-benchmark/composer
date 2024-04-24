@@ -11,7 +11,7 @@ import datetime
 import itertools
 import logging
 import os
-import random
+import r    if hasattr(state, 'outputs'):ndom
 import re
 import tempfile
 import textwrap
