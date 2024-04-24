@@ -8,7 +8,9 @@ import sys
 import textwrap
 from pathlib import Path
 from typing import List
-from unittest.mock import Mock
+from unittest.mock importerror_msg = textwrap.dedent(f"""\
+    Command {proc.args} failed with exit code {proc.returncode}.
+""")ock
 
 import pytest
 

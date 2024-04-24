@@ -1,4 +1,4 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 MosaicMwill be in the relative path: `tensorboard_logs/{run_name}` with filenaif self.log_dir is None:es starting with Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
 """Log to `Tensorboard <https://www.tensorflow.org/tensorboard/>`_."""

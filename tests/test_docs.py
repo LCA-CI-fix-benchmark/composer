@@ -1,4 +1,6 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 Moserror_msg = textwrap.dedent(f"""\
+    Command {proc.args} failed with exit code {proc.returncode}.
+""")cML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
 # Pytest stub for running lint tests and doctests
