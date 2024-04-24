@@ -1,7 +1,21 @@
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Base class for algorithms that improve a model's quality or efficiency."""
+"""Base class for algori    def apply(self, event: Event, state: State, logger: Logger) -> Optional[int]:
+        """Applies the algorithm to make an in-place change to the :class:`.State`.
+
+        Can optionally return an exit code to be stored in a :class:`.Trace`.
+        This exit code is made accessible for debugging.
+
+        Args:
+            event (Event): The current event.
+            state (State): The current state.
+            logger (Logger): A logger to use for logging algorithm-specific metrics.
+
+        Returns:
+            int or None: Exit code that will be stored in :class:`.Trace` and made accessible for debugging.
+        """
+        raise NotImplementedError(f'The method apply() must be implemented in the class {self.__class__.__name__}.')ve a model's quality or efficiency."""
 
 from __future__ import annotations
 

@@ -1,7 +1,23 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: Apache        self.current_metrics.update(metrics)
 
-"""Log to `Tensorboard <https://www.tensorflow.org/tensorboard/>`_."""
+        for tag, metric in metrics.items():
+            if isinstance(metric, str):  # Will error out with weird caffe2 import error.
+                continue
+            # TODO: handle logging non-(scalars/arrays/tensors/strings)
+            # If a non-(scalars/arrays/tensors/strings) is passed, we skip logging it to avoid crashing the job.
+            try:
+                self.writer.add_scalar(tag, metric, global_step=step)
+            except NotImplementedError:
+                # Gets raised if data_point is not a tensor, array, scalar, or string.
+                pass
+
+    def init(self, state: State, logger: Logger) -> None:
+        self.run_name = state.run_name
+
+        # We fix the log_dir, so all runs are co-located.
+        if self.log_dir is None:
+            self.log_dir = 'tensorboard_logs'orboard <https://www.tensorflow.org/tensorboard/>`_."""
 
 from pathlib import Path
 from typing import Any, Dict, Optional

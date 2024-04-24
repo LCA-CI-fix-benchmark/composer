@@ -1,7 +1,25 @@
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Periodically log generations from a set of prompts."""
+"""Periodically             input_ids = device.tensor_to_device(input_ids)
+            attn_mask = device.tensor_to_device(attn_mask)
+            with get_precision_context(state.precision):
+                output_token_ids.extend(
+                    model.generate(  # type: ignore
+                        input_ids=input_ids,
+                        attention_mask=attn_mask,
+                        synced_gpus=dist.get_world_size() > 1,
+                        **self.generate_kwargs,
+                    ))
+
+        if dist.get_global_rank() == 0:
+            # Process prompts and outputs into a table.
+            rows = []
+            input_tokens_len = all_input_ids.shape[1]
+            for i, prompt in enumerate(self.prompts):
+                output_tokens = output_token_ids[i][input_tokens_len:]
+                output_text = tokenizer.decode(output_tokens, skip_special_tokens=True)
+                rows.append([prompt, output_text, time.ctime()])m a set of prompts."""
 
 import logging
 import time

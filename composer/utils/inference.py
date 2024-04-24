@@ -1,7 +1,26 @@
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Inference-related utility functions for model export and optimizations.
+"""Inference-related         model (nn.Module): An instance of nn.Module. Please note that model is not modified inplace.
+            Instead, export-related transformations are applied to a copy of the model.
+        save_format (Union[str, ExportFormat]): Format to export to. Either ``"torchscript"`` or ``"onnx"``.
+        save_path (str): The path for storing the exported model. It can be a path to a file on the local disk,
+            a URL, or if ``save_object_store`` is set, the object name in a cloud bucket. 
+            For example, ``my_run/exported_model``.
+        save_object_store (ObjectStore, optional): If the ``save_path`` is in an object name in a cloud bucket
+            (i.e. AWS S3 or Google Cloud Storage), an instance of :class:`~.ObjectStore` which will be used
+            to store the exported model. Set this to ``None`` if ``save_path`` is a local filepath.
+            (default: ``None``)
+        sample_input (Any, optional): Example model inputs used for tracing. This is needed for "onnx" export.
+            The ``sample_input`` need not match the batch size you intend to use for inference. However, the model
+            should accept the ``sample_input`` as is. (default: ``None``)
+        dynamic_axes (Any, optional): Dictionary specifying the axes of input/output tensors as dynamic. May be required
+            for exporting models using older versions of PyTorch when types cannot be inferred.
+        surgery_algs (Union[Callable, Sequence[Callable]], optional): Algorithms that should be applied to the model
+            before loading a checkpoint. Each should be callable that takes a model and returns None.
+            ``surgery_algs`` are applied before ``transforms``. (default: ``None``)
+        transforms (Sequence[Transform], optional): Transformations (usually optimizations) that should be applied
+            to the model before exporting.r model export and optimizations.
 
 Used for exporting models into various formats such ONNX, torchscript etc. and apply optimizations such as fusion.
 """

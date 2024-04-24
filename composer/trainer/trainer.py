@@ -50,7 +50,16 @@ from composer.trainer._deepspeed import _fix_batch_precision_for_deepspeed, _par
 from composer.trainer._scale_schedule import scale_pytorch_scheduler
 from composer.trainer._scaler import ClosureGradScaler
 from composer.trainer.dist_strategy import (DDPSyncStrategy, ddp_sync_context, prepare_ddp_module, prepare_fsdp_module,
-                                            set_fsdp_default)
+                                        if found_cuda_oom == 1:
+    # Adjust device train microbatch size and skip return to rerun after handling OOM
+    _adjust_device_train_microbatch_size(self.state)
+    continue
+
+# Log microbatch and return loss if we've completed without OOMing.
+assert self.state.device_train_microbatch_size is not None
+self.logger.log_metrics({'trainer/device_train_microbatch_size': self.state.device_train_microbatch_size})
+self.first_batch_complete = True
+return total_loss_dictsdp_default)
 from composer.utils import (ExportFormat, MissingConditionalImportError, ObjectStore, Transform, checkpoint, dist,
                             ensure_tuple, export_with_logger, extract_hparams, format_name_with_dist,
                             get_composer_env_dict, get_device, get_file, is_tpu_installed, map_collection,

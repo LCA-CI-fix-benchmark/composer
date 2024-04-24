@@ -3,7 +3,28 @@
 
 """Logs metrics to the console and show a progress bar."""
 
-from __future__ import annotations
+frimport sys
+
+# doesn't update until it is finished.
+# Need to have a dummy progress bar in position 0, so the "real" progress bars in position 1 doesn't jump around
+self.dummy_pbar: Optional[_ProgressBar] = None
+self.train_pbar: Optional[_ProgressBar] = None
+self.eval_pbar: Optional[_ProgressBar] = None
+
+# set the stream
+if isinstance(stream, str):
+    if stream.lower() == 'stdout':
+        stream = sys.stdout
+    elif stream.lower() == 'stderr':
+        stream = sys.stderr
+    else:
+        raise ValueError(f'stream must be one of ("stdout", "stderr", TextIO-like), got "{stream}"')
+
+self.should_log_traces = log_traces
+self.stream = stream
+self.state: Optional[State] = None
+self.hparams: Dict[str, Any] = {}
+self.hparams_already_logged_to_console: bool = False annotations
 
 import os
 import sys
