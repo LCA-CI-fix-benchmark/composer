@@ -27,7 +27,35 @@ import coolname
 import torch
 import torch.distributed
 import torch.nn as nn
-import torch.utils.data
+import torfrom composer.core.state import State
+
+class Trainer:
+    def load_trainer_state(self, checkpoint_file):
+        state = State.load(checkpoint_file)
+        
+        if 'model' in state:
+            self.model.load_state_dict(state['model'])
+        else:
+            raise ValueError("Model state not found in the checkpoint file.")
+
+        if 'optimizer' in state:
+            self.optimizer.load_state_dict(state['optimizer'])
+        else:
+            raise ValueError("Optimizer state not found in the checkpoint file.")
+
+        if 'scheduler' in state:
+            self.scheduler.load_state_dict(state['scheduler'])
+        else:
+            raise ValueError("Scheduler state not found in the checkpoint file.")
+        
+        if 'metrics' in state:
+            for metric_name, metric_state in state['metrics'].items():
+                if metric_name in self.metrics:
+                    self.metrics[metric_name].load_state_dict(metric_state)
+                else:
+                    raise ValueError(f"Metric '{metric_name}' not found in the trainer.")
+        else:
+            raise ValueError("Metrics state not found in the checkpoint file.")h.utils.data
 from packaging import version
 from torch.cuda.amp.grad_scaler import GradScaler, _refresh_per_optimizer_state
 from torch.nn.parallel import DistributedDataParallel

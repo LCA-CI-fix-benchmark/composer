@@ -36,8 +36,57 @@ if TYPE_CHECKING:
     import composer.core.types as types
     from composer.core.algorithm import Algorithm
     from composer.core.callback import Callback
-    from composer.core.evaluator import Evaluator
-    from composer.core.passes import AlgorithmPass
+    from composer.core.                        )
+                    missing_keys, unexpected_keys = state_field_value[metric_name].load_state_dict(metric_state_dict,
+                                                                                                   strict=False)
+                    state_field_value[metric_name]._computed = metric_computed_field
+                    state_field_value[metric_name].persistent(mode=True)
+                    self.device.module_to_device(state_field_value[metric_name])
+                    if len(missing_keys) > 0:
+                        warnings.warn(
+                            f"While loading train metric: {metric_name}, missing these keys:  {', '.join(missing_keys)}"
+                        )
+                    if len(unexpected_keys) > 0:
+                        warnings.warn(
+                            f"While loading train metric: {metric_name}, found these unexpected keys:  {', '.join(unexpected_keys)}"
+                        )
+            elif attribute_name == 'eval_metrics':
+                # Get current metrics object and populate each metric present
+                # in serialization with serialized data via load_state_dict()
+                state_field_value = getattr(self, attribute_name)
+                for eval_key in state_field_value.keys():
+                    if eval_key not in serialized_value:
+                        continue
+                    for metric_name in state_field_value[eval_key].keys():
+                        if metric_name not in serialized_value[eval_key]:
+                            continue
+                        # Increment _update_count so it is non-zero, preventing Torchmetrics from warning us when we call metric.compute()
+                        state_field_value[eval_key][metric_name]._update_count += 1
+                        if isinstance(serialized_value[eval_key][metric_name], Metric):
+                            # For checkpoints saved using Composer <= 0.13.5
+                            serialized_value[eval_key][metric_name].persistent(mode=True)
+                            # Add new attr in torch2
+                            serialized_value[eval_key][metric_name]._state_dict_pre_hooks = OrderedDict()
+                            eval_metric_state_dict = serialized_value[eval_key][metric_name].state_dict()
+                            eval_metric_computed_field = serialized_value[eval_key][metric_name]._computed
+                        elif isinstance(serialized_value[eval_key][metric_name], dict):
+                            # The metric tensor is saved as a numpy array, so that FSDP doesn't mistake it for a tensor to be sharded upon load.
+                            # So we have to cast it back to a torch tensor.
+                            # For checkpoints saved using Composer >= 0.14
+                            eval_metric_state_dict = serialized_value[eval_key][metric_name]['state_dict']
+                            eval_metric_computed_field = serialized_value[eval_key][metric_name]['_computed']
+                            # Backwards compatible loading of torchmetrics from 0.16.0 which casted metric tensors to numpy
+                            if isinstance(eval_metric_computed_field, np.ndarray):
+                                eval_metric_computed_field = torch.from_numpy(eval_metric_computed_field)
+                                eval_metric_computed_device = serialized_value[eval_key][metric_name].get(
+                                    '_computed_device', None)
+                                if eval_metric_computed_device is not None:
+                                    eval_metric_computed_field = eval_metric_computed_field.to(
+                                        eval_metric_computed_device)
+                        else:
+                            raise ValueError(
+                                'Error while loading evaluation metric. Evaluation metric from serialization is neither a Torchmetrics Metric object nor a dictionary.'
+                            )asses import AlgorithmPass
     from composer.loggers import Logger
     from composer.profiler import Profiler
 

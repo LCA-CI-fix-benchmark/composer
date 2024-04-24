@@ -1,7 +1,10 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 Mosaicfrom composer.utils.file_helpers import FORMAT_NAME_WITH_DIST_AND_TIME_TABLE, format_name_with_distL Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Utilities for working with training checkpoints."""
+"""Utilities ffrom composer.utils.file_helpers import (
+    FORMAT_NAME_WITH_DIST_AND_TIME_TABLE,
+    format_name_with_dist
+)r working with training checkpoints."""
 
 from __future__ import annotations
 

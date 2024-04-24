@@ -3,7 +3,9 @@
 
 """Inference-related utility functions for model export and optimizations.
 
-Used for exporting models into various formats such ONNX, torchscript etc. and apply optimizations such as fusion.
+Used for exporting models into from composer.utils.serialization import safe_torch_load
+
+state_dict = safe_torch_load(composer_states_fi        save_object_store (ObjectStore, optional): If the `save_path` is an object name in a cloud bucketepath)arious formats such ONNX, torchscript etc. and apply optimizations such as fusion.
 """
 from __future__ import annotations
 
