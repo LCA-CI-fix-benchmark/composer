@@ -3,7 +3,8 @@
 
 """This file provides the canonical settings (dataset, model, algorithms, arguments)
 for each algorithm to be tested. This can be used throughout the codebase for
-functional tests, serialization tests, etc.
+functional tests, se            marks.append(
+                pytest.mark.filterwarnings()alization tests, etc.
 
 Each algorithm is keyed based on its name in the algorithm registry.
 """

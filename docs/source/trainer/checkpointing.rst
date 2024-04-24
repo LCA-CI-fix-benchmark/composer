@@ -7,8 +7,43 @@ creating the :class:`.Trainer`.
 To customize the filenames of checkpoints inside ``save_folder``, you can set the ``save_filename`` argument.
 By default, checkpoints will be named like ``'ep{epoch}-ba{batch}-rank{rank}'`` within the ``save_folder``.
 
-In addition, the trainer creates a symlink called ``'latest-rank{rank}'``, which points to the latest saved checkpoint
-file. You can customize this symlink name by setting the ``save_latest_filename`` argument.
+.. testcode::
+    :skipif: not _LIBCLOUD_INSTALLED
+
+    new_trainer = Trainer(
+        model=model,
+        train_dataloader=train_dataloader,
+        max_duration="10ep",
+        load_path="s3://checkpoint-debugging/checkpoints/ep1.pt",
+    )
+
+    new_trainer.fit()
+
+.. testcode::
+    :skipif: not _LIBCLOUD_INSTALLED
+
+    new_trainer = Trainer(
+        model=model,
+        train_dataloader=train_dataloader,
+        max_duration="10ep",
+        load_path="oci://checkpoint-debugging/checkpoints/ep1.pt",
+    )
+
+    new_trainer.fit()
+
+.. testcode::
+    :skipif: not _LIBCLOUD_INSTALLED
+
+    new_trainer = Trainer(
+        model=model,
+        train_dataloader=train_dataloader,
+        max_duration="10ep",
+        load_path="gs://checkpoint-debugging/checkpoints/ep1.pt",
+    )
+
+    new_trainer.fit()
+
+Note: For GCS, remember to input your `HMAC access id and secret <https://cloud.google.com/storage/docs/authentication/hmackeys/>`__mize this symlink name by setting the ``save_latest_filename`` argument.
 
 The ``save_folder``, ``save_filename``, and ``save_latest`` arguments are Python format strings, so you can customize the folder
 structure to include information such as the rank of the Python process or the current training progress. Please see

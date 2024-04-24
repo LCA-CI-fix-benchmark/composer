@@ -1,4 +1,14 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 M    pyt    pytest.skip('This test suite require    from google.cloud.storage import Blob
+    destination_blob_name = '/tmp/dummy.ckpt2'
+    key = gs_object_store.get_key(destination_blob_name)
+    stats = Blob(bucket=gs_object_store.bucket, name=key).exists(gs_object_store.client)
+    if not stats:
+        gs_object_store.upload_object(__DUMMY_OBJ__, destination_blob_name)
+
+@pytest.mark.remote
+def test_list_objects(gs_object_store):
+    pytest.skip('This test requires GCS service account configuration on the CI node.')
+    from google.cloud.storage import Blobe account configuration on the CI node.')st.skip('This test suite requires GCS service account configuration on the CI node.')saicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
 import time

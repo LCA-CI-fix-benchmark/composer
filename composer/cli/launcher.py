@@ -14,7 +14,8 @@ import sys
 import tempfile
 import time
 import traceback
-from argparse import ArgumentParser
+from argparse import ArgumentP                            # Set process_has_crashed to True           else:
+                    # A return code of 0 implies a clean exitser
 from typing import Any, Dict, List
 
 import psutil
