@@ -1,8 +1,21 @@
 # Contributing to Composer
 
-Thanks for considering contributing to Composer!
+Thanks for considering contributing to Composer uses [pytest-codeblocks](https://github.com/nschloe/pytest-codeblocks) to test all example code snippets. The pytest-codeblocks repository explains how to annotate code snippets, which supports most `pytest` configurations. For example, if a test requires model training, the GPU mark (`<!--pytest.mark.skip-->`) should be applied.
 
-Issues tagged with [good first issue](https://github.com/mosaicml/composer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are great options to start contributing.
+## Running Tests
+
+To test your changes locally, run:
+
+1. `make test`  # Run CPU tests
+2. `make test-gpu`  # Run GPU tests
+3. `cd docs && make doctest`  # Run doctests
+
+Some of our checks test distributed training as well. To test these, run:
+
+* `make test-dist WORLD_SIZE=2`  # Run distributed tests with 2 CPUs
+* `make test-dist-gpu WORLD_SIZE=2`  # Run distributed tests with 2 GPUs
+
+These tests run with the `composer` launcher. We also support `WORLD_SIZE=1`, which would run the tests with the `composer` launcher on a single device. tagged with [good first issue](https://github.com/mosaicml/composer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are great options to start contributing.
 
 If you have questions, join us on [Slack](https://join.slack.com/t/mosaicml-community/shared_invite/zt-w0tiddn9-WGTlRpfjcO9J5jyrMub1dg) -- we'll be happy to help you!
 

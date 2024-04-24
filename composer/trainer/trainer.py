@@ -11,8 +11,24 @@ import datetime
 import itertools
 import logging
 import os
-import random
-import re
+import r    # Clear state outputs if present
+    if hasattr(state, 'outputs'):
+        del state.outputs
+
+    # Clear state loss if present
+    if hasattr(state, 'loss'):
+        del state.loss
+
+    # Zero gradients for all optimizers in the state
+    for optimizer in state.optimizers:
+        optimizer.zero_grad(set_to_none=True)
+
+    # Reset per optimizer states for the scaler if scaler is present
+    if state.scaler is not None:
+        state.scaler._per_optimizer_states = defaultdict(_refresh_per_optimizer_state)
+
+    # Empty CUDA cache to release memory
+    torch.cuda.empty_cache()ort re
 import tempfile
 import textwrap
 import time

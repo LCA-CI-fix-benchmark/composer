@@ -27,7 +27,13 @@ from composer.core.precision import Precision
 from composer.core.serializable import Serializable
 from composer.core.time import Time, Timestamp, TimeUnit
 from composer.devices import Device
-from composer.utils import batch_get, batch_set, dist, ensure_tuple, get_composer_env_dict, is_model_deepspeed
+from composer.utils import batch_get, batch_set, dist, ensure_tuple, get_co                                'unexpected behavior, including failing to load weights for some layers.'))
+                    # Queue algorithm to be auto-applied
+                    elif type(algo) not in current_algos:
+                        missing_algos.add(algo)
+                        missing_algo_names.append(algo_name)
+                        missing_algo_reprs.append(serialized_value['repr'])
+                        self.algorithms.append(algo)env_dict, is_model_deepspeed
 from composer.utils.misc import using_torch_2
 
 if TYPE_CHECKING:
