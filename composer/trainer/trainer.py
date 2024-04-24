@@ -10,8 +10,13 @@ import contextlib
 import datetime
 import itertools
 import logging
-import os
-import random
+imp        state (State): State of trainer.
+    """
+    # If any rank hit CUDA OOM, update device_train_microbatch_size and retry. Raise runtime error
+    # if training 1 sample at a time still resulted in CUDA out of memory.
+    assert state.device_train_microbatch_size is not None
+    if state.device_train_microbatch_size == 1:
+        raise RuntimeError(('CUDA out of memory. The train loop failed with an internal microbatch of size 1.')import random
 import re
 import tempfile
 import textwrap

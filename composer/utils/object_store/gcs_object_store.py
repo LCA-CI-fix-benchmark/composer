@@ -1,7 +1,29 @@
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Google Cloud SDK - Compatible object store."""
+"""Google Cloud SDK        return f'{self.prefix}{object_name}'
+
+    def get_uri(self, object_name: str) -> str:
+        return f'gs://{self.bucket_name}/{self.get_key(object_name)}'
+
+    def get_object_size(self, object_name: str) -> int:
+        """Retrieves the size of an object stored in the cloud storage bucket.
+
+        Args:
+            object_name (str): The name of the object in the cloud storage bucket whose size is to be retrieved.
+
+        Returns:
+            int: The size of the object in bytes.
+
+        Raises:
+            FileNotFoundError: If the specified object does not exist in the cloud storage bucket.
+            Exception: If an error occurs while trying to retrieve the object's size.
+        """
+        if not self.use_gcs_sdk:
+            assert self.s3_object_store is not None
+            return self.s3_object_store.get_object_size(object_name)
+        else:
+            raise Exception("Error: Google Cloud Storage SDK is not enabled.")tore."""
 
 from __future__ import annotations
 

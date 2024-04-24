@@ -1,5 +1,44 @@
-# Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# Copyright 2022 MosaicML Compodef test_get_uri(gs_object_store):
+def test_list_objects(gs_object_store):
+    from google.cloud.storage import Blob
+    destination_blob_name = '/tmp/dummy.ckpt2'
+    key = gs_object_store.get_key(destination_blob_name)
+    stats = Blob(bucket=gs_object_store.bucket, name=key).exists(gs_object_store.client)
+    if not stats:
+        gs_object_store.upload_object(__DUMMY_OBJ__, destination_blob_name)
+    objects = gs_object_store.list_objects()
+    assert key in objectsname = 'test-object'
+    expected_uri = 'gs://mosaicml-composer-tests/streaming/test-object'
+    assert gs_object_store.get_uri(object_name) == expected_uri
+
+
+def test_get_key(gs_object_store):
+    object_name = 'test-object'
+    expected_key = 'streaming/test-object'
+    assert gs_object_store.get_key(object_name) == expected_key
+
+
+@pytest.mark.parametrize('result', ['success', 'not found'])
+def test_get_object_size(gs_object_store, result: str):
+    fn = Path(__DUMMY_OBJ__)
+    with open(fn, 'wb') as fp:
+        fp.write(bytes('0' * __NUM_BYTES__, 'utf-8'))
+    gs_object_store.upload_object(fn)
+
+    if result == 'success':
+        assert gs_object_store.get_object_size(__DUMMY_OBJ__) == __NUM_BYTES__
+    else:  # not found
+        with pytest.raises(FileNotFoundError):
+            gs_object_store.get_object_size(__DUMMY_OBJ__ + f'time.ctime()')
+
+
+def test_upload_object(gs_object_store):
+    from google.cloud.storage import Blob
+    destination_blob_name = '/tmp/dummy.ckpt2'
+    key = gs_object_store.get_key(destination_blob_name)
+    stats = Blob(bucket=gs_object_store.bucket, name=key).exists(gs_object_store.client)
+    if not stats:
+        gs_object_store.upload_object(__DUMMY_OBJ__, destination_blob_name)ache-2.0
 
 import time
 from pathlib import Path

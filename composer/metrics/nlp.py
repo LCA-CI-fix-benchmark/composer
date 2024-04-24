@@ -16,9 +16,26 @@ from torch import Tensor
 from torch.nn import functional as F
 from torchmetrics import Metric
 
-from composer.utils.eval_client import EvalClient, LambdaEvalClient, LocalEvalClient, MosaicMLLambdaEvalClient
+from composer.utils.eval_client import EvalClient, LambdaEvalClient, LocalEvalClient, MosaicMLLambdaEvalClie    r"""Computes accuracy for In-context learning (ICL) co    def estimator(self, n: int, c: int, k: int) -> float:
+        """Computes the pass@k metric.
 
-log = logging.getLogger(__name__)
+        Given the number of generated samples, n, the number of correct samples, c, and the k of interest,
+        this function calculates pass@k as 1 - comb(n - c, k) / comb(n, k) as per the definition of
+        pass@k in the HumanEval paper (https://arxiv.org/abs/2107.03374) and its associated implementation:
+        https://github.com/openai/human-eval.
+        """
+        if n - c < k:
+            return 1.0
+        return 1.0 - float(comb(n - c, k) / comb(n, k))n tasks.
+
+    ICL code eval tasks consist of some number of example code eval tasks (referred to as the 'context'), followed by a test task where the model must
+    complete the code, where we term the code completion a 'continuation'.
+
+    In each case, the model constructs a given number of continuations (termed pass@K for K continuations), and each continuation is run against a set of test cases. The model is considered
+    correct if at least one of the proposed continuations passes all the test cases.
+
+    Runs on AWS Lambdas by default.
+""" logging.getLogger(__name__)
 
 __all__ = [
     'InContextLearningLMAccuracy',

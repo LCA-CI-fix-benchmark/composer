@@ -1,5 +1,13 @@
-# Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# Copyright 2022 MosaicML Composer a    # https://github.com/mlflow/mlflow/blob/39b76b5b05407af5d223e892b03e450b7264576a/mlflow/protos/databricks.proto for code descriptions.
+    retryable_server_codes = [
+        ErrorCode.Name(code) for code in [
+            DATA_LOSS,
+            INTERNAL_ERROR,
+            INVALID_STATE,
+            TEMPORARILY_UNAVAILABLE,
+            DEADLINE_EXCEEDED,
+        ]
+    ]SPDX-License-Identifier: Apache-2.0
 
 """MLflow Artifacts object store."""
 

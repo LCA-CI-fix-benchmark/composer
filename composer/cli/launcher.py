@@ -14,8 +14,86 @@ import sys
 import tempfile
 import time
 import traceback
-from argparse import ArgumentParser
-from typing import Any, Dict, List
+from argparse import     try:
+        while True:
+            process_has_crashed = False
+    import datetime
+import signal
+import psutil
+import os
+
+try:
+    print((f'Waiting up to {CLEANUP_TIMEOUT.seconds} seconds for all training processes to terminate. '
+           'Press Ctrl-C to exit immediately.'))
+    while datetime.datetime.now() - current_time < CLEANUP_TIMEOUT:
+        for process in processes.values():
+            process.poll()
+        if all(process.returncode is not None for process in processes.values()):
+            break
+        time.sleep(0.1)
+except KeyboardInterrupt:
+    pass
+
+for global_rank, process in processes.items():
+    process.poll()
+    if process.returncode is None:
+        log.warning('Failed to kill global rank %s (PID %s) with SIGTERM; terminating with SIGKILL instead',
+                    global_rank, process.pid)
+        try:
+            proc = psutil.Process(process.pid)
+        except psutil.NoSuchProcess:
+            pass
+        else:
+            # If using SIGKILL, manually kill all child processes, since the main training process
+            # likely won't be able to intercept the signal and clean up its children.
+            for psutil_proc in [proc, *proc.children(recursive=True)]:
+                try:
+                    os.kill(psutil_proc.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+
+for global_rank, process in processes.items():
+    process.poll()
+    if process.returncode is not None and process.returncode != 0:
+        if -process.returncode in (signal.SIGKILL, signal.SIGTERM):
+            # Negative return codes indicate the process was killed via a signal
+            # If the launcher script killed the training process (which would happen via SIGKILL or SIGTERM),
+            # then do not print the stack trace.
+            continue
+        # only print the processes that have actually crashed,
+        # not the ones that were killed
+        _print_process_exit_status(global_rank, process)
+
+
+def _aggregate_process_returncode(processes: Dict[int, subprocess.Popen]) -> int:
+    for global_rank, process in processes.items():
+        process.poll()
+        if process.returncode is None:
+            log.error('Global rank %s (PID %s) has still not exited; return exit code 1.', global_rank, process.pid)
+            return 1
+        if process.returncode != 0:
+            log.error('Global rank %s (PID %s) exited with code %s', global_rank, process.pid, process.returncode)
+            return process.returncode
+
+    return 0lobal_rank, process in processes.items():
+                if process.poll() is None:
+                    # the process is still running
+                    all_processes_finished = False
+                    continue
+                else:
+                    # return code of 0 implies clean exit
+                    if process.returncode != 0:
+                        log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
+                        process_has_crashed = True
+                        break
+                    else:
+                        # exited cleanly
+                        log.info(f'Rank {global_rank} finished successfully.')
+            if process_has_crashed or all_processes_finished:
+                break
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        log.info("Process interrupted by user.")ping import Any, Dict, List
 
 import psutil
 import torch

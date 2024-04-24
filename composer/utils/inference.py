@@ -1,8 +1,43 @@
-# Copyright 2022 MosaicML Composer authors
+# Co"""
+Used for exporting models into various formats such ONNX, torchscript etc. and apply optimizations such as fusion.
+"""ight 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Inference-related utility functions for model export and optimizations.
+"""Inference-related utility functions for mode                    output_names = [        model (nn.Module): An instance of nn.Module. Please note that model is not modified inplace.
+            Instead, export-related transformations are applied to a copy of the model.
+        save_format (Union[str, ExportFormat]): Format to export to. Either ``"torchscript"`` or ``"onnx"``.
+        save_path: (str): The path for storing the exported model. It can be a path to a file on the local disk,
+            a URL, or if ``save_object_store`` is set, the object name in a cloud bucket. For example, ``my_run/exported_model``.
+        logger (Logger): If this logger has a destination that supports file uploading, and save_object_store
+            is not provided, this logger is used to export the model.
+        save_object_store (ObjectStore, optional): If the ``save_path`` is in an object name in a cloud bucket
+            (i.e. AWS S3 or Google Cloud Storage), an instance of
+                torch.onnx.export(
+                    model,
+                    sample_input,
+                    local_save_path,
+                    input_names=input_names,
+                    output_names=output_names,
+                    dynamic_axes=dynamic_axes,
+                    opset_version=onnx_opset_version,
+                )
 
+            # upload if required.
+            if is_remote_store:
+                save_object_store.upload_object(save_path, local_save_path)
+
+
+def export_with_logger(
+    model: nn.Module,
+    save_format: Union[str, ExportFormat],
+    save_path: str,
+    logger: Logger,
+    save_object_store: Optional[ObjectStore] = None,
+    sample_input: Optional[Any] = None,
+    transforms: Optional[Sequence[Transform]] = None,
+    input_names: Optional[Sequence[str]] = None,
+    output_names: Optional[Sequence[str]] = None,
+) -> None:
 Used for exporting models into various formats such ONNX, torchscript etc. and apply optimizations such as fusion.
 """
 from __future__ import annotations
