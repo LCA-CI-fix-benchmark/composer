@@ -1,4 +1,4 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyright 2022 MosaicML Composer         gc.collect()  # Perform garbage collection only for GPU tests to prevent slowdown in CPU testsuthors
 # SPDX-License-Identifier: Apache-2.0
 
 import gc

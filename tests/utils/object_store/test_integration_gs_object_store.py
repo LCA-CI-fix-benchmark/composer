@@ -1,7 +1,16 @@
-# Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# Copyright 2022 MosaicML# Run this test suite only after GCS service account is configured on the CI node.
 
-import time
+def test_get_uri(gs_object_store):
+    object_name = 'test-object'
+    expected_uri = 'gs://mosaicml-composer-tests/streaming/test-object'
+    assert (gs_object_store.get_uri(object_name) == expected_uri)
+
+def test_get_key(gs_object_store):
+    object_name = 'test-object'
+    expected_key = 'streaming/test-object'
+    assert (gs_object_store.get_key(object_name) == expected_key)
+
+# Other test functions follow...me
 from pathlib import Path
 
 import pytest

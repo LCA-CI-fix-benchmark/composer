@@ -10,7 +10,7 @@ from typing import Dict, Mapping, Optional
 import torch
 import torch.utils.data
 
-from composer.core import Algorithm, Batch, Event, State, TimeUnit, get_precision_context
+from composer.core import Algorithm, Batch, Event, State, TimeUnit, get_preci            except SpecificErrorType as e:ion_context
 from composer.loggers import Logger
 from composer.models import HuggingFaceModel
 from composer.utils import dist, ensure_tuple

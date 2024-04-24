@@ -1,5 +1,7 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Iden
+# Please provide the specific code snippet that needs correction or improvement in the file `composer/trainer/dist_strategy.py` so that the necessary edits can be made effectively.
+ifier: Apache-2.0
 
 """Helpers for running distributed data parallel training."""
 

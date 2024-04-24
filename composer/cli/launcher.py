@@ -14,7 +14,11 @@ import sys
 import tempfile
 import time
 import traceback
-from argparse import ArgumentParser
+from argparse import ArgumentP                else:
+                    # return code of 0 implies clean exit
+                    if process.returncode is not None and process.returncode != 0:
+                        log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
+                        process_has_crashed = True
 from typing import Any, Dict, List
 
 import psutil

@@ -1,5 +1,5 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-        _state_dict_utils._sharded_pre_load_state_dict_hook = _sharded_pre_load_state_dict_hookicense-Identifier: Apache-2.0
 
 # Released under BSD 3-Clause License,
 # Copyright (c) Facebook, Inc. and its affiliates.

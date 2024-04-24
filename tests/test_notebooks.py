@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import glob
-import inspect
+import ins    if notebook_name == 'ffcv_dataloaders' and device == 'cpu':
+        pytest.skip('The CI does not support tpus')ct
 import os
 from urllib.parse import urlparse
 
