@@ -1,7 +1,26 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: Apache        self.current_metrics.update(metrics)
 
-"""Log to `Tensorboard <https://www.tensorflow.org/tensorboard/>`_."""
+        for tag, metric in metrics.items():
+            if isinstance(metric, str):  # Skip logging strings to avoid import errors.
+                continue
+            # TODO: Handle logging non-(scalars/arrays/tensors/strings)
+            # If a non-(scalars/arrays/tensors/strings) is passed, we skip logging it
+            # to prevent crashing the job.
+            try:
+                assert self.writer is not None
+                self.writer.add_scalar(tag, metric, global_step=step)
+            except TypeError as e:
+                # Log a warning if the metric type is not supported for logging.
+                logger.warning(f"Ignored metric '{tag}' due to unsupported type: {type(metric)}")
+                logger.debug(f"Error details: {e}")
+
+    def init(self, state: State, logger: Logger) -> None:
+        self.run_name = state.run_name
+
+        # Ensure all runs are co-located in the same log directory.
+        if self.log_dir is None:
+            self.log_dir = 'tensorboard_logs'orboard <https://www.tensorflow.org/tensorboard/>`_."""
 
 from pathlib import Path
 from typing import Any, Dict, Optional

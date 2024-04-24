@@ -8,9 +8,22 @@ import sys
 import textwrap
 from pathlib import Path
 from typing import List
-from unittest.mock import Mock
-
-import pytest
+from unittest.mock im    # Check the subprocess output for non-zero exit code and raise an exception with stdout/stderr dump
+    # The `check=True` flag in `subprocess.run` does not provide stdout/stderr in the exception
+    if proc.returncode == 0:
+        return
+    
+    # Construct error message with detailed information including command, exit code, stdout, and stderr
+    error_msg = textwrap.dedent(f"""\
+        Command '{proc.args}' failed with exit code {proc.returncode}.
+        ----Begin stdout----
+        {proc.stdout.decode()}
+        ----End stdout------
+        ----Begin stderr----
+        {proc.stderr.decode()}
+        ----End stderr------""")
+    
+    raise RuntimeError(error_msg)ort pytest
 
 import composer
 from composer.core import Engine, Event

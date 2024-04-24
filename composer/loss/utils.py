@@ -1,9 +1,49 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: Adef create_one_hot_labels(tensor: torch.Tensor, num_classes: int, dim: int) -> torch.Tensor:
+    """
+    Convert index class labels to one-hot encoded tensors.
 
-"""Loss-related utilities."""
+    Args:
+        tensor (torch.Tensor): Tensor containing index class labels.
+        num_classes (int): Size of the class dimension for the output one-hot tensor. If set to -1,
+            the number of classes will be inferred to be one greater than the largest value in ``tensor``.
+        dim (int): Location of the new class dimension of size ``num_classes``.
 
-from __future__ import annotations
+    Returns:
+        torch.Tensor: One-hot class labels with an extra dimension of size ``num_classes``.
+    """
+    if not check_for_index_targets(tensor):
+        raise ValueError(f'tensor must be integer type, current type: {tensor.dtype}')
+
+    max_index = tensor.max() + 1
+    if num_classes == -1:
+        num_classes = int(max_index)
+
+    if num_classes < max_index:
+        raise ValueError(f'num_classes must be greater than or equal to tensor.max() + 1: {num_classes} < {max_index}')
+
+    # Remove negative indices
+    neg_indices = tensor.min() < 0
+    if neg_indices:
+        warnings.warn('Negative label indices are being ignored in conversion to one-hot labels. Negative indices will be treated as an additional class.')
+        tensor = tensor.clone().long()
+        tensor[tensor < 0] = num_classes
+        num_classes += 1  # Add an extra class for negative indices
+
+    # Assume class dimension is inserted after the first dimension
+    tensor = tensor.unsqueeze(dim)
+    tensor_shape = list(tensor.shape)
+    tensor_shape[dim] = num_classes
+
+    # Convert to one-hot
+    one_hot_tensor = torch.zeros(size=tensor_shape, dtype=tensor.dtype, device=tensor.device)
+    one_hot_tensor.scatter_(dim=dim, index=tensor, value=1)
+
+    # Remove the extra class for negative indices
+    if neg_indices:
+        one_hot_tensor = one_hot_tensor[:, :-1]
+
+    return one_hot_tensorfrom __future__ import annotations
 
 import warnings
 from typing import Optional

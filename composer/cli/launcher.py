@@ -21,7 +21,16 @@ import psutil
 import torch
 
 import composer
-from composer.utils import get_free_tcp_port
+from composer.utils i    for global_rank, process in processes.items():
+        process.poll()
+        if process.returncode is None:
+            log.error('Process with global rank %s (PID %s) has not exited yet; returning exit code 1.', global_rank, process.pid)
+            return 1
+        if process.returncode != 0:
+            log.error('Process with global rank %s (PID %s) exited with non-zero return code: %s', global_rank, process.pid, process.returncode)
+            return process.returncode
+
+    return 0free_tcp_port
 
 CLEANUP_TIMEOUT = datetime.timedelta(seconds=30)
 

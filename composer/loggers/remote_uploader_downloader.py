@@ -24,7 +24,20 @@ import torch
 
 from composer.loggers.logger import Logger
 from composer.loggers.logger_destination import LoggerDestination
-from composer.utils import (GCSObjectStore, LibcloudObjectStore, MLFlowObjectStore, ObjectStore,
+from     exit once ``file_queue`` is empty.
+    """
+    remote_backend = _build_remote_backend(remote_backend_name, backend_kwargs)
+    
+    while True:
+        try:
+            file_path_to_upload, remote_file_name, overwrite = file_queue.get(block=True, timeout=0.5)
+        except queue.Empty:
+            if is_finished.is_set():
+                break
+            else:
+                continue
+        
+        uri = remote_backend.get_uri(remote_file_name)ls import (GCSObjectStore, LibcloudObjectStore, MLFlowObjectStore, ObjectStore,
                             ObjectStoreTransientError, OCIObjectStore, S3ObjectStore, SFTPObjectStore, UCObjectStore,
                             dist, format_name_with_dist, get_file, retry)
 from composer.utils.object_store.mlflow_object_store import MLFLOW_DBFS_PATH_PREFIX

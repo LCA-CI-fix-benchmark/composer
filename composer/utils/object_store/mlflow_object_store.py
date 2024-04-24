@@ -1,5 +1,24 @@
-# Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# Copyright 2022 MosaicML Composer auth    from mlflow.protos.databricks_pb2 import ErrorCode
+    
+    # Define retryable server error codes based on MLflow databricks.proto descriptions
+    retryable_server_codes = [
+        ErrorCode.Name(code) for code in [
+            ErrorCode.DATA_LOSS,
+            ErrorCode.INTERNAL_ERROR,
+            ErrorCode.INVALID_STATE,
+            ErrorCode.TEMPORARILY_UNAVAILABLE,
+            ErrorCode.DEADLINE_EXCEEDED,
+        ]
+    ]
+    
+    # Define retryable client error codes based on MLflow databricks.proto descriptions
+    retryable_client_codes = [
+        ErrorCode.Name(code) for code in [
+            ErrorCode.ABORTED,
+            ErrorCode.REQUEST_LIMIT_EXCEEDED,
+            ErrorCode.RESOURCE_EXHAUSTED
+        ]
+    ]License-Identifier: Apache-2.0
 
 """MLflow Artifacts object store."""
 

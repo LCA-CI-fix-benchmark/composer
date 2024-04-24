@@ -1,7 +1,28 @@
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Inference-related utility functions for model export and optimizations.
+"""Inference-related utility functions for model             (i.e. AWS S3 or Google Clou    # Get the CPU device
+    cpu = get_device('cpu')
+    
+    # Move the model to the CPU device
+    cpu.module_to_device(model)
+
+    # Move sample input to the CPU device if provided
+    if sample_input is not None:
+        sample_input = ensure_tuple(sample_input)
+        sample_input = _move_sample_input_to_device(sample_input, cpu)
+
+    # Apply surgery algorithms in the given order
+    for alg in ensure_tuple(surgery_algs):
+        alg(model), an instance of
+            :class:`~.ObjectStore` which will be used to retrieve the checkpoint.
+            Otherwise, if the checkpoint is a local filepath, set to ``None``. (default: ``None``)
+        load_strict (bool): Whether the keys (i.e., model parameter names) in the model state dict should
+            perfectly match the keys in the model instance. (default: ``False``)
+        input_names (Sequence[str], optional): Names to assign to the input nodes of the graph, in order. If set
+            to ``None``, the keys from the `sample_input` will be used. Falls back to ``["input"]``.
+        output_names (Sequence[str], optional): Names to assign to the output nodes of the graph, in order. If set
+            to ``None``, it defaults to ``["output"]``.d optimizations.
 
 Used for exporting models into various formats such ONNX, torchscript etc. and apply optimizations such as fusion.
 """
