@@ -1,4 +1,12 @@
-# Copyright 2022 MosaicML Composer authors
+# Cop# Import necessary modules and classes
+from utils.eval_client.lambda_eval_client import LambdaEvalClient
+
+# Create an instance of LambdaEvalClient
+lambda_client = LambdaEvalClient()
+
+# Test the functionality of LambdaEvalClient
+result = lambda_client.evaluate_lambda(lambda x: x * x, 5)
+print(result)  # Output should be 25right 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 import pytest
 

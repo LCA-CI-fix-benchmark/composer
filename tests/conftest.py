@@ -1,4 +1,33 @@
-# Copyright 2022 MosaicML Composer authors
+# Copyrigimport pytest
+from tests.utils.eval_client.test_lambda_evalimport os
+from typing import List
+import pytest
+
+def _add_option(parser, name, help_text):
+    """Add an option to the parser."""
+    pass  # Placeholder for actual implementation
+
+def _get_world_size(item: pytest.Item):
+    """Returns the world_size of a test, defaults to 1."""
+    _default = pytest.mark.world_size(1).mark
+    return item.get_closest_marker('world_size', default=_default).args[0]
+
+def pytest_collection_modifyitems(config: pytest.Config, items: List[pytest.Item]) -> None:
+    """Filter tests by world_size (for multi-GPU tests) and duration (short, long, or all)"""
+
+    world_size = int(os.environ.get('WORLD_SIZE', '1'))
+
+    conditions = [
+        lambda item: _get_world_size(item) == world_size,
+    ]valClient
+
+@pytest.fixture
+def lambda_client():
+    return LambdaEvalClient()
+
+# Add any additional fixtures or configurations as needed
+
+# Add test data or setups for tests if requiredt 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
 import os

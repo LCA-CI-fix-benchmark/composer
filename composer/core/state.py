@@ -30,8 +30,59 @@ from composer.devices import Device
 from composer.utils import batch_get, batch_set, dist, ensure_tuple, get_composer_env_dict, is_model_deepspeed
 from composer.utils.misc import using_torch_2
 
-if TYPE_CHECKING:
-    import deepspeed
+if TYPE_CHECif 'Missing key(s) in        if self.load_fsdp_monolith_rank0_only:
+            assert self.fsdp_config is not None
+            log.info('Wrapping model with FSDP after loading mode                    # Backwards compatible loading of torch                        else:
+                            raise ValueError(
+                                'Error while loading evaluation metric. Evaluation metric from serialization is neither a Torchmetrics Metric object nor a dictionary.'
+                            )
+                        
+                        # Load state dict for evaluation metric
+                        missing_keys, unexpected_keys = state_field_value[eval_key][metric_name].load_state_dict(
+                            eval_metric_state_dict, strict=False)
+                        state_field_value[eval_key][metric_name]._computed = eval_metric_computed_field
+                        state_field_value[eval_key][metric_name].persistent(mode=True)
+                        self.device.module_to_device(state_field_value[eval_key][metric_name])
+                        
+                        if len(missing_keys) > 0:om 0.16.0 which casted metric tensors to numpy
+                    if isinstance(metric_computed_field, np.ndarray):
+                        metric_computed_field = torch.from_numpy(metric_computed_field)
+                        metric_computed_device = serialized_value[metric_name].get('_computed_device', None)
+                        if metric_computed_device is not None:
+                            metric_computed_field = metric_computed_field.to(metric_computed_device)
+                    else:
+                        raise ValueError(
+                            'Error while loading train metric. Train metric from serialization is neither a Torchmetrics Metric object nor a dictionary.'
+                        )
+
+                    # Load state dict for train metric
+                    missing_keys, unexpected_keys = state_field_value[metric_name].load_state_dict(metric_state_dict, strict=False)
+                    state_field_value[metric_name]._computed = metric_computed_field
+                    state_field_value[metric_name].persistent(mode=True)
+                    self.device.module_to_device(state_field_value[metric_name])
+
+                    # Warn about missing or unexpected keys
+                    if len(missing_keys) > 0:
+                        warnings.warn(
+                            f"While loading train metric: {metric_name}, missing these keys:  {', '.join(missing_keys)}"
+                        )
+                    if len(unexpected_keys) > 0:
+                        warnings.warn(
+                            f"While loading train metric: {metric_name}, found these unexpected keys:  {', '.join(unexpected_keys)}"
+                        )from composer.trainer.dist_strategy import prepare_fsdp_module
+            prepare_fsdp_module(self.model, self.optimizers, self.fsdp_config, self.precision, self.device,
+                                self.auto_microbatching)
+            log.debug('Finished wrapping model with FSDP.')
+        # Add missing closing brace for the if statement
+
+    def load_optim_state(self, state_dict: Dict[str, Any]):
+        """Load the optimizer state."""t' in str(e) or 'Unexpected key(s) in state_dict' in str(e):
+    error_message = textwrap.dedent('Failed to load checkpoint due to missing or unexpected keys in state_dict. '
+                                    'This may be caused by a change in the model architecture. '
+                                    'To resolve this, consider setting load_strict_model_weights=False in the Trainer.')
+    raise RuntimeError(error_message) from e
+else:
+    raise e   import deepspeed
 
     import composer.core.types as types
     from composer.core.algorithm import Algorithm
