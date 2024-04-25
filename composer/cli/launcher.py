@@ -448,6 +448,7 @@ def _cleanup_processes(processes: Dict[int, subprocess.Popen]):
 def _aggregate_process_returncode(processes: Dict[int, subprocess.Popen]) -> int:
     for global_rank, process in processes.items():
         process.poll()
+        # Check if the process has exited
         if process.returncode is None:
             log.error('Global rank %s (PID %s) has still not exited; return exit code 1.', global_rank, process.pid)
             return 1
