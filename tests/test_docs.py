@@ -14,17 +14,24 @@ import pytest
 
 
 def check_output(proc: subprocess.CompletedProcess):
-    # Check the subprocess output, and raise an exception with the stdout/stderr dump if there was a non-zero exit
-    # The `check=True` flag available in `subprocess.run` does not print stdout/stderr
-    if proc.returncode == 0:
-        return
-    error_msg = textwrap.dedent(f"""\
-        Command {proc.args} failed with exit code {proc.returncode}.
-        ----Begin stdout----
-        {proc.stdout}
-        ----End stdout------
-        ----Begin stderr----
-        {proc.stderr}
+# tests/test_docs.py
+
+# Update the code snippet with the necessary corrections and improvements
+
+# Check the subprocess output, and raise an exception with the stdout/stderr dump if there was a non-zero exit
+# The `check=True` flag available in `subprocess.run` does not print stdout/stderr
+if proc.returncode == 0:
+    return
+error_msg = textwrap.dedent(f"""\
+    Command {proc.args} failed with exit code {proc.returncode}.
+    ----Begin stdout----
+    {proc.stdout}
+    ----End stdout------
+    ----Begin stderr----
+    {proc.stderr}
+    ----End stderr------
+""")
+# Consider adding a return statement here if needed
         ----End stderr------""")
 
     raise RuntimeError(error_msg)
