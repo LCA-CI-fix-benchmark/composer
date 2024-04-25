@@ -9,7 +9,7 @@ import pytest
 from composer.utils import reproducibility
 
 # Allowed options for pytest.mark.world_size()
-# Important: when updating this list, make sure to also up ./.ci/test.sh
+# Important: when updating this list, make sure to also update ./.ci/test.sh
 # (so tests of all world sizes will be executed) and tests/README.md
 # (so the documentation is correct)
 WORLD_SIZE_OPTIONS = (1, 2)

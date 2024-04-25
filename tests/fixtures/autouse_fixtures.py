@@ -14,7 +14,8 @@ import tqdm.std
 
 import composer
 from composer.devices import DeviceCPU, DeviceGPU
-from composer.utils import dist, reproducibility
+from composer.utils import dist
+from composer.utils import reproducibility
 
 
 @pytest.fixture(autouse=True)
