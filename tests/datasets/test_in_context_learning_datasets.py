@@ -22,11 +22,15 @@ from composer.datasets.in_context_learning_evaluation import (InContextLearningC
                                                               _get_fewshot_sample_idxs, _make_padded_input,
                                                               get_icl_task_dataloader)
 from composer.loggers import InMemoryLogger
-from composer.metrics import (InContextLearningCodeEvalAccuracy, InContextLearningLMAccuracy,
-                              InContextLearningMultipleChoiceAccuracy, InContextLearningQAAccuracy)
 from composer.models import HuggingFaceModel
 from composer.trainer import Trainer
 from composer.utils import dist, reproducibility
+from composer.metrics import (
+    InContextLearningCodeEvalAccuracy,
+    InContextLearningLMAccuracy,
+    InContextLearningMultipleChoiceAccuracy,
+    InContextLearningQAAccuracy
+)
 from tests.common import device, world_size
 
 

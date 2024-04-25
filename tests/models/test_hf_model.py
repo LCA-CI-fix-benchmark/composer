@@ -706,10 +706,10 @@ def test_hf_loading_model_classes(model_class_name: str, num_classes: Optional[i
     transformers = pytest.importorskip('transformers')
 
     if num_classes is not None and model_class_name not in {'autoseq', 'bertseq', 'customseq'}:
-        pytest.skip('Invalid parametrization. num_classes is only for loading sequence classification models.')
-
     if num_classes is None and model_class_name in {'autoseq', 'bertseq', 'customseq'}:
-        pytest.skip('Invalid parametrization. num_classes cannot be None for loading sequence classification models.')
+        pytest.skip('Invalid parametrization: num_classes cannot be None for loading sequence classification models.')
+    else:
+        pytest.skip('Invalid parametrization: num_classes is only for loading sequence classification models.')
 
     trainer = get_lm_trainer(tiny_bert_model, tiny_bert_tokenizer, str(tmp_path))
     trainer.save_checkpoint(str(tmp_path / 'hf-checkpoint.pt'))
