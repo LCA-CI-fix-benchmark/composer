@@ -282,7 +282,6 @@ def get_algs_with_marks():
                     'ignore:SAM has known issues of weight mismatch when loading from a checkpoint.*:UserWarning'))
 
         if alg_cls == MixUp:
-            # TODO(Landen): Fix
             marks.append(
                 pytest.mark.filterwarnings(r'ignore:Some targets have less than 1 total probability:UserWarning'))
 
@@ -291,6 +290,7 @@ def get_algs_with_marks():
             marks.append(pytest.mark.gpu)
 
         if alg_cls == SelectiveBackprop:
+            # Add necessary code for SelectiveBackprop
             marks.append(
                 pytest.mark.filterwarnings(
                     r'ignore:Cannot split tensor of length .* into batches of size .*:UserWarning'))

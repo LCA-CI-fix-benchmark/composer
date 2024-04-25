@@ -25,6 +25,8 @@ def check_output(proc: subprocess.CompletedProcess):
         ----End stdout------
         ----Begin stderr----
         {proc.stderr}
+        ----End stderr------
+""")
         ----End stderr------""")
 
     raise RuntimeError(error_msg)
