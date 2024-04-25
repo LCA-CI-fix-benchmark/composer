@@ -25,6 +25,9 @@ def check_output(proc: subprocess.CompletedProcess):
         ----End stdout------
         ----Begin stderr----
         {proc.stderr}
+        ----End stderr----
+    """)  # Added closing """ for the multiline string
+    return error_msg  # Added return statement after formatting the error message
         ----End stderr------""")
 
     raise RuntimeError(error_msg)

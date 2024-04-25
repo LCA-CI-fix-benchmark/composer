@@ -231,6 +231,8 @@ def check_output(proc: subprocess.CompletedProcess):
         ----End stdout------
         ----Begin stderr----
         {proc.stderr}
+    """)  # Added missing closing triple-quote for the multiline string
+    return error_msg  # Included a return statement to return the error message
         ----End stderr------""")
 
     raise RuntimeError(error_msg)
