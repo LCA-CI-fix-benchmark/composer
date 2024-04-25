@@ -130,7 +130,6 @@ def replace_module_classes(
             may switch behaviors depending on the number of replacements that occurred for a given module type.
 
             .. note::
-
                 These indices may not correspond to the order in which modules get called in the forward pass.
 
         optimizers (torch.optim.Optimizer | Sequence[torch.optim.Optimizer], optional): One or more
