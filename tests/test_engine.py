@@ -227,7 +227,7 @@ def check_output(proc: subprocess.CompletedProcess):
     error_msg = textwrap.dedent(f"""\
         Command {proc.args} failed with exit code {proc.returncode}.
         ----Begin stdout----
-        {proc.stdout}
+        {subprocess.check_output(proc.args, stderr=subprocess.STDOUT).decode()}
         ----End stdout------
         ----Begin stderr----
         {proc.stderr}
