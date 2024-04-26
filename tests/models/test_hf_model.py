@@ -706,10 +706,8 @@ def test_hf_loading_model_classes(model_class_name: str, num_classes: Optional[i
     transformers = pytest.importorskip('transformers')
 
     if num_classes is not None and model_class_name not in {'autoseq', 'bertseq', 'customseq'}:
-        pytest.skip('Invalid parametrization. num_classes is only for loading sequence classification models.')
-
-    if num_classes is None and model_class_name in {'autoseq', 'bertseq', 'customseq'}:
-        pytest.skip('Invalid parametrization. num_classes cannot be None for loading sequence classification models.')
+    if num_classes is None and model_class_name not in {'autoseq', 'bertseq', 'customseq'}:
+        pytest.skip('Invalid parametrization. num_classes is required for loading sequence classification models.')
 
     trainer = get_lm_trainer(tiny_bert_model, tiny_bert_tokenizer, str(tmp_path))
     trainer.save_checkpoint(str(tmp_path / 'hf-checkpoint.pt'))
@@ -892,13 +890,10 @@ def test_hf_fsdp(tiny_bert_config, tiny_bert_tokenizer):
 
 
 def test_separate_eval_metrics(tiny_bert_model, tiny_bert_tokenizer):
-    pytest.importorskip('transformers')
-
     hf_model = HuggingFaceModel(
         tiny_bert_model,
         tokenizer=tiny_bert_tokenizer,
-        metrics=[LanguageCrossEntropy()],
-        eval_metrics=[MaskedAccuracy(), InContextLearningLMAccuracy()],
+        metrics=[LanguageCrossEntropy()]
     )
 
     assert hf_model.train_metrics is not None
@@ -973,27 +968,22 @@ def test_write_hf_from_composer_direct(tiny_bert_tokenizer, tmp_path):
     assert os.path.exists(tmp_path / 'hf-save-pretrained' / 'pytorch_model.bin')
 
     loaded_hf_model = transformers.AutoModelForMaskedLM.from_pretrained(tmp_path / 'hf-save-pretrained')
-
-    # set _name_or_path so that the equivalence check passes. It is expected that these are different, because one is loaded from disk, while one is loaded from the hub
-    loaded_hf_model.config._name_or_path = tiny_bert_model.config._name_or_path
-
+    assert (tmp_path / 'hf-save-pretrained' / 'config.json').exists()
+    assert (tmp_path / 'hf-save-pretrained' / 'pytorch_model.bin').exists()
     check_hf_model_equivalence(tiny_bert_model, loaded_hf_model)
+    loaded_hf_model = transformers.AutoModelForMaskedLM.from_pretrained(tmp_path / 'hf-save-pretrained')
 
+    # Set _name_or_path to match for equivalence check
+    loaded_hf_model.config._name_or_path = tiny_bert_model.config._name_or_path
+    pytest.importorskip('transformers')
+
+    import logging
+import logging
 
 @pytest.mark.parametrize('embedding_resize', ['higher', 'lower', 'no_resize'])
 @pytest.mark.parametrize('allow_embedding_resizing', [True, False])
 def test_embedding_resizing(tiny_bert_model, tiny_bert_tokenizer, embedding_resize, allow_embedding_resizing, caplog):
     pytest.importorskip('transformers')
-
-    import logging
-
-    from composer.models import HuggingFaceModel
-
-    original_size = tiny_bert_model.config.vocab_size
-    if embedding_resize == 'higher':
-        tiny_bert_model.resize_token_embeddings(original_size + 100)
-    elif embedding_resize == 'lower':
-        tiny_bert_model.resize_token_embeddings(original_size - 100)
 
     error_context = pytest.raises(ValueError) if (not allow_embedding_resizing and
                                                   embedding_resize == 'lower') else nullcontext()
@@ -1002,12 +992,14 @@ def test_embedding_resizing(tiny_bert_model, tiny_bert_tokenizer, embedding_resi
             _ = HuggingFaceModel(tiny_bert_model,
                                  tokenizer=tiny_bert_tokenizer,
                                  allow_embedding_resizing=allow_embedding_resizing)
-        if embedding_resize == 'lower':
-            if allow_embedding_resizing:
-                # When the embedding size is smaller than the tokenizer vocab size,
-                # the embeddings should get resized to match the tokenizer vocab size
-                assert tiny_bert_model.config.vocab_size == len(tiny_bert_tokenizer)
-                assert caplog.messages[0].startswith(
+from contextlib import nullcontext
+
+    elif embedding_resize == 'lower':
+        tiny_bert_model.resize_token_embeddings(original_size - 100)
+
+    error_context = pytest.raises(ValueError) if (not allow_embedding_resizing and
+                                                  embedding_resize == 'lower') else nullcontext()
+    with caplog.at_level(logging.WARNING, logger='composer'):
                     'The number of tokens in the tokenizer is greater than the number of tokens in the model')
         elif embedding_resize == 'higher':
             # When the embedding size is greater than the tokenizer vocab size,

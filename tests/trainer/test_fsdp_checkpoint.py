@@ -32,7 +32,7 @@ from composer.utils.file_helpers import get_file
 from composer.utils.misc import using_torch_2
 from composer.utils.object_store import S3ObjectStore
 from composer.utils.reproducibility import get_rng_state
-from tests.common import RandomClassificationDataset, deep_compare
+from composer.trainer.common import RandomClassificationDataset, deep_compare
 from tests.common.compare import deep_compare
 from tests.common.markers import world_size
 

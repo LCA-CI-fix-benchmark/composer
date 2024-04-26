@@ -14,7 +14,7 @@ from composer.metrics.nlp import (BinaryF1Score, InContextLearningCodeEvalAccura
                                   InContextLearningMCExpectedCalibrationError, InContextLearningMultipleChoiceAccuracy,
                                   InContextLearningQAAccuracy, LanguageCrossEntropy, LanguagePerplexity, MaskedAccuracy)
 from composer.utils import dist
-from tests.common import device, world_size
+from composer.metrics.common import device, world_size
 
 
 @pytest.mark.parametrize('ignore_index', [-100])

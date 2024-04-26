@@ -309,11 +309,8 @@ def load_sharded_checkpoint(
 ) -> list[dict]:
 
     if not using_torch_2():
-        raise ValueError(
-            f'Sharded checkpoint loading requires torch version >= 2.0.0. You have torch version {torch.__version__}')
-
     using_multinode = dist.get_world_size() != dist.get_local_world_size()
-    if not version.parse(torch.__version__) >= version.parse('2.0.1') and using_multinode:
+    if using_multinode and not version.parse(torch.__version__) >= version.parse('2.0.1'):
         raise ValueError(
             f'Sharded checkpoint loading on >1 node requires torch version >= 2.0.1. You have torch version {torch.__version__}'
         )
@@ -811,7 +808,7 @@ def save_checkpoint(
         }
 
     log.debug('State dict created.')
-
+# Further context or information is required to make the necessary edits.
     # Sharded checkpoints get their own little folder.
     if state.fsdp_sharded_state_dict_enabled:
         # To load optimizer states with torch 2.0, the optimizer state must be at the top

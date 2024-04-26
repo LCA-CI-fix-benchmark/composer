@@ -1339,11 +1339,13 @@ class State(Serializable):
                                     eval_metric_computed_field = eval_metric_computed_field.to(
                                         eval_metric_computed_device)
                         else:
-                            raise ValueError(
-                                'Error while loading evaluation metric. Evaluation metric from serialization is neither a Torchmetrics Metric object nor a dictionary.'
-                            )
-                        missing_keys, unexpected_keys = state_field_value[eval_key][metric_name].load_state_dict(
-                            eval_metric_state_dict, strict=False)
+                            if not isinstance(state_field_value[eval_key][metric_name], (Torchmetrics.Metric, dict)):
+                                raise ValueError(
+                                    'Error while loading evaluation metric. Evaluation metric from serialization is neither a Torchmetrics Metric object nor a dictionary.'
+                                )
+                            if isinstance(state_field_value[eval_key][metric_name], Torchmetrics.Metric):
+                                missing_keys, unexpected_keys = state_field_value[eval_key][metric_name].load_state_dict(
+                                    eval_metric_state_dict, strict=False)
                         state_field_value[eval_key][metric_name]._computed = eval_metric_computed_field
                         state_field_value[eval_key][metric_name].persistent(mode=True)
                         self.device.module_to_device(state_field_value[eval_key][metric_name])

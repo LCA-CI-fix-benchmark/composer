@@ -12,15 +12,15 @@ from composer.trainer import Trainer
 __all__ = [
     'Algorithm',
     'Callback',
+    'ComposerModel',
     'DataSpec',
     'Engine',
     'Evaluator',
     'Event',
+    'Logger',
     'State',
     'Time',
     'Timestamp',
     'TimeUnit',
-    'Logger',
-    'ComposerModel',
     'Trainer',
 ]
