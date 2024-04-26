@@ -108,7 +108,7 @@ def test_notebook(notebook: str, device: str, s3_bucket: str):
     if notebook_name == 'ffcv_dataloaders' and device == 'gpu':
         pytest.skip('CIFAR10 download is flaky')
     if notebook_name == 'finetune_huggingface':
-        pytest.skip(
+        pytest.skip('Message for skipping finetune_huggingface notebook test')
             "Error that is unreproducible locally: ModuleNotFoundError: No module named 'transformers.models.ernie_m.configuration_ernie_m'"
         )
     if notebook_name == 'pretrain_finetune_huggingface':
