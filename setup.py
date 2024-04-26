@@ -97,15 +97,15 @@ extra_deps['base'] = []
 extra_deps['dev'] = [
     # Imports for docs builds and running tests
     # Pinning versions strictly to avoid random test failures.
-    # Should manually update dependency versions occassionally.
-    'custom_inherit==2.4.1',
-    'junitparser==3.1.1',
-    'coverage[toml]==7.3.4',
-    'fasteners==0.18',  # object store tests require fasteners
-    'pytest==7.4.4',
+    # Should manually update dependency versions occasionally.
+    'custom_inherit==2.6.0',
+    'junitparser==3.3.0',
+    'coverage[toml]==7.4.0',
+    'fasteners==0.14',  # Object store tests require fasteners
+    'pytest==7.5.0',
     'toml==0.10.2',
-    'ipython==8.11.0',
-    'ipykernel==6.28.0',
+    'ipython==8.12.0',
+    'ipykernel==6.29.0',
     'jupyter==1.0.0',
     'yamllint==1.33.0',
     'recommonmark==0.7.1',

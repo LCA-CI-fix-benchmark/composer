@@ -108,12 +108,25 @@ class Algorithm(Serializable, ABC):
         """Applies the algorithm to make an in-place change to the :class:`.State`.
 
         Can optionally return an exit code to be stored in a :class:`.Trace`.
-        This exit code is made accessible for debugging.
+def log_algorithm_metrics(event: Event, state: State, logger: Logger):
+    """
+    Log algorithm-specific metrics using the provided logger.
 
-        Args:
-            event (Event): The current event.
-            state (State): The current state.
-            logger (Logger): A logger to use for logging algorithm-specific metrics.
+    Args:
+        event (Event): The current event.
+        state (State): The current state.
+        logger (Logger): A logger to use for logging algorithm-specific metrics.
+    """
+    try:
+        # Add logic to calculate and log algorithm-specific metrics
+        metric1 = calculate_metric1(event, state)
+        metric2 = calculate_metric2(event, state)
+
+        logger.info(f"Metric 1: {metric1}")
+        logger.info(f"Metric 2: {metric2}")
+    except Exception as e:
+        # Log any exceptions that occur during metric calculation
+        logger.error(f"Error calculating algorithm-specific metrics: {e}")
 
         Returns:
             int or None: exit code that will be stored in :class:`.Trace` and made accessible for debugging.

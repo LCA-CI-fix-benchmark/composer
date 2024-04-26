@@ -242,12 +242,13 @@ def _adjust_device_train_microbatch_size(state: State):
         state.device_train_microbatch_size = max(int(original_microbatch_size / 2), 1)
         warnings.warn(
             RuntimeWarning('CUDA out of memory detected. Train microbatch size will be decreased from '
-                           f'{original_microbatch_size} -> {state.device_train_microbatch_size}.'))
-    # Clear gradients in case failure happened during backwards pass
+                           f'{original_microbatch_size} -> {state.device_train_microbatch_size}.')
+    # Clear gradients in case failure happened during the backward pass
     if hasattr(state, 'outputs'):
         del state.outputs
     if hasattr(state, 'loss'):
         del state.loss
+    # Reset optimizers by zeroing gradients
     for optimizer in state.optimizers:
         optimizer.zero_grad(set_to_none=True)
     if state.scaler is not None:
