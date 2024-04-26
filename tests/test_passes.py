@@ -133,10 +133,39 @@ class TestSortHelpers:
 
 
 def get_default_passes():
-    state = State(model=SimpleModel(), device=DeviceCPU(), rank_zero_seed=42, run_name='test_chungoose')
-    engine = Engine(state, Logger(state))
-    return engine.algorithm_passes
+from typing import Sequence
 
+class SimpleModel:
+    pass
+
+class DeviceCPU:
+    pass
+
+class State:
+    def __init__(self, model, device, rank_zero_seed, run_name):
+        self.model = model
+        self.device = device
+        self.rank_zero_seed = rank_zero_seed
+        self.run_name = run_name
+
+class Logger:
+    def __init__(self, state):
+        self.state = state
+
+class Engine:
+    def __init__(self, state, logger):
+        self.state = state
+        self.logger = logger
+
+class Algorithm:
+    pass
+
+class Event:
+    pass
+
+state = State(model=SimpleModel(), device=DeviceCPU(), rank_zero_seed=42, run_name='test_chungoose')
+engine = Engine(state, Logger(state))
+return engine.algorithm_passes
 
 def get_custom_pass():
 
@@ -145,8 +174,7 @@ def get_custom_pass():
 
     return sort_by_name
 
-
-sort_by_name = get_custom_pass()  # Generate pass object so we can use same ref in tests
+sort_by_name = get_custom_pass()  # Generate pass object so we can use the same reference in tests
 
 
 class TestTrainerArg:

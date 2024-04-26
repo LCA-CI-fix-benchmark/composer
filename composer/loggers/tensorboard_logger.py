@@ -90,6 +90,8 @@ class TensorboardLogger(LoggerDestination):
                 pass
 
     def init(self, state: State, logger: Logger) -> None:
+import torch
+
         self.run_name = state.run_name
 
         # We fix the log_dir, so all runs are co-located.

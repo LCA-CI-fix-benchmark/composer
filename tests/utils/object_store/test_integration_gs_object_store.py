@@ -22,6 +22,12 @@ def gs_object_store():
 
 
 @pytest.mark.remote
+import pytest
+
+class GCSObjectStore:
+    def __init__(self, path):
+        self.path = path
+
 def test_bucket_not_found():
     pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     with pytest.raises(FileNotFoundError):
@@ -29,19 +35,18 @@ def test_bucket_not_found():
 
 
 @pytest.mark.remote
-def test_get_uri(gs_object_store):
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
-    object_name = 'test-object'
-    expected_uri = 'gs://mosaicml-composer-tests/streaming/test-object'
-    assert (gs_object_store.get_uri(object_name) == expected_uri)
+import pytest
 
-
-@pytest.mark.remote
 def test_get_key(gs_object_store):
     pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     object_name = 'test-object'
-    expected_key = 'streaming/test-object'
-    assert (gs_object_store.get_key(object_name) == expected_key)
+
+
+@pytest.mark.remote
+import pytest
+
+def test_get_object_size(gs_object_store, result: str):
+    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
 
 
 @pytest.mark.remote

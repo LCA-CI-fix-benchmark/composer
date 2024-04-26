@@ -30,6 +30,9 @@ def disable_tokenizer_parallelism():
 
 
 @pytest.fixture(autouse=True)
+import torch
+import gc
+
 def clear_cuda_cache(request):
     """Clear memory between GPU tests."""
     marker = request.node.get_closest_marker('gpu')
