@@ -58,7 +58,7 @@ class DDPSyncStrategy(StringEnum):
 
 
 @contextmanager
-def ddp_sync_context(state: State, is_final_microbatch: bool, sync_strategy: Union[str, DDPSyncStrategy]):
+def ddp_sync_context(state: State, is_final_microbatch: bool, sync_strategy: Union[str, DDPSyncStrategy]) -> None:
     """A context manager for handling the :class:`DDPSyncStrategy`.
 
     Args:

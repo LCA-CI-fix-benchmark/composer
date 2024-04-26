@@ -108,6 +108,7 @@ class Algorithm(Serializable, ABC):
         """Applies the algorithm to make an in-place change to the :class:`.State`.
 
         Can optionally return an exit code to be stored in a :class:`.Trace`.
+        """
         This exit code is made accessible for debugging.
 
         Args:

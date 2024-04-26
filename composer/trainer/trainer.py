@@ -2962,6 +2962,7 @@ class Trainer:
                         # Log device_eval_microbatch_size if auto_microbatching is enabled
                         self.logger.log_metrics({
                             f'trainer/{evaluator.label}/device_eval_microbatch_size':
+                        })
                                 evaluator.device_eval_microbatch_size
                         })
                     # Break if we've successfully completed eval without OOMing.

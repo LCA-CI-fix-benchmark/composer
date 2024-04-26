@@ -29,7 +29,11 @@ def disable_tokenizer_parallelism():
 
 @pytest.fixture(autouse=True)
 def clear_cuda_cache(request):
-    """Clear memory between GPU tests."""
+    """
+    Clear CUDA memory cache between GPU tests if CUDA is available.
+    
+    This function is used to clear the memory between GPU tests to avoid any memory leaks.
+    """
     marker = request.node.get_closest_marker('gpu')
     if marker is not None and torch.cuda.is_available():
         torch.cuda.empty_cache()

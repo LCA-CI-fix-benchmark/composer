@@ -99,6 +99,9 @@ class TensorboardLogger(LoggerDestination):
         self._initialize_summary_writer()
 
     def _initialize_summary_writer(self):
+        """
+        Initialize the summary writer using torch's SummaryWriter.
+        """
         from torch.utils.tensorboard import SummaryWriter
 
         assert self.run_name is not None
