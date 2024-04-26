@@ -176,10 +176,14 @@ def export_for_inference(
         sample_input = _move_sample_input_to_device(sample_input, cpu)
 
     # Apply surgery algorithms in the given order
-    for alg in ensure_tuple(surgery_algs):
-        alg(model)
+# Update the code snippet in composer/utils/inference.py to fix the CI issue
 
-    if load_path is not None:
+# Add any necessary import statements at the beginning of the file if required
+
+for alg in ensure_tuple(surgery_algs):
+    alg(model)
+
+if load_path is not None:
         # download checkpoint and load weights only
         log.debug('Loading checkpoint at %s', load_path)
         with tempfile.TemporaryDirectory() as tempdir:
@@ -195,11 +199,19 @@ def export_for_inference(
                 log.warning(f"Found these unexpected keys in the checkpoint: {', '.join(unexpected_keys)}")
 
     with model_eval_mode(model):
-        # Apply transformations (i.e., inference optimizations) in the given order
-        for transform in ensure_tuple(transforms):
-            model = transform(model)
+# Update the code snippet in composer/utils/inference.py to fix the CI issue
 
-        is_remote_store = save_object_store is not None
+# Add any necessary import statements at the beginning of the file if required
+
+import os
+import tempfile
+import contextlib
+
+is_remote_store = save_object_store is not None
+tempdir_ctx = tempfile.TemporaryDirectory() if is_remote_store else contextlib.nullcontext(None)
+with tempdir_ctx as tempdir:
+    if is_remote_store:
+        local_save_path = os.path.join(str(tempdir), 'model.export')
         tempdir_ctx = tempfile.TemporaryDirectory() if is_remote_store else contextlib.nullcontext(None)
         with tempdir_ctx as tempdir:
             if is_remote_store:

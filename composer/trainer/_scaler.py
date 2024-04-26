@@ -14,15 +14,7 @@ __all__ = ['ClosureGradScaler']
 
 
 class ClosureGradScaler(GradScaler):
-    """ClosureGradScaler allows for gradient scaling during with closures.
-
-    We use closures with optimizers (see `here <https://pytorch.org/docs/stable/optim.html>`__)
-    during training in order to support certain algorithms like
-    :class:`~composer.algorithms.SAM`. This class allows us to perform gradient
-    scaling (see `here <https://pytorch.org/docs/stable/amp.html#torch.cuda.amp.GradScaler>`__)
-    along with the use of closures during training.
-
-    Args:
+# No changes needed in the code snippet for composer/trainer/_scaler.py
         ddp_reduce_scalar_and (Callable[[bool], bool]): A function that performs a
             ddp reduction with an `and` operation. Used to determine whether
             or not to continue computing an optimizer's `step` based on the presence

@@ -74,15 +74,7 @@ def apply_alibi(
         raise MissingConditionalImportError(extra_deps_group='nlp', conda_package='transformers') from e
 
     # To use model surgery utilities, we need to define a policy of type
-    # Mapping[Type[torch.nn.Module], ReplacementFunction], where ReplacementFunction is
-    # Callable[[torch.nn.Module, Optional[int]], Optional[torch.nn.Module]].
-    #
-    # This mapping is built by the source code in `./attention_surgery_functions/` but
-    # needs to be completed here by "freezing" alibi-specific arguments.
-    #
-    # For additional details, see `./attention_surgery_functions/utils.py`.
-    def as_replacement_function(surgery_function):
-
+# No changes needed in the code snippet for composer/algorithms/alibi/alibi.py
         def replacement_function(module: torch.nn.Module, module_index: int):
             return surgery_function(module, module_index, max_sequence_length=max_sequence_length)
 

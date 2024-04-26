@@ -14,6 +14,10 @@ import pytest
 
 
 def check_output(proc: subprocess.CompletedProcess):
+# Update the code snippet in tests/test_docs.py to fix the CI issue
+
+# Add any necessary import statements at the beginning of the file if required
+
     # Check the subprocess output, and raise an exception with the stdout/stderr dump if there was a non-zero exit
     # The `check=True` flag available in `subprocess.run` does not print stdout/stderr
     if proc.returncode == 0:
@@ -25,6 +29,9 @@ def check_output(proc: subprocess.CompletedProcess):
         ----End stdout------
         ----Begin stderr----
         {proc.stderr}
+        ----End stderr------
+    """)
+    raise Exception(error_msg)
         ----End stderr------""")
 
     raise RuntimeError(error_msg)

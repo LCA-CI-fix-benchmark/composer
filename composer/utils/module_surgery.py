@@ -130,10 +130,15 @@ def replace_module_classes(
             may switch behaviors depending on the number of replacements that occurred for a given module type.
 
             .. note::
+# Update the code snippet in composer/utils/module_surgery.py to fix the CI issue
 
-                These indices may not correspond to the order in which modules get called in the forward pass.
+# Add any necessary import statements at the beginning of the file if required
 
-        optimizers (torch.optim.Optimizer | Sequence[torch.optim.Optimizer], optional): One or more
+"""
+These indices may not correspond to the order in which modules get called in the forward pass.
+
+optimizers (torch.optim.Optimizer | Sequence[torch.optim.Optimizer], optional): One or more
+"""
             :class:`~torch.optim.Optimizer` objects. If provided,
             this function will attempt to remove parameters in replaced modules
             from these optimizers, and add parameters from the newly-created

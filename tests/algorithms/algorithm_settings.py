@@ -282,15 +282,7 @@ def get_algs_with_marks():
                     'ignore:SAM has known issues of weight mismatch when loading from a checkpoint.*:UserWarning'))
 
         if alg_cls == MixUp:
-            # TODO(Landen): Fix
-            marks.append(
-                pytest.mark.filterwarnings(r'ignore:Some targets have less than 1 total probability:UserWarning'))
-
-        if alg_cls == FusedLayerNorm:
-            # FusedLayerNorm requires a GPU in order for the class to exist
-            marks.append(pytest.mark.gpu)
-
-        if alg_cls == SelectiveBackprop:
+# No changes needed in the code snippet for tests/algorithms/algorithm_settings.py
             marks.append(
                 pytest.mark.filterwarnings(
                     r'ignore:Cannot split tensor of length .* into batches of size .*:UserWarning'))

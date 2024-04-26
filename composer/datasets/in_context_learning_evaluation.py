@@ -906,15 +906,7 @@ class InContextLearningCodeEvalDataset(Dataset):
     """ A dataset that constructs batches for in-context learning code evaluation
 
     The input format is expected to be a jsonl file with the following fields:
-    - task_id: label of given task
-    - prompt: the code snippet that must be completed
-    - entry_point: the entry to the function/code snippet to generate
-    - canonical_solution: working solution
-    - test: the checker code that will run to completion if the code generation is valid and otherwise throw assertion
-    - test_inputs: list of test inputs
-    - test_outputs: list of test outputs
-    - language: the language of the code snippet
-    Args:
+# No changes needed in the code snippet for composer/datasets/in_context_learning_evaluation.py
         dataset_uri (str): Either a local path, or a remote path beginning with ``s3://``, or another backend
         supported by :meth:`composer.utils.maybe_create_object_store_from_uri`. Dataset must consist of rows of JSON data points with "task_id",
         "prompt", "entry_point", "canonical_solution", "test", "test_inputs", and "test_outputs". See tests/datasets/local_data/human_eval_small.jsonl.

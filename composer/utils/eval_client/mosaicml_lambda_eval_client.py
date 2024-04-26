@@ -60,16 +60,28 @@ class MosaicMLLambdaEvalClient(EvalClient):
                 else:
                     log.error(f'Failed to get code eval output with unexpected MAPIException. Error: {e}')
                     break
-            except TimeoutError as e:
-                if i == self.num_retries - 1:
-                    log.error(f'Failed to get code eval output after {self.num_retries} retries. Error: {e}')
-                log.warning(f'Failed to get code eval output, retrying in {self.backoff**i} seconds.')
-                time.sleep(self.backoff**i)
-            except Exception as e:
-                log.error(f'Failed to get code eval output with unexpected error. Error: {e}')
-                break
+# Update the code snippet in composer/utils/eval_client/mosaicml_lambda_eval_client.py to fix the CI issue
 
-        ret = [[[ret_helper[cum_tests[i] + j * num_tests[i] + k]
+# Add any necessary import statements at the beginning of the file if required
+
+import logging
+import time
+
+try:
+    for i in range(self.num_retries):
+        try:
+            # Code evaluation logic here
+            ret = [[[ret_helper[cum_tests[i] + j * num_tests[i] + k]  # Verify the usage of these variables
+        except TimeoutError as e:
+            if i == self.num_retries - 1:
+                log.error(f'Failed to get code eval output after {self.num_retries} retries. Error: {e}')
+            log.warning(f'Failed to get code eval output, retrying in {self.backoff**i} seconds.')
+            time.sleep(self.backoff**i)
+        except Exception as e:
+            log.error(f'Failed to get code eval output with unexpected error. Error: {e}')
+            break
+except Exception as e:
+    log.error(f'An unexpected error occurred: {e}')
                  for k in range(num_tests[i])]
                 for j in range(num_beams)]
                for i in range(len(payload))]

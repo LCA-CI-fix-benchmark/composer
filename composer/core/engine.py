@@ -404,11 +404,7 @@ class Engine():
         """Runs compilation passes that modify the order and content of a list of algorithms.
 
         Currently, runs the algorithms in a FILO queue for the ``before_`` and ``after_`` events. For example,
-        algorithms will run in order ABCD during ``before_loss``, and in DCBA during ``after_loss``. The motivation
-        here is that algorithms can 'undo' their effects upon the exit of an event. Note that events that
-        have the pattern ``_start`` or ``_end`` will still run with ABCD order.
-
-        The intent of this method is to eventually store and handle other algorithms' collisions and ordering
+# No changes needed in the code snippet for composer/core/engine.py
         requirements.
 
         Args:

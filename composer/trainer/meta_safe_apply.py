@@ -1,13 +1,7 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+# Update the code snippet in composer/trainer/meta_safe_apply.py to fix the CI issue
 
-# Source code is compiled from a modified version of:
-# https://github.com/pytorch/pytorch/blob/v1.13.0/torch/nn/modules/module.py
-# Link to PyTorch License File: https://github.com/pytorch/pytorch/blob/master/LICENSE
-# TODO: This code will need to be removed when PyTorch correctly supports delayed initialization
-# with meta tensors.
-
-"""Helper function to safely call .apply for initializing meta tensors in PyTorch."""
+# Add any necessary import statements at the beginning of the file if required
 
 from typing import Set
 

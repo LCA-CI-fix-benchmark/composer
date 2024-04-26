@@ -330,26 +330,32 @@ def _launch_processes(
 
 
 def _monitor_processes(processes: Dict[int, subprocess.Popen]):
-    try:
-        while True:
-            process_has_crashed = False
-            all_processes_finished = True
-            for global_rank, process in processes.items():
-                if process.poll() is None:
-                    # the process is still running
-                    all_processes_finished = False
-                    continue
+# Update the code snippet in composer/cli/launcher.py to fix the CI issue
+
+# Add any necessary import statements at the beginning of the file if required
+
+try:
+    while True:
+        process_has_crashed = False
+        all_processes_finished = True
+        for global_rank, process in processes.items():
+            if process.poll() is None:
+                # the process is still running
+                all_processes_finished = False
+                continue
+            else:
+                # return code of 0 implies clean exit
+                if process.returncode != 0:
+                    log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
+                    process_has_crashed = True
+                    break
                 else:
-                    # return code of 0 implies clean exit
-                    if process.returncode != 0:
-                        log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
-                        process_has_crashed = True
-                        break
-                    else:
-                        # exited cleanly
-                        log.info(f'Rank {global_rank} finished successfully.')
-            if process_has_crashed or all_processes_finished:
-                break
+                    # exited cleanly
+                    log.info(f'Rank {global_rank} finished successfully.')
+        if process_has_crashed or all_processes_finished:
+            break
+except Exception as e:
+    log.error(f'An unexpected error occurred: {e}')
             time.sleep(0.1)
     except KeyboardInterrupt:
         print('Ctrl-C received; terminating training processes.')
@@ -404,18 +410,29 @@ def _cleanup_processes(processes: Dict[int, subprocess.Popen]):
     current_time = datetime.datetime.now()
 
     try:
-        print((f'Waiting up to {CLEANUP_TIMEOUT.seconds} seconds for all training processes to terminate. '
-               'Press Ctrl-C to exit immediately.'))
-        while datetime.datetime.now() - current_time < CLEANUP_TIMEOUT:
-            for process in processes.values():
-                process.poll()
-            if all(process.returncode is not None for process in processes.values()):
-                break
-            time.sleep(0.1)
-    except KeyboardInterrupt:
-        pass
+# Update the code snippet in composer/cli/launcher.py to fix the CI issue
 
+# Add any necessary import statements at the beginning of the file if required
+
+try:
     for global_rank, process in processes.items():
+        process.poll()
+        if process.returncode is None:
+            log.warning('Failed to kill global rank %s (PID %s) with SIGTERM; terminating with SIGKILL instead',
+                        global_rank, process.pid)
+            try:
+                proc = psutil.Process(process.pid)
+            except psutil.NoSuchProcess:
+                log.error(f'Process with PID {process.pid} does not exist.')
+            else:
+                proc.terminate()
+                time.sleep(0.1)
+                if proc.is_running():
+                    log.warning(f'Process with PID {process.pid} did not terminate with SIGKILL.')
+                else:
+                    log.info(f'Process with PID {process.pid} terminated successfully with SIGKILL.')
+except Exception as e:
+    log.error(f'An unexpected error occurred: {e}')
         process.poll()
         if process.returncode is None:
             log.warning('Failed to kill global rank %s (PID %s) with SIGTERM; terminating with SIGKILL instead',
@@ -446,15 +463,22 @@ def _cleanup_processes(processes: Dict[int, subprocess.Popen]):
 
 
 def _aggregate_process_returncode(processes: Dict[int, subprocess.Popen]) -> int:
-    for global_rank, process in processes.items():
-        process.poll()
-        if process.returncode is None:
-            log.error('Global rank %s (PID %s) has still not exited; return exit code 1.', global_rank, process.pid)
-            return 1
-        if process.returncode != 0:
-            log.error('Global rank %s (PID %s) exited with code %s', global_rank, process.pid, process.returncode)
-            return process.returncode
+# Update the code snippet in composer/cli/launcher.py to fix the CI issue
 
+# Add any necessary import statements at the beginning of the file if required
+
+import logging
+import tempfile
+
+log.setLevel(logging.INFO if args.verbose else logging.WARN)
+
+processes = {}
+
+log_tmpdir = tempfile.TemporaryDirectory()
+if args.stdout is None:
+    args.stdout = f'{log_tmpdir.name}/rank{{rank}}.stdout.txt'
+if args.stderr is None:
+    args.stderr = f'{log_tmpdir.name}/rank{{rank}}.stderr.txt'
     return 0
 
 

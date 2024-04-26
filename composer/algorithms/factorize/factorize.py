@@ -138,10 +138,16 @@ class Factorize(Algorithm):
             Can be specified as either an integer > 1 or as a float within ``[0, 0.5)``.
             In the latter case, the value is interpreted as a fraction of
             ``min(in_features, out_features)`` for each :class:`torch.nn.Linear`
-            module and is converted to the equivalent integer value, with a
-            minimum of 1. Default: ``128``.
-    """
+# Update the code snippet in composer/algorithms/factorize/factorize.py to fix the CI issue
 
+# Add any necessary import statements at the beginning of the file if required
+
+"""
+module and is converted to the equivalent integer value, with a
+minimum of 1. Default: ``128``.
+"""
+
+class Factorize:
     def __init__(self,
                  factorize_convs: bool = True,
                  factorize_linears: bool = True,
