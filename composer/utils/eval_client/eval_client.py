@@ -22,8 +22,8 @@ class EvalClient(abc.ABC):
         being grouped by the prompt. For each prompt, the model generates a series of possible continuations, which we term generation beams.
         As a result, in the nested list for each prompt, the lists are grouped by the generation beam, since each prompt produces some set number. In the
         final tier of nesting for each generation, the JSONs are grouped by test case. We note that the evaluation client is agnostic to the list
-        structure and instead iterates over each JSON payload for a test cases, converting each JSON to a boolean independently, only maintaining
-        the list shape. The JSON for each test case containing the following attributes:
+        structure and instead iterates over each JSON payload for a test case, converting each JSON to a boolean independently, only maintaining
+        the list shape. The JSON for each test case contains the following attributes:
 
         {
             'code': <code to be evaluated>,

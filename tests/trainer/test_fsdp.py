@@ -141,6 +141,10 @@ def test_fsdp_inits_params_once(model: ComposerClassifier, device: str, world_si
 
 
 @pytest.mark.parametrize('model', [SimpleModel])
+import pytest
+import torch
+from packaging import version
+
 @pytest.mark.parametrize('mixed_precision', _MIXED_PRECISION_TYPES)
 @pytest.mark.gpu
 @world_size(2)

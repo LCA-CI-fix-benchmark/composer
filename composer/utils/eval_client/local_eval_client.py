@@ -41,20 +41,30 @@ class LocalEvalClient(EvalClient):
         return bool(ret.value)
 
     def update_offline_helper(self, code_gen: str, test_input: str, test_output: str, entry_point: str, language: str,
-                              val: multiprocessing.Value):  # type: ignore
-        """Helper function to evaluate test case in a subprocess.
+import multiprocessing
 
-        This function compiles the code generation,
-        and runs the function from the entry point, before running the test input through the function and
-        checking it against the test output.
+def evaluate_test_case_in_subprocess(code: str, entry_point: str, test_input: str, test_output: str,
+                                     val: multiprocessing.Value):  # type: ignore
+    """Helper function to evaluate test case in a subprocess.
+
+    This function compiles the code generation,
+    and runs the function from the entry point, before running the test input through the function and
+    checking it against the test output.
 
         Args:
-            code_gen (str): The code generation to be evaluated.
-            test_input (str): The input of the test case
-            test_output (str): The output of the test case
-            entry_point (str): The name of the function to call
-            language (str): The language of the code generation
-            val (multiprocessing.Value): The value in which to save the final value of the test case
+import multiprocessing
+
+def evaluate_test_case(entry_point: str, language: str, val: multiprocessing.Value):
+    """
+    Evaluate the test case by calling a specific function.
+
+    Args:
+        entry_point (str): The name of the function to call
+        language (str): The language of the code generation
+        val (multiprocessing.Value): The value in which to save the final value of the test case
+    """
+    rank = dist.get_global_rank()
+    if language == 'python':
         """
         rank = dist.get_global_rank()
         if language == 'python':

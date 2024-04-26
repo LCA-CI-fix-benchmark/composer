@@ -472,7 +472,6 @@ def test_fsdp_load_old_checkpoint(
         train_metrics=train_metrics,
         val_metrics=val_metrics,
         fsdp_config=fsdp_config,
-    )
     state_dict2 = trainer.state.state_dict()
 
     if ((dist.get_global_rank() == 0 and state_dict_type == 'full') or state_dict_type in ['sharded', 'local']):

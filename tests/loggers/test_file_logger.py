@@ -93,10 +93,9 @@ def test_exceptions_are_printed(tmp_path: pathlib.Path):
                       train_dataloader=dataloader,
                       max_duration=1,
                       callbacks=[exception_raising_callback],
-                      loggers=[file_logger])
-    disable_env_report()  # Printing the full report in this test can cause timeouts
-    # manually calling `sys.excepthook` for the exception, as it is impossible to write a test
-    # that validates unhandled exceptions are logged, since the test validation code would by definition
+    report.disable_env_report()  # Printing the full report in this test can cause timeouts
+    # Manually calling `sys.excepthook` for the exception, as it is impossible to write a test
+    # that validates unhandled exceptions are logged, since the test validation code would, by definition,
     # need to handle the exception!
     try:
         trainer.fit()

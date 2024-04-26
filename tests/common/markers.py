@@ -70,9 +70,10 @@ def world_size(*world_sizes: int, param_name: str = 'world_size'):
             parameters.append(pytest.param(2, marks=pytest.mark.world_size(2)))
 
     def decorator(test: Callable):
-        if len(parameters) == 0:
-            return test
+def parametrize_test(param_name, parameters):
+    if len(parameters) == 0:
+        return test
 
-        return pytest.mark.parametrize(param_name, parameters)(test)
+    return pytest.mark.parametrize(param_name, parameters)(test)
 
-    return decorator
+return decorator

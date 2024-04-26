@@ -22,11 +22,12 @@ def gs_object_store():
 
 
 @pytest.mark.remote
-def test_bucket_not_found():
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
-    with pytest.raises(FileNotFoundError):
-        _ = GCSObjectStore('gs://not_a_bucket/streaming')
+import pytest
 
+def test_bucket_not_found_after_configuring_gcs_service_account():
+    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
+    with pytest.raises(GCSObjectStoreError):
+        _ = GCSObjectStore('gs://not_a_bucket/streaming')
 
 @pytest.mark.remote
 def test_get_uri(gs_object_store):
@@ -61,15 +62,15 @@ def test_get_object_size(gs_object_store, result: str):
 
 
 @pytest.mark.remote
-def test_upload_object(gs_object_store):
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
-    from google.cloud.storage import Blob
-    destination_blob_name = '/tmp/dummy.ckpt2'
-    key = gs_object_store.get_key(destination_blob_name)
-    stats = Blob(bucket=gs_object_store.bucket, name=key).exists(gs_object_store.client)
-    if not stats:
-        gs_object_store.upload_object(__DUMMY_OBJ__, destination_blob_name)
+import pytest
 
+pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
+from google.cloud.storage import Blob
+destination_blob_name = '/tmp/dummy.ckpt2'
+key = gs_object_store.get_key(destination_blob_name)
+stats = Blob(bucket=gs_object_store.bucket, name=key).exists(gs_object_store.client)
+if not stats:
+    gs_object_store.upload_object(__DUMMY_OBJ__, destination_blob_name)
 
 @pytest.mark.remote
 def test_list_objects(gs_object_store):
