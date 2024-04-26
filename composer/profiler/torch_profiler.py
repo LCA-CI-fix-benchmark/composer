@@ -45,8 +45,7 @@ class TorchProfiler(Callback):  # noqa: D101
         When using the Composer :class:`.Trainer`, one does not need to directly create an
         instance of this :class:`.TorchProfiler` callback.
 
-
-    To view profiling results, run::
+    To view profiling results, run:
 
         pip install tensorboard torch_tb_profiler
         tensorboard --logdir path/to/torch/trace_folder

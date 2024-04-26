@@ -998,13 +998,12 @@ def test_write_hf_from_composer(checkpoint_upload_folder, local_save_filename, t
     loaded_hf_model.config._name_or_path = tiny_bert_model.config._name_or_path
 
     check_hf_model_equivalence(tiny_bert_model, loaded_hf_model)
-
+import pytest
 
 def test_write_hf_from_composer_direct(tiny_bert_tokenizer, tmp_path):
     # tests that the logic to write out a huggingface checkpoint from a composer checkpoint
     # still works when the huggingface model is instantiated directly rather than using from_pretrained
     transformers = pytest.importorskip('transformers')
-
     from composer.models.huggingface import write_huggingface_pretrained_from_composer_checkpoint
 
     checkpoint_upload_folder = tmp_path

@@ -221,8 +221,8 @@ class HuggingFaceModel(ComposerModel):
             os.makedirs(tokenizer_save_dir, exist_ok=True)
 
             for filename, saved_content in hf_tokenizer_state.items():
-                # This cannot be a temporary directory because huggingface relies on the slow tokenizer file
-                # being persistent on disk
+                # The directory cannot be temporary because huggingface relies on the slow tokenizer file
+                # to be persistent on disk
 
                 # For backwards compatibility, check if the filename already has the file extension
                 if filename.endswith(saved_content['file_extension']):

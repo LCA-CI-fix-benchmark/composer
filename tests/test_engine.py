@@ -220,6 +220,8 @@ def test_engine_errors_if_previous_trainer_was_not_closed(dummy_state: State, du
 
 
 def check_output(proc: subprocess.CompletedProcess):
+import textwrap
+
     # Check the subprocess output, and raise an exception with the stdout/stderr dump if there was a non-zero exit
     # The `check=True` flag available in `subprocess.run` does not print stdout/stderr
     if proc.returncode == 0:
@@ -228,7 +230,10 @@ def check_output(proc: subprocess.CompletedProcess):
         Command {proc.args} failed with exit code {proc.returncode}.
         ----Begin stdout----
         {proc.stdout}
+        ----Begin stderr----
+        {proc.stderr}
         ----End stdout------
+        ----End stderr------
         ----Begin stderr----
         {proc.stderr}
         ----End stderr------""")
