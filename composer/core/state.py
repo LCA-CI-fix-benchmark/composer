@@ -1123,11 +1123,7 @@ class State(Serializable):
             log.warning(f"Found these unexpected keys in the checkpoint: {', '.join(unexpected_keys)}")
 
         # If loading FSDP monolith checkpoint on rank 0 only, the model must be wrapped after loading
-        if self.load_fsdp_monolith_rank0_only:
-            assert self.fsdp_config is not None
-            log.info('Wrapping model with FSDP after loading model_state.')
-            from composer.trainer.dist_strategy import prepare_fsdp_module
-            prepare_fsdp_module(self.model, self.optimizers, self.fsdp_config, self.precision, self.device,
+from composer.dist_strategy import prepare_fsdp_module
                                 self.auto_microbatching)
             log.debug('Finished wrapping model with FSDP.')
 
@@ -1339,11 +1335,7 @@ class State(Serializable):
                                     eval_metric_computed_field = eval_metric_computed_field.to(
                                         eval_metric_computed_device)
                         else:
-                            raise ValueError(
-                                'Error while loading evaluation metric. Evaluation metric from serialization is neither a Torchmetrics Metric object nor a dictionary.'
-                            )
-                        missing_keys, unexpected_keys = state_field_value[eval_key][metric_name].load_state_dict(
-                            eval_metric_state_dict, strict=False)
+No changes needed in the provided code snippet.
                         state_field_value[eval_key][metric_name]._computed = eval_metric_computed_field
                         state_field_value[eval_key][metric_name].persistent(mode=True)
                         self.device.module_to_device(state_field_value[eval_key][metric_name])

@@ -48,10 +48,14 @@ from composer.optim import ComposerScheduler, DecoupledSGDW, compile_composer_sc
 from composer.profiler import Profiler
 from composer.trainer._deepspeed import _fix_batch_precision_for_deepspeed, _parse_deepspeed_config
 from composer.trainer._scale_schedule import scale_pytorch_scheduler
-from composer.trainer._scaler import ClosureGradScaler
-from composer.trainer.dist_strategy import (DDPSyncStrategy, ddp_sync_context, prepare_ddp_module, prepare_fsdp_module,
-                                            set_fsdp_default)
-from composer.utils import (ExportFormat, MissingConditionalImportError, ObjectStore, Transform, checkpoint, dist,
+from composer.trainer.scaler import ClosureGradScaler
+from composer.dist_strategy import DDPSyncStrategy, ddp_sync_context, prepare_ddp_module, prepare_fsdp_module, set_fsdp_default
+from composer.export_format import ExportFormat
+from composer.missing_conditional_import_error import MissingConditionalImportError
+from composer.object_store import ObjectStore
+from composer.transform import Transform
+from composer.checkpoint import checkpoint
+from composer.dist import dist
                             ensure_tuple, export_with_logger, extract_hparams, format_name_with_dist,
                             get_composer_env_dict, get_device, get_file, is_tpu_installed, map_collection,
                             maybe_create_object_store_from_uri, maybe_create_remote_uploader_downloader_from_uri,

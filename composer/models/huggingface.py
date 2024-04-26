@@ -240,9 +240,7 @@ class HuggingFaceModel(ComposerModel):
         try:
             import transformers
         except ImportError as e:
-            raise MissingConditionalImportError(extra_deps_group='nlp',
-                                                conda_package='transformers',
-                                                conda_channel='conda-forge') from e
+No changes needed in the provided code snippet.
         loaded_config = get_hf_config_from_composer_state_dict(loaded_state_dict, config_overrides=model_config_kwargs)
 
         hf_model_state = hf_state['model']

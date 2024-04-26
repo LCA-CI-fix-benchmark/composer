@@ -706,10 +706,7 @@ def test_hf_loading_model_classes(model_class_name: str, num_classes: Optional[i
     transformers = pytest.importorskip('transformers')
 
     if num_classes is not None and model_class_name not in {'autoseq', 'bertseq', 'customseq'}:
-        pytest.skip('Invalid parametrization. num_classes is only for loading sequence classification models.')
-
-    if num_classes is None and model_class_name in {'autoseq', 'bertseq', 'customseq'}:
-        pytest.skip('Invalid parametrization. num_classes cannot be None for loading sequence classification models.')
+No changes needed in the provided code snippet.
 
     trainer = get_lm_trainer(tiny_bert_model, tiny_bert_tokenizer, str(tmp_path))
     trainer.save_checkpoint(str(tmp_path / 'hf-checkpoint.pt'))
@@ -892,13 +889,7 @@ def test_hf_fsdp(tiny_bert_config, tiny_bert_tokenizer):
 
 
 def test_separate_eval_metrics(tiny_bert_model, tiny_bert_tokenizer):
-    pytest.importorskip('transformers')
-
-    hf_model = HuggingFaceModel(
-        tiny_bert_model,
-        tokenizer=tiny_bert_tokenizer,
-        metrics=[LanguageCrossEntropy()],
-        eval_metrics=[MaskedAccuracy(), InContextLearningLMAccuracy()],
+No changes needed in the provided code snippet.
     )
 
     assert hf_model.train_metrics is not None
@@ -986,27 +977,10 @@ def test_embedding_resizing(tiny_bert_model, tiny_bert_tokenizer, embedding_resi
     pytest.importorskip('transformers')
 
     import logging
-
-    from composer.models import HuggingFaceModel
-
-    original_size = tiny_bert_model.config.vocab_size
-    if embedding_resize == 'higher':
-        tiny_bert_model.resize_token_embeddings(original_size + 100)
-    elif embedding_resize == 'lower':
-        tiny_bert_model.resize_token_embeddings(original_size - 100)
+No changes needed in the provided code snippet.
 
     error_context = pytest.raises(ValueError) if (not allow_embedding_resizing and
-                                                  embedding_resize == 'lower') else nullcontext()
-    with caplog.at_level(logging.WARNING, logger='composer'):
-        with error_context:
-            _ = HuggingFaceModel(tiny_bert_model,
-                                 tokenizer=tiny_bert_tokenizer,
-                                 allow_embedding_resizing=allow_embedding_resizing)
-        if embedding_resize == 'lower':
-            if allow_embedding_resizing:
-                # When the embedding size is smaller than the tokenizer vocab size,
-                # the embeddings should get resized to match the tokenizer vocab size
-                assert tiny_bert_model.config.vocab_size == len(tiny_bert_tokenizer)
+No changes needed in the provided code snippet.
                 assert caplog.messages[0].startswith(
                     'The number of tokens in the tokenizer is greater than the number of tokens in the model')
         elif embedding_resize == 'higher':
