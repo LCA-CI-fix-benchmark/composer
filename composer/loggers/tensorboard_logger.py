@@ -92,13 +92,12 @@ class TensorboardLogger(LoggerDestination):
     def init(self, state: State, logger: Logger) -> None:
         self.run_name = state.run_name
 
-        # We fix the log_dir, so all runs are co-located.
+        # Fix the log_dir to ensure all runs are co-located.
         if self.log_dir is None:
             self.log_dir = 'tensorboard_logs'
 
+        # Initialize the summary writer
         self._initialize_summary_writer()
-
-    def _initialize_summary_writer(self):
         from torch.utils.tensorboard import SummaryWriter
 
         assert self.run_name is not None

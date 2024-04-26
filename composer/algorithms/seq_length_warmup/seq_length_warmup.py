@@ -311,6 +311,7 @@ class SeqLengthWarmup(Algorithm):
                     loss_item.backward()
 
                 # Zero any gradients created by the backward pass
+                # Zero gradients for each optimizer in the state
                 for optimizer in state.optimizers:
                     optimizer.zero_grad()
 

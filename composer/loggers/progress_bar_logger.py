@@ -142,11 +142,10 @@ class ProgressBarLogger(LoggerDestination):
     ) -> None:
 
         # The dummy pbar is to fix issues when streaming progress bars over k8s, where the progress bar in position 0
-        # doesn't update until it is finished.
-        # Need to have a dummy progress bar in position 0, so the "real" progress bars in position 1 doesn't jump around
-        self.dummy_pbar: Optional[_ProgressBar] = None
-        self.train_pbar: Optional[_ProgressBar] = None
-        self.eval_pbar: Optional[_ProgressBar] = None
+        # Need to have a dummy progress bar in position 0 to prevent the "real" progress bars from jumping around
+        self.dummy_pbar: Optional[_ProgressBar] = None  # Dummy progress bar
+        self.train_pbar: Optional[_ProgressBar] = None  # Training progress bar
+        self.eval_pbar: Optional[_ProgressBar] = None  # Evaluation progress bar
 
         # set the stream
         if isinstance(stream, str):

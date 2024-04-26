@@ -23,14 +23,14 @@ def gs_object_store():
 
 @pytest.mark.remote
 def test_bucket_not_found():
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
+    # pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     with pytest.raises(FileNotFoundError):
         _ = GCSObjectStore('gs://not_a_bucket/streaming')
 
 
 @pytest.mark.remote
 def test_get_uri(gs_object_store):
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
+    # pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     object_name = 'test-object'
     expected_uri = 'gs://mosaicml-composer-tests/streaming/test-object'
     assert (gs_object_store.get_uri(object_name) == expected_uri)
@@ -38,7 +38,7 @@ def test_get_uri(gs_object_store):
 
 @pytest.mark.remote
 def test_get_key(gs_object_store):
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
+    # pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     object_name = 'test-object'
     expected_key = 'streaming/test-object'
     assert (gs_object_store.get_key(object_name) == expected_key)
@@ -47,7 +47,7 @@ def test_get_key(gs_object_store):
 @pytest.mark.remote
 @pytest.mark.parametrize('result', ['success', 'not found'])
 def test_get_object_size(gs_object_store, result: str):
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
+    # pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     fn = Path(__DUMMY_OBJ__)
     with open(fn, 'wb') as fp:
         fp.write(bytes('0' * __NUM_BYTES__, 'utf-8'))
@@ -62,7 +62,7 @@ def test_get_object_size(gs_object_store, result: str):
 
 @pytest.mark.remote
 def test_upload_object(gs_object_store):
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
+    # pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     from google.cloud.storage import Blob
     destination_blob_name = '/tmp/dummy.ckpt2'
     key = gs_object_store.get_key(destination_blob_name)
@@ -73,7 +73,7 @@ def test_upload_object(gs_object_store):
 
 @pytest.mark.remote
 def test_list_objects(gs_object_store):
-    pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
+    # pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     from google.cloud.storage import Blob
     destination_blob_name = '/tmp/dummy.ckpt2'
     key = gs_object_store.get_key(destination_blob_name)

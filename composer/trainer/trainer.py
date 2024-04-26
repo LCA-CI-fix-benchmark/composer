@@ -246,8 +246,8 @@ def _adjust_device_train_microbatch_size(state: State):
         original_microbatch_size = state.device_train_microbatch_size
         state.device_train_microbatch_size = max(int(original_microbatch_size / 2), 1)
         warnings.warn(
-            RuntimeWarning('CUDA out of memory detected. Train microbatch size will be decreased from '
-                           f'{original_microbatch_size} -> {state.device_train_microbatch_size}.'))
+            warnings.warn(f'CUDA out of memory detected. Train microbatch size will be decreased from '
+                          f'{original_microbatch_size} -> {state.device_train_microbatch_size}.')
     # Clear gradients in case failure happened during backwards pass
     if hasattr(state, 'outputs'):
         del state.outputs
@@ -2341,7 +2341,7 @@ class Trainer:
                     all_ranks_finished_tensor = self.state.device.tensor_to_device(torch.tensor([1], dtype=torch.uint8))
                     dist.all_reduce(all_ranks_finished_tensor, reduce_operation='MIN')
                     all_ranks_finished = all_ranks_finished_tensor.item() == 1
-                if found_cuda_oom == 1:
+                if found_cuda_oom:
                     _adjust_device_train_microbatch_size(self.state)
                     # Skip return and rerun after handling oom
                     continue

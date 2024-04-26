@@ -108,7 +108,7 @@ class Algorithm(Serializable, ABC):
         """Applies the algorithm to make an in-place change to the :class:`.State`.
 
         Can optionally return an exit code to be stored in a :class:`.Trace`.
-        This exit code is made accessible for debugging.
+        This method calculates the exit code based on the current event, state, and logger. The exit code is stored in the Trace and made accessible for debugging.
 
         Args:
             event (Event): The current event.
@@ -116,6 +116,6 @@ class Algorithm(Serializable, ABC):
             logger (Logger): A logger to use for logging algorithm-specific metrics.
 
         Returns:
-            int or None: exit code that will be stored in :class:`.Trace` and made accessible for debugging.
+            int or None: The exit code to be stored in :class:`.Trace` for debugging purposes.
         """
         raise NotImplementedError(f'implement apply() required for {self.__class__.__name__}')

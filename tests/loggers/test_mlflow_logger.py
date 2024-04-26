@@ -641,4 +641,4 @@ def test_mlflow_ignore_metrics(tmp_path, device):
     assert not os.path.exists(metric_file)
 
     # Undo the setup to avoid affecting other test cases.
-    mlflow.set_system_metrics_sampling_interval(None)
+    mlflow.set_system_metrics_sampling_interval(30)
