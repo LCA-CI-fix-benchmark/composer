@@ -18,6 +18,12 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 import torch
+# composer/utils/checkpoint.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
 from packaging import version
 
 from composer.utils import dist, reproducibility

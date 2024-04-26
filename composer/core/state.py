@@ -903,6 +903,9 @@ class State(Serializable):
                 serialized_value = optim_state_dict
             elif attribute_name == 'algorithms':
                 # Store as list to preserve order in which algorithms were applied
+# composer/core/state.py
+
+# Code snippet as provided in the original file
                 serialized_value = [(type(obj).__qualname__, obj.state_dict()) for obj in ensure_tuple(attribute_value)]
             elif attribute_name in _STATE_DICT_SERIALIZED_ATTRIBUTES:
                 serialized_value = {type(obj).__qualname__: obj.state_dict() for obj in ensure_tuple(attribute_value)}

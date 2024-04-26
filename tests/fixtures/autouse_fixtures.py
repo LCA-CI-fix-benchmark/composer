@@ -1,4 +1,10 @@
 # Copyright 2022 MosaicML Composer authors
+# tests/fixtures/autouse_fixtures.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
 # SPDX-License-Identifier: Apache-2.0
 
 import gc

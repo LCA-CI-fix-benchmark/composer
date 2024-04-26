@@ -10,6 +10,12 @@ import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch
+# composer/datasets/in_context_learning_evaluation.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
 import transformers
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm

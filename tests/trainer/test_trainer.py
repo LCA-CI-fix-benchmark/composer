@@ -26,6 +26,12 @@ from composer.loggers import InMemoryLogger, Logger, RemoteUploaderDownloader
 from composer.loss import soft_cross_entropy
 from composer.models import ComposerModel
 from composer.optim import ExponentialScheduler
+# tests/trainer/test_trainer.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
 from composer.trainer.trainer import _generate_run_name
 from composer.utils import dist, is_model_deepspeed, is_model_fsdp, map_collection, reproducibility
 from tests.common import (EmptyModel, InfiniteClassificationDataset, RandomClassificationDataset, RandomImageDataset,

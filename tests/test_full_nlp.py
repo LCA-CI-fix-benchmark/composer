@@ -11,6 +11,12 @@ from torch.utils.data import DataLoader
 from torchmetrics.classification import MulticlassAccuracy
 
 from composer.algorithms import GatedLinearUnits
+# tests/test_full_nlp.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
 from composer.loggers import RemoteUploaderDownloader
 from composer.metrics.nlp import LanguageCrossEntropy, MaskedAccuracy
 from composer.models import HuggingFaceModel
@@ -19,7 +25,6 @@ from composer.utils import dist, get_device, inference, reproducibility
 from tests.common import device
 from tests.common.datasets import RandomTextClassificationDataset, RandomTextLMDataset
 from tests.common.models import SimpleTransformerClassifier, SimpleTransformerMaskedLM
-
 
 def get_model_embeddings(model):
     if isinstance(model, HuggingFaceModel):

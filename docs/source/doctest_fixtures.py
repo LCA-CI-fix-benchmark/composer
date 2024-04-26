@@ -49,6 +49,12 @@ from composer.core import Timestamp as Timestamp
 from composer.core import TimeUnit as TimeUnit
 from composer.core import types as types
 from composer.datasets.synthetic import SyntheticBatchPairDataset
+# docs/source/doctest_fixtures.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
 from composer.devices import DeviceCPU
 from composer.loggers import InMemoryLogger as InMemoryLogger
 from composer.loggers import Logger as Logger

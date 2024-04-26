@@ -706,6 +706,12 @@ def test_hf_loading_model_classes(model_class_name: str, num_classes: Optional[i
     transformers = pytest.importorskip('transformers')
 
     if num_classes is not None and model_class_name not in {'autoseq', 'bertseq', 'customseq'}:
+# tests/models/test_hf_model.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
         pytest.skip('Invalid parametrization. num_classes is only for loading sequence classification models.')
 
     if num_classes is None and model_class_name in {'autoseq', 'bertseq', 'customseq'}:

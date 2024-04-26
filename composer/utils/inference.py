@@ -176,6 +176,12 @@ def export_for_inference(
         sample_input = _move_sample_input_to_device(sample_input, cpu)
 
     # Apply surgery algorithms in the given order
+# composer/utils/inference.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
     for alg in ensure_tuple(surgery_algs):
         alg(model)
 

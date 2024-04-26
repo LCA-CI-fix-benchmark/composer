@@ -23,6 +23,12 @@
     .. doctest::
 
         >>> import torch.nn
+# composer/utils/reproducibility.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
         >>> from composer.utils import reproducibility
         >>> reproducibility.configure_deterministic_mode()
         >>> reproducibility.seed_all(42)
@@ -33,7 +39,6 @@
         >>> # model will now be deterministically initialized, since the seed is set.
         >>> init_weights(model)
         >>> trainer = Trainer(model=model, seed=42)
-
     Note that the seed must also be passed to the Trainer, otherwise the Trainer
     would generate a random seed based on the timestamp (see :func:`~.get_random_seed`).
 

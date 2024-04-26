@@ -130,10 +130,15 @@ def replace_module_classes(
             may switch behaviors depending on the number of replacements that occurred for a given module type.
 
             .. note::
+# composer/utils/module_surgery.py
 
-                These indices may not correspond to the order in which modules get called in the forward pass.
+# Add necessary imports to resolve the ImportError issue
+import torch.optim
 
-        optimizers (torch.optim.Optimizer | Sequence[torch.optim.Optimizer], optional): One or more
+# Code snippet as provided in the original file
+These indices may not correspond to the order in which modules get called in the forward pass.
+
+optimizers (torch.optim.Optimizer | Sequence[torch.optim.Optimizer], optional): One or more
             :class:`~torch.optim.Optimizer` objects. If provided,
             this function will attempt to remove parameters in replaced modules
             from these optimizers, and add parameters from the newly-created
@@ -311,14 +316,16 @@ def _find_param_in_optimizer(param: torch.nn.parameter.Parameter, optimizer: Opt
             return i
 
     return -1
+# composer/utils/module_surgery.py
 
-
-def _ordered_diff(first: List, second: List) -> List:
-    """Returns first - second while maintaining the order in first."""
-    second_list = set(second)
+# Code snippet as provided in the original file
     return [item for item in first if item not in second_list]
 
 
+def update_params_in_optimizer(old_params: Iterable[torch.nn.parameter.Parameter],
+                               new_params: Iterable[torch.nn.parameter.Parameter],
+                               optimizers: Union[Optimizer, Sequence[Optimizer]]) -> None:
+    r"""Remove ``old_params`` from the ``optimizers`` and insert ``new_params``.
 def update_params_in_optimizer(old_params: Iterable[torch.nn.parameter.Parameter],
                                new_params: Iterable[torch.nn.parameter.Parameter],
                                optimizers: Union[Optimizer, Sequence[Optimizer]]) -> None:

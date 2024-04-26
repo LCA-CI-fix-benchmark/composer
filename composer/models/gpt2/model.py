@@ -76,7 +76,9 @@ def create_gpt2(use_pretrained: Optional[bool] = False,
             }
 
    To create a GPT-2 model for language modeling pretraining:
+# composer/models/gpt2/model.py
 
+# Code snippet as provided in the original file
     .. testcode::
 
         from composer.models import create_gpt2

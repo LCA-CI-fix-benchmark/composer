@@ -61,6 +61,12 @@ def build_lm_dataloader(
         raise MissingConditionalImportError(extra_deps_group='nlp', conda_package='transformers') from e
 
     try:
+# composer/datasets/lm_dataset.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
         import datasets
     except ImportError as e:
         raise MissingConditionalImportError(extra_deps_group='nlp', conda_package='datasets') from e

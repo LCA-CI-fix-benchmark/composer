@@ -1,4 +1,10 @@
 # Copyright 2022 MosaicML Composer authors
+# composer/utils/eval_client/local_eval_client.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
 # SPDX-License-Identifier: Apache-2.0
 
 """Eval client for local evaluation."""
@@ -17,8 +23,6 @@ __all__ = ['LocalEvalClient']
 log = logging.getLogger(__name__)
 
 TIMEOUT = 5  # in seconds
-
-
 class LocalEvalClient(EvalClient):
     """Utility for creating a client for and invoking local evaluations."""
 

@@ -22,14 +22,18 @@ from composer.datasets.in_context_learning_evaluation import (InContextLearningC
                                                               _get_fewshot_sample_idxs, _make_padded_input,
                                                               get_icl_task_dataloader)
 from composer.loggers import InMemoryLogger
+# tests/datasets/test_in_context_learning_datasets.py
+
+# Add the correct import statement to resolve the ImportError
+from composer.utils import reproducibility
+
+# Code snippet as provided in the original file
 from composer.metrics import (InContextLearningCodeEvalAccuracy, InContextLearningLMAccuracy,
                               InContextLearningMultipleChoiceAccuracy, InContextLearningQAAccuracy)
 from composer.models import HuggingFaceModel
 from composer.trainer import Trainer
 from composer.utils import dist, reproducibility
 from tests.common import device, world_size
-
-
 def test_fewshot_sample_idxs():
     rng = random.Random(1234)
 
