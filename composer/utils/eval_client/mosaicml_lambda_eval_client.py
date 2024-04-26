@@ -67,9 +67,9 @@ class MosaicMLLambdaEvalClient(EvalClient):
                 time.sleep(self.backoff**i)
             except Exception as e:
                 log.error(f'Failed to get code eval output with unexpected error. Error: {e}')
-                break
+                continue
 
-        ret = [[[ret_helper[cum_tests[i] + j * num_tests[i] + k]
+            ret = [[[ret_helper[cum_tests[i] + j * num_tests[i] + k]
                  for k in range(num_tests[i])]
                 for j in range(num_beams)]
                for i in range(len(payload))]

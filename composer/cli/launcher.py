@@ -454,7 +454,6 @@ def _aggregate_process_returncode(processes: Dict[int, subprocess.Popen]) -> int
         if process.returncode != 0:
             log.error('Global rank %s (PID %s) exited with code %s', global_rank, process.pid, process.returncode)
             return process.returncode
-
     return 0
 
 
