@@ -38,6 +38,7 @@ def _wrap_mlflow_exceptions(uri: str, e: Exception):
 
     # https://github.com/mlflow/mlflow/blob/39b76b5b05407af5d223e892b03e450b7264576a/mlflow/exceptions.py for used error codes.
     # https://github.com/mlflow/mlflow/blob/39b76b5b05407af5d223e892b03e450b7264576a/mlflow/protos/databricks.proto for code descriptions.
+    # Assuming ErrorCode is properly defined or imported
     retryable_server_codes = [
         ErrorCode.Name(code) for code in [
             DATA_LOSS,

@@ -195,11 +195,16 @@ def export_for_inference(
                 log.warning(f"Found these unexpected keys in the checkpoint: {', '.join(unexpected_keys)}")
 
     with model_eval_mode(model):
+        transforms = []  # Define transforms variable before usage
         # Apply transformations (i.e., inference optimizations) in the given order
-        for transform in ensure_tuple(transforms):
-            model = transform(model)
-
-        is_remote_store = save_object_store is not None
+        if isinstance(transforms, (list, tuple)):
+            for transform in transforms:
+                model = transform(model)
+        else:
+            log.error("Invalid transforms provided. Expected a list or tuple.")
+        
+        # Check for the availability of save_object_store to determine is_remote_store
+        is_remote_store = save_object_store is not None if 'save_object_store' in locals() else False
         tempdir_ctx = tempfile.TemporaryDirectory() if is_remote_store else contextlib.nullcontext(None)
         with tempdir_ctx as tempdir:
             if is_remote_store:

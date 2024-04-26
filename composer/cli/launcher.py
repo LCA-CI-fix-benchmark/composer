@@ -334,20 +334,21 @@ def _monitor_processes(processes: Dict[int, subprocess.Popen]):
         while True:
             process_has_crashed = False
             all_processes_finished = True
-            for global_rank, process in processes.items():
-                if process.poll() is None:
-                    # the process is still running
-                    all_processes_finished = False
-                    continue
-                else:
-                    # return code of 0 implies clean exit
-                    if process.returncode != 0:
-                        log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
-                        process_has_crashed = True
-                        break
+            if processes:  # Check if processes dictionary is not empty
+                for global_rank, process in processes.items():
+                    if process.poll() is None:
+                        # the process is still running
+                        all_processes_finished = False
+                        continue
                     else:
-                        # exited cleanly
-                        log.info(f'Rank {global_rank} finished successfully.')
+                        # return code of 0 implies clean exit
+                        if process.returncode != 0:
+                            log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
+                            process_has_crashed = True
+                            break
+                        else:
+                            # exited cleanly
+                            log.info(f'Rank {global_rank} finished successfully.')
             if process_has_crashed or all_processes_finished:
                 break
             time.sleep(0.1)
@@ -404,18 +405,20 @@ def _cleanup_processes(processes: Dict[int, subprocess.Popen]):
     current_time = datetime.datetime.now()
 
     try:
-        print((f'Waiting up to {CLEANUP_TIMEOUT.seconds} seconds for all training processes to terminate. '
                'Press Ctrl-C to exit immediately.'))
         while datetime.datetime.now() - current_time < CLEANUP_TIMEOUT:
-            for process in processes.values():
-                process.poll()
-            if all(process.returncode is not None for process in processes.values()):
-                break
+            if processes:  # Check if processes dictionary is not empty
+                for process in processes.values():
+                    process.poll()
+                if all(process.returncode is not None for process in processes.values()):
+                    break
             time.sleep(0.1)
     except KeyboardInterrupt:
         pass
 
-    for global_rank, process in processes.items():
+    if processes:  # Check if processes dictionary is not empty
+        for global_rank, process in processes.items():
+            process.poll()
         process.poll()
         if process.returncode is None:
             log.warning('Failed to kill global rank %s (PID %s) with SIGTERM; terminating with SIGKILL instead',
@@ -446,15 +449,15 @@ def _cleanup_processes(processes: Dict[int, subprocess.Popen]):
 
 
 def _aggregate_process_returncode(processes: Dict[int, subprocess.Popen]) -> int:
-    for global_rank, process in processes.items():
-        process.poll()
-        if process.returncode is None:
             log.error('Global rank %s (PID %s) has still not exited; return exit code 1.', global_rank, process.pid)
             return 1
         if process.returncode != 0:
             log.error('Global rank %s (PID %s) exited with code %s', global_rank, process.pid, process.returncode)
             return process.returncode
+        else:
+            log.info('Global rank %s (PID %s) exited successfully with code 0', global_rank, process.pid)
 
+    return 0
     return 0
 
 
