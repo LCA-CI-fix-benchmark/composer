@@ -3041,7 +3041,6 @@ class Trainer:
                     self.engine.run_event(Event.BEFORE_DATALOADER)
                 batch = next(dataloader_iter)
             except StopIteration:
-                # [BEFORE/AFTER]_DATALOADER only runs while training
                 if trainer_mode == TrainerMode.TRAIN:
                     # Event.AFTER_DATALOADER is normally called in the train loop. However, if we
                     # encounter StopIteration, the train loop will not run. Accordingly, we need to
