@@ -340,14 +340,17 @@ def _monitor_processes(processes: Dict[int, subprocess.Popen]):
                     all_processes_finished = False
                     continue
                 else:
-                    # return code of 0 implies clean exit
-                    if process.returncode != 0:
-                        log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
-                        process_has_crashed = True
-                        break
-                    else:
-                        # exited cleanly
-                        log.info(f'Rank {global_rank} finished successfully.')
+                    try:
+                        # return code of 0 implies clean exit
+                        if process.returncode != 0:
+                            log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
+                            process_has_crashed = True
+                            break
+                        else:
+                            # exited cleanly
+                            log.info(f'Rank {global_rank} finished successfully.')
+                    except Exception as e:
+                        log.error(f'Error occurred while logging: {e}')
             if process_has_crashed or all_processes_finished:
                 break
             time.sleep(0.1)
@@ -446,13 +449,19 @@ def _cleanup_processes(processes: Dict[int, subprocess.Popen]):
 
 
 def _aggregate_process_returncode(processes: Dict[int, subprocess.Popen]) -> int:
-    for global_rank, process in processes.items():
-        process.poll()
-        if process.returncode is None:
-            log.error('Global rank %s (PID %s) has still not exited; return exit code 1.', global_rank, process.pid)
-            return 1
+            try:
+                log.error('Global rank %s (PID %s) has still not exited; return exit code 1.', global_rank, process.pid)
+                return 1
+            except Exception as e:
+                log.error(f'Error occurred while logging: {e}')
         if process.returncode != 0:
-            log.error('Global rank %s (PID %s) exited with code %s', global_rank, process.pid, process.returncode)
+            try:
+                log.error('Global rank %s (PID %s) exited with code %s', global_rank, process.pid, process.returncode)
+                return process.returncode
+            except Exception as e:
+                log.error(f'Error occurred while logging: {e}')
+
+    return 0
             return process.returncode
 
     return 0
