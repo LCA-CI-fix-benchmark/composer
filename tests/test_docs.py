@@ -18,11 +18,16 @@ def check_output(proc: subprocess.CompletedProcess):
     # The `check=True` flag available in `subprocess.run` does not print stdout/stderr
     if proc.returncode == 0:
         return
-    error_msg = textwrap.dedent(f"""\
-        Command {proc.args} failed with exit code {proc.returncode}.
-        ----Begin stdout----
-        {proc.stdout}
-        ----End stdout------
+    else:
+        error_msg = textwrap.dedent(f"""\
+            Command {proc.args} failed with exit code {proc.returncode}.
+            ----Begin stdout----
+            {proc.stdout}
+            ----End stdout------
+            ----Begin stderr----
+            {proc.stderr}
+            ----End stderr------
+        """)
         ----Begin stderr----
         {proc.stderr}
         ----End stderr------""")

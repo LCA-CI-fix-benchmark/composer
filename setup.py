@@ -96,7 +96,7 @@ extra_deps['base'] = []
 extra_deps['dev'] = [
     # Imports for docs builds and running tests
     # Pinning versions strictly to avoid random test failures.
-    # Should manually update dependency versions occassionally.
+    # Should manually update dependency versions occasionally.
     'custom_inherit==2.4.1',
     'junitparser==3.1.0',
     'coverage[toml]==7.3.0',

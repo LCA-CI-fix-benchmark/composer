@@ -96,13 +96,20 @@ def test_notebook(notebook: str, device: str, s3_bucket: str):
     notebook_name = os.path.split(notebook)[-1][:-len('.ipynb')]
 
     if notebook_name == 'medical_image_segmentation':
-        pytest.skip('Dataset is only available via kaggle; need to authenticate on ci/cd')
+    # Skip the test if the dataset is only available via kaggle and authentication is required on ci/cd
+    pytest.skip('Dataset is only available via kaggle; authentication needed on ci/cd')
+    
     if notebook_name == 'training_with_submitit':
-        pytest.skip('The CI does not support SLURM and submitit')
+        # Skip the test if SLURM and submitit are not supported by CI
+        pytest.skip('CI does not support SLURM and submitit')
+    
     if notebook_name == 'auto_microbatching' and device == 'cpu':
-        pytest.skip('auto_microbatching notebook only runs with a gpu')
+        # Skip the test if auto_microbatching notebook requires a gpu to run
+        pytest.skip('auto_microbatching notebook only runs with a GPU')
+    
     if notebook_name == 'TPU_Training_in_composer':
-        pytest.skip('The CI does not support tpus')
+        # Skip the test if TPUs are not supported by CI
+        pytest.skip('CI does not support TPUs')
     if notebook_name == 'ffcv_dataloaders' and device == 'cpu':
         pytest.skip('The FFCV notebook requires CUDA')
     if notebook_name == 'ffcv_dataloaders' and device == 'gpu':

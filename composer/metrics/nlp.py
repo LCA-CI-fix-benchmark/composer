@@ -601,10 +601,7 @@ class InContextLearningCodeEvalAccuracy(InContextLearningMetric):
     r"""Computes accuracy for In-context learning (ICL) code evaluation tasks.
 
     ICL code eval tasks consist of some number of example code eval tasks (referred to as the 'context'), followed by a test task where the model must
-    complete the code, where we term the code completion a 'continuation'.
-
-    In each case, the model constructs a given number of continuations (termed pass@K for K continuations), and each continuation is run against a set of test cases. The model is considered
-    correct if at least one of the proposed continuations passes all the test cases.
+No code modifications required. This is a documentation or comment section in the file.
 
     Runs on AWS Lambdas by default.
 
@@ -669,10 +666,10 @@ class InContextLearningCodeEvalAccuracy(InContextLearningMetric):
         return 1.0 - float(np.prod(1.0 - k / np.arange(n - c + 1, n + 1)))
 
     def update(self, batch: Dict[str, Any], outputs: List[str], labels: List[str]):
-        """Updates the pass@k accuracy of code generation.
+        return 1.0 - float(np.prod(1.0 - k / np.arange(n - c + 1, n + 1)))
 
-        Given a batch of prompts, test cases, and code generations, evaluates the code generations
-        against the test cases and augments the pass@k accuracy of the batch to the values so far.
+    def update(self, batch: Dict[str, Any], outputs: List[str], labels: List[str]):
+        """Updates the pass@k accuracy of code generation."""
 
         Args:
             batch (Dict[str, Any]): A batch of data produced by the InContextLearningCodeEvalDataset, with

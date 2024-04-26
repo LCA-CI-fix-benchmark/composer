@@ -35,7 +35,8 @@ def clear_cuda_cache(request):
     marker = request.node.get_closest_marker('gpu')
     if marker is not None and torch.cuda.is_available():
         torch.cuda.empty_cache()
-        gc.collect()  # Only gc on GPU tests as it 2x slows down CPU tests
+        # Perform garbage collection only on GPU tests to prevent slowing down CPU tests unnecessarily
+        gc.collect()
 
 
 @pytest.fixture(autouse=True)

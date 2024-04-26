@@ -172,6 +172,7 @@ def build_ffcv_cifar10_dataloader(
             ffcv.transforms.RandomTranslate(padding=2, fill=tuple(map(int, cifar10_mean_ffcv))),
             ffcv.transforms.Cutout(4, tuple(map(int, cifar10_mean_ffcv))),
         ])
+        ])
     # Common transforms for train and test
     image_pipeline.extend([
         ffcv.transforms.ToTensor(),
