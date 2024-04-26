@@ -82,7 +82,6 @@ def apply_alibi(
     #
     # For additional details, see `./attention_surgery_functions/utils.py`.
     def as_replacement_function(surgery_function):
-
         def replacement_function(module: torch.nn.Module, module_index: int):
             return surgery_function(module, module_index, max_sequence_length=max_sequence_length)
 

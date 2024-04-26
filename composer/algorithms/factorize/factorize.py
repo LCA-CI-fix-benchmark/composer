@@ -142,7 +142,7 @@ class Factorize(Algorithm):
             minimum of 1. Default: ``128``.
     """
 
-    def __init__(self,
+    def __init__(self, ...):
                  factorize_convs: bool = True,
                  factorize_linears: bool = True,
                  min_channels: int = 256,

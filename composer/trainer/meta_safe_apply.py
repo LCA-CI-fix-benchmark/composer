@@ -1,15 +1,6 @@
 # Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
-
-# Source code is compiled from a modified version of:
-# https://github.com/pytorch/pytorch/blob/v1.13.0/torch/nn/modules/module.py
-# Link to PyTorch License File: https://github.com/pytorch/pytorch/blob/master/LICENSE
-# TODO: This code will need to be removed when PyTorch correctly supports delayed initialization
-# with meta tensors.
-
-"""Helper function to safely call .apply for initializing meta tensors in PyTorch."""
-
-from typing import Set
+### Changes Summary:
+The provided code snippet includes a comment indicating that the code is compiled from a modified version of a Python program.
 
 import torch
 from torch.nn.parameter import Parameter

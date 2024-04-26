@@ -58,7 +58,7 @@ class S3ObjectStore(ObjectStore):
         aws_access_key_id (str, optional): The access key id. Must be specified if not available in
             a config file or environment variables. Defaults to None.
         aws_secret_access_key (str, optional): The secret access key. Must be specified if not available in
-            a config file or environment variables. Defaults to None.
+    a config file or environment variables. Defaults to None.
         aws_session_token (str, optional): The session token. Must be specified if not available in
             a config file or environment variables. Defaults to None.
         client_config (dict, optional): Kwargs dictionary for :class:`botocore.config.Config`. Defaults to None.
