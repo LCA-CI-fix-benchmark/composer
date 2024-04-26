@@ -228,6 +228,9 @@ def check_output(proc: subprocess.CompletedProcess):
         Command {proc.args} failed with exit code {proc.returncode}.
         ----Begin stdout----
         {proc.stdout}
+        ----Begin stderr----
+        {proc.stderr}
+        ----End stderr------
         ----End stdout------
         ----Begin stderr----
         {proc.stderr}
