@@ -580,12 +580,8 @@ class InContextLearningCodeEvalAccuracy(InContextLearningMetric):
             batch (Dict[str, Any]): A batch of data produced by the InContextLearningCodeEvalDataset, with
             the prompt, test cases, and entry points. This will be a dictionary that must have the following
             arguments:
-            {
+        {
                 'prompts': List[str],
-                'test_inputs': List[List[str]],
-                'test_outputs': List[List[str]],
-                'entry_points': List[str],
-                'languages': List[str],
                 'generation_kwargs': Dict[str, Any]
             }
             outputs (List[str]): A list of code generations in the format of HF generate with beam search,

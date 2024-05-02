@@ -2953,8 +2953,8 @@ class Trainer:
                     if evaluator.auto_microbatching:
                         # Propagate across all ranks if any rank hit CUDA OOM
                         found_cuda_oom = self.state.device.tensor_to_device(
-                            torch.tensor([found_cuda_oom], dtype=torch.uint8))
-                        dist.all_reduce(found_cuda_oom, reduce_operation='MAX')
+                            torch.tensor([found_cuda_oom.item()], dtype=torch.uint8))
+                        dist.all_reduce(found_cuda_oom, op=torch.distributed.ReduceOp.MAX)
                         if found_cuda_oom.item() == 1:
                             _adjust_device_eval_microbatch_size(evaluator)
                             # Skip return and rerun after handling oom

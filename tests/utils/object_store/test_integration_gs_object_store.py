@@ -25,7 +25,8 @@ def gs_object_store():
 def test_bucket_not_found():
     pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
     with pytest.raises(FileNotFoundError):
-        _ = GCSObjectStore('gs://not_a_bucket/streaming')
+        with pytest.raises(ValueError):
+            _ = GCSObjectStore('gs://not_a_bucket/streaming')
 
 
 @pytest.mark.remote

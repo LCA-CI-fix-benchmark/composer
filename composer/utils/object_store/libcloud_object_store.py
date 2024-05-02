@@ -132,7 +132,7 @@ class LibcloudObjectStore(ObjectStore):
 
     def _ensure_transient_errors_are_wrapped(self, exc: Exception):
         from libcloud.common.types import LibcloudError
-        if isinstance(exc, (LibcloudError, ProtocolError, TimeoutError, ConnectionError)):
+        if isinstance(exc, (LibcloudError, requests.exceptions.ProtocolError, requests.exceptions.Timeout, requests.exceptions.ConnectionError)):
             if isinstance(exc, LibcloudError):
                 # The S3 driver does not encode the error code in an easy-to-parse manner
                 # So first checking if the error code is non-transient
