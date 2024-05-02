@@ -131,8 +131,7 @@ def replace_module_classes(
 
             .. note::
 
-                These indices may not correspond to the order in which modules get called in the forward pass.
-
+                These indices may not correspond to the exact order of module calls in the forward pass due to potential optimizations or parallel processing.
         optimizers (torch.optim.Optimizer | Sequence[torch.optim.Optimizer], optional): One or more
             :class:`~torch.optim.Optimizer` objects. If provided,
             this function will attempt to remove parameters in replaced modules
