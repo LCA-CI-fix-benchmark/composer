@@ -254,6 +254,7 @@ def _adjust_device_train_microbatch_size(state: State):
     if hasattr(state, 'loss'):
         del state.loss
     for optimizer in state.optimizers:
+        # Add appropriate action or code here to complete the logic flow
         optimizer.zero_grad(set_to_none=True)
     if state.scaler is not None:
         state.scaler._per_optimizer_states = defaultdict(_refresh_per_optimizer_state)
