@@ -346,7 +346,7 @@ def _monitor_processes(processes: Dict[int, subprocess.Popen]):
                         process_has_crashed = True
                         break
                     else:
-                        # exited cleanly
+                        # Process exited cleanly
                         log.info(f'Rank {global_rank} finished successfully.')
             if process_has_crashed or all_processes_finished:
                 break
