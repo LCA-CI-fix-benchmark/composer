@@ -233,7 +233,7 @@ def check_output(proc: subprocess.CompletedProcess):
         {proc.stderr}
         ----End stderr------""")
 
-    raise RuntimeError(error_msg)
+    raise RuntimeError(f"{error_msg}")
 
 
 @pytest.mark.parametrize('exception', [True, False])
@@ -241,10 +241,10 @@ def test_engine_closes_on_atexit(exception: bool):
     # Running this test via a subprocess, as atexit() must trigger
 
     code = textwrap.dedent("""\
-    from composer import Trainer, Callback
-    from tests.common import SimpleModel
+        from composer import Trainer, Callback
+        from tests.common import SimpleModel
 
-    class CallbackWithConditionalCloseImport(Callback):
+        class CallbackWithConditionalCloseImport(Callback):
         def post_close(self):
             import requests
 
