@@ -341,11 +341,11 @@ def _monitor_processes(processes: Dict[int, subprocess.Popen]):
                     continue
                 else:
                     # return code of 0 implies clean exit
+                    # Check if the process return code indicates a crash
                     if process.returncode != 0:
                         log.error(f'Rank {global_rank} crashed with exit code {process.returncode}.')
                         process_has_crashed = True
                         break
-                    else:
                         # exited cleanly
                         log.info(f'Rank {global_rank} finished successfully.')
             if process_has_crashed or all_processes_finished:
@@ -449,7 +449,7 @@ def _aggregate_process_returncode(processes: Dict[int, subprocess.Popen]) -> int
     for global_rank, process in processes.items():
         process.poll()
         if process.returncode is None:
-            log.error('Global rank %s (PID %s) has still not exited; return exit code 1.', global_rank, process.pid)
+            log.error('Global rank %s (PID %s) has still not exited; return exit code %s.', global_rank, process.pid, 1)
             return 1
         if process.returncode != 0:
             log.error('Global rank %s (PID %s) exited with code %s', global_rank, process.pid, process.returncode)
