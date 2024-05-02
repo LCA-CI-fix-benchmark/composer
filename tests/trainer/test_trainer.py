@@ -27,7 +27,7 @@ from composer.loss import soft_cross_entropy
 from composer.models import ComposerModel
 from composer.optim import ExponentialScheduler
 from composer.trainer.trainer import _generate_run_name
-from composer.utils import dist, is_model_deepspeed, is_model_fsdp, map_collection, reproducibility
+from composer.utils import dist, is_model_deepspeed, is_model_fsdp
 from tests.common import (EmptyModel, InfiniteClassificationDataset, RandomClassificationDataset, RandomImageDataset,
                           RandomTextLMDataset, SimpleConvModel, SimpleModel, SimpleTransformerMaskedLM, device,
                           world_size)
