@@ -26,9 +26,9 @@ from composer.metrics import (InContextLearningCodeEvalAccuracy, InContextLearni
                               InContextLearningMultipleChoiceAccuracy, InContextLearningQAAccuracy)
 from composer.models import HuggingFaceModel
 from composer.trainer import Trainer
-from composer.utils import dist, reproducibility
+from composer.utils import dist
+from composer.utils import reproducibility
 from tests.common import device, world_size
-
 
 def test_fewshot_sample_idxs():
     rng = random.Random(1234)
