@@ -269,7 +269,6 @@ def test_engine_closes_on_atexit(exception: bool):
     else:
         check_output(proc)
 
-
 def test_logging(
     caplog: pytest.LogCaptureFixture,
     dummy_state: State,
