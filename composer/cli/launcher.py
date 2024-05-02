@@ -349,6 +349,7 @@ def _monitor_processes(processes: Dict[int, subprocess.Popen]):
                         # exited cleanly
                         log.info(f'Rank {global_rank} finished successfully.')
             if process_has_crashed or all_processes_finished:
+                # Add condition or action here to handle the situation
                 break
             time.sleep(0.1)
     except KeyboardInterrupt:

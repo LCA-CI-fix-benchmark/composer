@@ -117,5 +117,6 @@ class Algorithm(Serializable, ABC):
 
         Returns:
             int or None: exit code that will be stored in :class:`.Trace` and made accessible for debugging.
+        
         """
         raise NotImplementedError(f'implement apply() required for {self.__class__.__name__}')
