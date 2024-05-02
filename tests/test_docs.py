@@ -26,9 +26,8 @@ def check_output(proc: subprocess.CompletedProcess):
         ----Begin stderr----
         {proc.stderr}
         ----End stderr------""")
-
+    
     raise RuntimeError(error_msg)
-
 
 @pytest.mark.doctest
 def test_run_doctests():
@@ -38,13 +37,10 @@ def test_run_doctests():
     check_output(subprocess.run(['make', 'html'], cwd=docs_folder, capture_output=True, text=True))
     check_output(subprocess.run(['make', 'doctest'], cwd=docs_folder, capture_output=True, text=True))
 
-
 @pytest.mark.doctest
 def test_docker_build_matrix():
     """Test that the docker build matrix is up to date."""
     docker_folder = os.path.join(os.path.dirname(__file__), '..', 'docker')
-
-    # Capture the existing readme and build matrix contents
     with open(os.path.join(docker_folder, 'README.md'), 'r') as f:
         existing_readme = f.read()
 
