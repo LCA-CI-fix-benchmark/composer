@@ -47,7 +47,6 @@ def test_docker_build_matrix():
     # Capture the existing readme and build matrix contents
     with open(os.path.join(docker_folder, 'README.md'), 'r') as f:
         existing_readme = f.read()
-
     with open(os.path.join(docker_folder, 'build_matrix.yaml'), 'r') as f:
         existing_build_matrix = f.read()
 

@@ -69,8 +69,6 @@ def test_upload_object(gs_object_store):
     stats = Blob(bucket=gs_object_store.bucket, name=key).exists(gs_object_store.client)
     if not stats:
         gs_object_store.upload_object(__DUMMY_OBJ__, destination_blob_name)
-
-
 @pytest.mark.remote
 def test_list_objects(gs_object_store):
     pytest.skip('Run this test suite only after GCS service account is configured on CI node.')
