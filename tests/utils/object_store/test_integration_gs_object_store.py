@@ -79,9 +79,9 @@ def test_list_objects(gs_object_store):
     key = gs_object_store.get_key(destination_blob_name)
     stats = Blob(bucket=gs_object_store.bucket, name=key).exists(gs_object_store.client)
     if not stats:
-        gs_object_store.upload_object(__DUMMY_OBJ__, destination_blob_name)
+        gs_object_store.upload_object(dummy_object_path, destination_blob_name)
     objects = gs_object_store.list_objects()
-    assert (key in objects)
+    assert key in objects
 
 
 @pytest.mark.remote
