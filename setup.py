@@ -123,6 +123,7 @@ extra_deps['dev'] = [
     'sphinxcontrib-qthelp==1.0.0',
     'sphinxext.opengraph==0.9.1',
     'sphinxemoji==0.2.0',
+]
     'furo==2022.9.29',
     'sphinx-copybutton==0.5.2',
     'testbook==0.4.2',
@@ -137,14 +138,13 @@ extra_deps['dev'] = [
     'GitPython==3.1.40',
     'moto[s3]>=4.0.1,<5',
     'mock-ssh-server==0.9.1',
-    'cryptography==41.0.5',
     'pytest-httpserver>=1.0.4,<1.1',
     'setuptools<=59.5.0',
-]
+],
 
 extra_deps['health_checker'] = {
     'pynvml>=11.5.0,<12',
-}
+},
 
 extra_deps['system_metrics_monitor'] = {
     'pynvml>=11.5.0,<12',
