@@ -34,6 +34,8 @@ from tests.common import (EmptyModel, InfiniteClassificationDataset, RandomClass
 from tests.common.events import EventCounterCallback
 from tests.test_state import assert_state_equivalent
 
+# Import the necessary module for the SleepyCallback class
+from composer.callbacks.callback import Callback
 
 class SleepyCallback(Callback):
 

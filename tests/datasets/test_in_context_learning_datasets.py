@@ -27,8 +27,10 @@ from composer.metrics import (InContextLearningCodeEvalAccuracy, InContextLearni
 from composer.models import HuggingFaceModel
 from composer.trainer import Trainer
 from composer.utils import dist, reproducibility
+import random
 from tests.common import device, world_size
 
+# Define or import the function _get_fewshot_sample_idxs before calling it in the test function
 
 def test_fewshot_sample_idxs():
     rng = random.Random(1234)
