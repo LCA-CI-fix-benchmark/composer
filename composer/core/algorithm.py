@@ -102,13 +102,13 @@ class Algorithm(Serializable, ABC):
             bool: True if this algorithm should run now.
         """
         raise NotImplementedError(f'implement match() required for {self.__class__.__name__}')
-
     @abstractmethod
     def apply(self, event: Event, state: State, logger: Logger) -> Optional[int]:
         """Applies the algorithm to make an in-place change to the :class:`.State`.
 
         Can optionally return an exit code to be stored in a :class:`.Trace`.
         This exit code is made accessible for debugging.
+        """
 
         Args:
             event (Event): The current event.

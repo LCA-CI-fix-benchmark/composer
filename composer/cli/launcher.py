@@ -348,11 +348,12 @@ def _monitor_processes(processes: Dict[int, subprocess.Popen]):
                     else:
                         # exited cleanly
                         log.info(f'Rank {global_rank} finished successfully.')
-            if process_has_crashed or all_processes_finished:
-                break
-            time.sleep(0.1)
+        if process_has_crashed or all_processes_finished:
+            break
+        time.sleep(0.1)
     except KeyboardInterrupt:
         print('Ctrl-C received; terminating training processes.')
+        # Add handling for KeyboardInterrupt exception here
         pass
 
 
