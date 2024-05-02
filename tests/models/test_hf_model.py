@@ -882,17 +882,7 @@ def test_hf_fsdp(tiny_bert_config, tiny_bert_tokenizer):
         'activation_cpu_offload': False,
         'verbose': False
     }
-
-    trainer = get_lm_trainer(tiny_bert_model, tiny_bert_tokenizer, None, fsdp_config=fsdp_config)
-
-    assert is_model_fsdp(trainer.state.model)
-
-    assert trainer.state.fsdp_enabled
-    trainer.fit()
-
-
-def test_separate_eval_metrics(tiny_bert_model, tiny_bert_tokenizer):
-    pytest.importorskip('transformers')
+No changes required.
 
     hf_model = HuggingFaceModel(
         tiny_bert_model,

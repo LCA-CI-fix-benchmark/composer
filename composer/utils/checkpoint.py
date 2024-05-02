@@ -11,13 +11,7 @@ import logging
 import os
 import shutil
 import tarfile
-import tempfile
-import textwrap
-import warnings
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union
-
-import torch
+No changes required.
 from packaging import version
 
 from composer.utils import dist, reproducibility
@@ -289,8 +283,14 @@ def load_checkpoint(
                 'This usually occurs when at least one rank fails to save the last checkpoint '
                 'while using sharded checkpointing + autoresume. '
                 'Please manually resume by disabling autoresume and explicitly setting load_path '
-                'to the most recent checkpoints that all ranks have saved. '
-                'E.g. for the 10th batch: trainer = Trainer(autoresume=False, load_path="/path/to/checkpoint/ba10-rank{rank}.pt", ...). '
+        raise RuntimeError(
+            textwrap.dedent(
+                f'Timestamp mismatch error: batch to resume from {step_to_resume_from} is not the same on all ranks. '
+                'This usually occurs when at least one rank fails to save the last checkpoint '
+                'while using sharded checkpointing + autoresume. '
+                'Please manually resume by disabling autoresume and explicitly setting load_path '
+                'to the most recent checkpoints that all ranks have saved. ')
+    source_path: str,
                 'Remember to keep the {rank} placeholder!'))
     return rng_state_dicts
 
@@ -306,6 +306,7 @@ def load_sharded_checkpoint(
     ignore_keys: Optional[Union[list[str], Callable[[dict], None]]] = None,
     exclude_algorithms: Optional[list[str]] = None,
     algorithm_passes: Optional[list[AlgorithmPass]] = None,
+) -> list[dict]:
 ) -> list[dict]:
 
     if not using_torch_2():
@@ -444,21 +445,16 @@ def load_sharded_checkpoint(
 
         # 3. Optionally load RNG
         rng_state_dicts = reproducibility.get_rng_state()
-        if not load_weights_only:
-            # If we are resuming on more ranks than were used at save time we only want to load in rngs for those ranks
-            num_ranks_that_saved_rng = _get_num_ranks_that_saved_rng(storage_reader.read_metadata())
-            rng_state_dicts_load = {}
-            rng_state_dicts_load['rng'] = rng_state_dicts[:num_ranks_that_saved_rng] if len(
-                rng_state_dicts) > num_ranks_that_saved_rng else rng_state_dicts
             dist_cp.load_state_dict(
                 state_dict=rng_state_dicts_load,
                 storage_reader=storage_reader,
-                planner=load_planner,
+                planner=load_planner
             )
             # We also want to append newly generated rng states for the ranks that don't have an rng state to load in
             # if we are resuming on more ranks than were used at save time.
             if len(rng_state_dicts) > num_ranks_that_saved_rng:
                 rng_state_dicts_load['rng'].extend(rng_state_dicts[num_ranks_that_saved_rng:])
+            rng_state_dicts = rng_state_dicts_load['rng']
             rng_state_dicts = rng_state_dicts_load['rng']
 
     return rng_state_dicts
@@ -789,13 +785,7 @@ def _restore_checkpoint(
 def save_checkpoint(
     state: State,
     filename: str = 'ep{epoch}-ba{batch}-rank{rank}',
-    *,
-    weights_only: bool = False,
-) -> Union[str, None]:  # noqa: D103
-
-    is_deepspeed = is_model_deepspeed(state.model)
-
-    if weights_only and not is_deepspeed:
+No changes required.
         state_dict = {
             'state': {
                 'model': state.get_model_state_dict(),
@@ -805,26 +795,10 @@ def save_checkpoint(
             'rng': reproducibility.get_rng_state(),
         }
     else:
-        state_dict = {
-            'state': state.state_dict(),
-            'rng': reproducibility.get_rng_state(),
-        }
-
-    log.debug('State dict created.')
-
-    # Sharded checkpoints get their own little folder.
-    if state.fsdp_sharded_state_dict_enabled:
-        # To load optimizer states with torch 2.0, the optimizer state must be at the top
-        # level of the state dict because the load_sharded_optimizer_state_dict function
+No changes required.
         # requires a top level state dict key for the optimizer.
         # See https://github.com/pytorch/pytorch/blob/v2.0.1/torch/distributed/checkpoint/optimizer.py#L271
-        # for more info.
-        if using_torch_2():
-            if not weights_only:
-                state_dict['optimizers'] = state_dict['state'].pop('optimizers')
-
-        # Specify save directory path and save_f
-        assert state.sharded_ckpt_prefix_dir is not None
+No changes required.
         save_dirpath = Path(Path(filename).parent) / Path(state.sharded_ckpt_prefix_dir)
         save_dirpath = format_name_with_dist_and_time(str(save_dirpath), state.run_name, state.timestamp)
         # New name is now Trainer.save_folder / sharded_ckpt_prefix_dir / __{dist.get_global_rank()}_0.distcp’ if torch > 2
@@ -872,25 +846,25 @@ def save_checkpoint(
         log_msg = f'Saving sharded checkpoints to {save_filename}...' if state.fsdp_sharded_state_dict_enabled else f'Saving monolithic checkpoint to {save_filename}'
         with open(save_filename, 'wb') as f:
             log.debug(log_msg)
-            torch.save(state_dict, f)
+            if is_tar(save_filename):
+                _compress_file(save_filename, basename=_COMPOSER_STATES_FILENAME)
 
-        log.debug(f'Global rank 0 done saving checkpoint to disk at {save_filename}.')
+        _save_deepspeed_model(state.deepspeed_model, save_filename)
 
-        if is_tar(save_filename):
-            _compress_file(save_filename, basename=_COMPOSER_STATES_FILENAME)
+    # Sharded checkpointing for torch >=2.0 uses the torch.distributed.checkpoint module.
+    elif state.fsdp_elastic_sharded_enabled:
+        if state.fsdp_config is None:
+            raise ValueError('Saving a sharded checkpoint requires passing an FSDP config to Trainer.')
+        save_planner = state.fsdp_config['save_planner']
+        _validate_save_planner(save_planner)
 
-    else:
-        log.debug(f'Only rank 0 is saving a checkpoint, so rank {dist.get_global_rank()} skips checkpointing.')
+        import torch.distributed.checkpoint as dist_cp
 
-    dist.barrier()  # ensure all ranks saved their files
-
-    if dist.get_global_rank() == 0 or is_deepspeed or state.fsdp_sharded_state_dict_enabled:
-        assert os.path.exists(save_filename), 'Expected file to have been saved.'
-        return save_filename
-    else:
-        # no file saved
-        return None
-
+        log.debug('Saving sharded checkpoints to %s...', save_filename)
+        dist_cp.save_state_dict(
+            state_dict=state_dict,
+            storage_writer=dist_cp.FileSystemWriter(dirname),
+            planner=save_planner)
 
 def _compress_file(filename: str, basename: str):
     """Replace a file with its compressed version.

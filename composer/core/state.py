@@ -1130,7 +1130,6 @@ class State(Serializable):
             prepare_fsdp_module(self.model, self.optimizers, self.fsdp_config, self.precision, self.device,
                                 self.auto_microbatching)
             log.debug('Finished wrapping model with FSDP.')
-
     def load_optim_state(self, state_dict: Dict[str, Any]):
         """Load the optimizer state.
 

@@ -12,13 +12,7 @@ import pandas as pd
 import pytest
 import torch
 import transformers
-from torch.utils.data import DataLoader
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-from composer import Evaluator
-from composer.callbacks import EvalOutputLogging
-from composer.core import DataSpec
-from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
+from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset)
                                                               _get_fewshot_sample_idxs, _make_padded_input,
                                                               get_icl_task_dataloader)
 from composer.loggers import InMemoryLogger
