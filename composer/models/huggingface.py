@@ -189,6 +189,16 @@ class HuggingFaceModel(ComposerModel):
 
         return full_state_dict
 
+    def forward(self, *args, **kwargs):
+        if not self.dummy_forward_called:
+            self._dummy_forward()
+            self.dummy_forward_called = True
+        return self.model(*args, **kwargs)
+
+    def _dummy_forward(self):
+        self.model(input_ids=torch.zeros(1, 1, dtype=torch.long))
+        return full_state_dict
+
     @staticmethod
     def load_huggingface_tokenizer_from_saved_state(
         hf_state: Dict[str, Any],
