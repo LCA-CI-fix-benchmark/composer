@@ -165,6 +165,21 @@ class HuggingFaceModel(ComposerModel):
         if peft_config is not None:
             self.model = get_peft_model(self.model, peft_config)
             log.info(f'PEFT model created. {self.model}')
+        
+    def forward(self, *args, **kwargs):
+        if not self.dummy_forward_called:
+            # Call a dummy forward pass to initialize the model
+            self.model(*args, **kwargs)
+            self.dummy_forward_called = True
+        return self.model(*args, **kwargs)
+
+    def eval_forward(self, batch: Dict[str, Any]) -> Dict[str, Any]:
+        outputs = self.forward(**batch)
+        if 'labels' in batch:
+            self.labels = batch['labels']
+            if self.shift_labels:
+                self.labels = self.labels[:, 1:]
+        return {'logits': outputs.logits}
 
     def state_dict(self, *args, **kwargs) -> Dict[str, Any]:
         """Returns the state dict of the model."""
