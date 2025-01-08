@@ -36,6 +36,14 @@ def _write(destination_path, src_file):
         with dist.local_rank_zero_download_and_wait(destination_path):
             if dist.get_local_rank() == 0:
                 shutil.copy(src_file, destination_path)
+    obj_store = maybe_create_object_store_from_uri(destination_path)
+    _, _, save_path = parse_uri(destination_path)
+    if obj_store is not None:
+        obj_store.upload_object(object_name=save_path, filename=src_file)
+    else:
+        with dist.local_rank_zero_download_and_wait(destination_path):
+            if dist.get_local_rank() == 0:
+                shutil.copy(src_file, destination_path)
 
 
 class EvalOutputLogging(Callback):
