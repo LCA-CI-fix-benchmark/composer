@@ -23,8 +23,8 @@ from composer.loggers.console_logger import ConsoleLogger
 from composer.utils import MissingConditionalImportError, dist, maybe_create_object_store_from_uri, parse_uri
 
 ICLDatasetTypes = (InContextLearningLMTaskDataset, InContextLearningQATaskDataset,
-                   InContextLearningMultipleChoiceTaskDataset, InContextLearningSchemaTaskDataset,
-                   InContextLearningCodeEvalDataset)
+                   InContextLearningMultipleChoiceTaskDataset,
+                   InContextLearningSchemaTaskDataset, InContextLearningCodeEvalDataset)
 
 
 def _write(destination_path, src_file):
@@ -69,7 +69,7 @@ class EvalOutputLogging(Callback):
                                                 conda_channel='conda-forge') from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
-        tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
+        tmp_dir = os.path.join(os.getcwd(), self.hash.hexdigest())
 
         if not os.path.exists(tmp_dir):
             with dist.local_rank_zero_download_and_wait(tmp_dir):
@@ -89,7 +89,11 @@ class EvalOutputLogging(Callback):
         with dist.local_rank_zero_download_and_wait(f'{tmp_dir}/{file_name}'):
             if dist.get_local_rank() == 0:
                 with open(f'{tmp_dir}/{file_name}', 'wb') as f:
-                    full_df.to_csv(f, sep='\t', index=False)
+                    full_df.to_csv(
+                        f,
+                        sep='\t',
+                        index=False,
+                    )
 
         # copy/upload tmp files
         _write(destination_path=f'{self.output_directory}/{file_name}', src_file=f'{tmp_dir}/{file_name}')
