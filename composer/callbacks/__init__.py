@@ -8,6 +8,7 @@ examples for writing your own callbacks at the :class:`.Callback` base class.
 """
 from composer.callbacks.activation_monitor import ActivationMonitor
 from composer.callbacks.checkpoint_saver import CheckpointSaver
+from composer.callbacks.memory_snapshot import MemorySnapshot
 from composer.callbacks.early_stopper import EarlyStopper
 from composer.callbacks.export_for_inference import ExportForInferenceCallback
 from composer.callbacks.free_outputs import FreeOutputs
