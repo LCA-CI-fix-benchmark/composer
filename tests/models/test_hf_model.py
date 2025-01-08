@@ -19,7 +19,9 @@ from torchmetrics.classification import MulticlassAccuracy
 from torchmetrics.regression import PearsonCorrCoef
 
 from composer.loggers import InMemoryLogger
-from composer.metrics import InContextLearningLMAccuracy, LanguageCrossEntropy, MaskedAccuracy
+from composer.metrics import InContextLearningLMAccuracy
+from composer.metrics import LanguageCrossEntropy
+from composer.metrics import MaskedAccuracy
 from composer.models import HuggingFaceModel
 from composer.trainer import Trainer
 from composer.utils import dist, is_model_fsdp
@@ -29,7 +31,8 @@ from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_
                                  configure_tiny_gpt2_tokenizer, configure_tiny_mistral_model,
                                  configure_tiny_mistral_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
 from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_tokenizer, configure_tiny_gpt2_model,
-                                 configure_tiny_gpt2_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
+                                 configure_tiny_gpt2_tokenizer, configure_tiny_t5_model,
+                                 configure_tiny_t5_tokenizer)
 from tests.loggers.test_remote_uploader_downloader import DummyObjectStore
 
 if TYPE_CHECKING:
