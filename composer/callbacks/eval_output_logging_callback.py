@@ -14,10 +14,8 @@ from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
 from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
-                                                              InContextLearningLMTaskDataset,
-                                                              InContextLearningMultipleChoiceTaskDataset,
-                                                              InContextLearningQATaskDataset,
-                                                              InContextLearningSchemaTaskDataset)
+    InContextLearningLMTaskDataset, InContextLearningMultipleChoiceTaskDataset,
+    InContextLearningQATaskDataset, InContextLearningSchemaTaskDataset)
 from composer.loggers import Logger
 from composer.loggers.console_logger import ConsoleLogger
 from composer.utils import MissingConditionalImportError, dist, maybe_create_object_store_from_uri, parse_uri
@@ -48,7 +46,7 @@ class EvalOutputLogging(Callback):
 
     If subset_sample > 0, then only `subset_sample` of the outputs will be logged.
 
-    output_directory indicates where to write the tsv results, either can be a local directory or a cloud storage directory.
+    Output_directory indicates where to write the tsv results, either can be a local directory or a cloud storage directory.
     """
 
     def __init__(self, subset_sample: int = -1, output_directory: Optional[str] = None):
@@ -67,7 +65,6 @@ class EvalOutputLogging(Callback):
             raise MissingConditionalImportError(extra_deps_group='pandas',
                                                 conda_package='pandas',
                                                 conda_channel='conda-forge') from e
-        # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
 
@@ -145,6 +142,5 @@ class EvalOutputLogging(Callback):
                                 if not isinstance(destination, ConsoleLogger):
                                     # don't log to console because it will pollute the console too much
                                     destination.log_table(columns, rows, f'icl_outputs/{benchmark}/{metric_name}')
-
                             self.table[f'{benchmark}_{metric_name}'] = (columns, rows)
         self._prep_response_cache(state, False)
