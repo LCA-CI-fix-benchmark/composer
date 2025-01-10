@@ -101,6 +101,12 @@ class HuggingFaceModel(ComposerModel):
             from peft import PeftModel
             if isinstance(self.model, PeftModel):
                 self.model_forward_args = inspect.getfullargspec(self.model.base_model.model.forward).args
+        else:
+            self.model_forward_args = inspect.getfullargspec(self.model.forward).args
+
+        if _peft_installed and isinstance(self.model, PeftModel):
+            from peft import PeftModel
+            self.model_forward_args = inspect.getfullargspec(self.model.base_model.model.forward).args
 
         self.tokenizer = tokenizer
 
