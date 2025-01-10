@@ -13,6 +13,7 @@ from composer.callbacks.export_for_inference import ExportForInferenceCallback
 from composer.callbacks.free_outputs import FreeOutputs
 from composer.callbacks.generate import Generate
 from composer.callbacks.health_checker import HealthChecker
+from composer.callbacks.memory_snapshot import MemorySnapshot
 from composer.callbacks.image_visualizer import ImageVisualizer
 from composer.callbacks.lr_monitor import LRMonitor
 from composer.callbacks.memory_monitor import MemoryMonitor
@@ -23,7 +24,6 @@ from composer.callbacks.runtime_estimator import RuntimeEstimator
 from composer.callbacks.speed_monitor import SpeedMonitor
 from composer.callbacks.system_metrics_monitor import SystemMetricsMonitor
 from composer.callbacks.threshold_stopper import ThresholdStopper
-from composer.callbacks.memory_snapshot import MemorySnapshot
 
 __all__ = [
     'ActivationMonitor',
@@ -42,6 +42,6 @@ __all__ = [
     'RuntimeEstimator',
     'SystemMetricsMonitor',
     'Generate',
-    'FreeOutputs',
     'MemorySnapshot',
+    'FreeOutputs',
 ]

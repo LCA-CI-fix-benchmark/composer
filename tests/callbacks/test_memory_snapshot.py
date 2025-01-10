@@ -8,7 +8,7 @@ import pathlib
 from composer.callbacks import MemorySnapshot
 from composer.trainer import Trainer
 from tests.common import RandomClassificationDataset, SimpleModel
-from composer.loggers import LoggerDestination
+from composer.loggers import LoggerDestination, FileUploaderTracker
 from composer import State, Trainer
 
 
@@ -31,6 +31,8 @@ def test_memory_snapshot(interval: str, tmp_path: pathlib.Path):
     simple_model = SimpleModel()
 
     file_tracker_destination = FileUploaderTracker()
+
+
 
     # Construct the trainer and train
     trainer = Trainer(
