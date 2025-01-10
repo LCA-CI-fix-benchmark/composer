@@ -59,7 +59,6 @@ class EvalOutputLogging(Callback):
         self.destination_file = None
 
     def _write_tables_to_output_dir(self, state: State):
-
         
         try:
             import pandas as pd
@@ -67,6 +66,7 @@ class EvalOutputLogging(Callback):
             raise MissingConditionalImportError(extra_deps_group='pandas',
                                                 conda_package='pandas',
                                                 conda_channel='conda-forge') from e
+                                                
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
@@ -110,7 +110,7 @@ class EvalOutputLogging(Callback):
         self._prep_response_cache(state, True)
 
     def eval_after_all(self, state: State, logger: Logger) -> None:
-        # eval after all runs after all evaluators have completed during eval within training
+        # eval after all runs after all evaluators have completed during eval within training 
         #  (either in training or eval)
         self._write_tables_to_output_dir(state)
         self.table = {}
