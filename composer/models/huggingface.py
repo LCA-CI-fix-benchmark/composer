@@ -174,6 +174,25 @@ class HuggingFaceModel(ComposerModel):
             full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
 
         return full_state_dict
+    def forward(self, *args, **kwargs):
+        """
+        Calls the forward method of the underlying HuggingFace model.
+
+        If `use_logits` is True, the model's output logits will be returned.
+        Otherwise, the model's output will be returned as is.
+        """
+        output = self.model(*args, **kwargs)
+
+        if self.use_logits:
+            if isinstance(output, tuple):
+                return output[0]  # the first element is the logits
+            else:
+                return output
+        else:
+            return output
+
+    def eval_forward(self, *args, **kwargs):
+        return self.forward(*args, **kwargs)
 
 
     @staticmethod
