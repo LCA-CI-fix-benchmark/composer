@@ -1,3 +1,4 @@
+from composer.callbacks.activation_monitor import ActivationMonitor
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
@@ -6,7 +7,6 @@
 Each callback inherits from the :class:`.Callback` base class. See detailed description and
 examples for writing your own callbacks at the :class:`.Callback` base class.
 """
-from composer.callbacks.activation_monitor import ActivationMonitor
 from composer.callbacks.checkpoint_saver import CheckpointSaver
 from composer.callbacks.early_stopper import EarlyStopper
 from composer.callbacks.export_for_inference import ExportForInferenceCallback
