@@ -126,7 +126,8 @@ class HuggingFaceModel(ComposerModel):
                     f' This would cause an error during training.'
                     f' You can resize the model embeddings to {len(tokenizer)} from {self.config.vocab_size}'
                     f' by calling `model.resize_token_embeddings(len(tokenizer))` before calling the `HuggingFaceModel`'
-                    f' constructor, or pass `allow_embedding_resizing=True` to have it done automatically.')
+                    f' constructor, or pass `allow_embedding_resizing=True` to have it done automatically.'
+            )
         elif tokenizer is not None and self.config.vocab_size > len(tokenizer):
             # when the embedding size is greater than the tokenizer vocab size,
             # the embeddings do not _need_ to be resized to match the tokenizer vocab size,

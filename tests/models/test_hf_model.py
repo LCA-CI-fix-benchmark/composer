@@ -94,8 +94,7 @@ def test_hf_train_eval_predict(num_classes: int, tiny_bert_config):
     transformers = pytest.importorskip('transformers')
 
     tiny_bert_config.num_labels = num_classes
-    hf_model = transformers.AutoModelForSequenceClassification.from_config(
-        tiny_bert_config)  # type: ignore (thirdparty)
+    hf_model = transformers.AutoModelForSequenceClassification.from_config(tiny_bert_config)  # type: ignore (thirdparty)
 
     metrics = MulticlassAccuracy(num_classes=num_classes, average='micro')
     model = HuggingFaceModel(hf_model, metrics=[metrics], use_logits=True)
@@ -207,7 +206,7 @@ def test_hf_train_eval_predict_regression(tiny_deberta_config):
 def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
     """
     WARNING: Parameters are updated within the check so don't call check_hf_tokenizer_equivalence on the same
-    params more than once
+    params more than once.
 
     This is a best effort attempt to compare two tokenizers for equivalence
 
