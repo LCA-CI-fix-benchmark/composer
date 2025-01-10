@@ -23,8 +23,8 @@ from composer.loggers.console_logger import ConsoleLogger
 from composer.utils import MissingConditionalImportError, dist, maybe_create_object_store_from_uri, parse_uri
 
 ICLDatasetTypes = (InContextLearningLMTaskDataset, InContextLearningQATaskDataset,
-                   InContextLearningMultipleChoiceTaskDataset, InContextLearningSchemaTaskDataset,
                    InContextLearningCodeEvalDataset)
+                   InContextLearningMultipleChoiceTaskDataset, InContextLearningSchemaTaskDataset,
 
 
 def _write(destination_path, src_file):
@@ -79,11 +79,14 @@ class EvalOutputLogging(Callback):
         full_df = pd.DataFrame()
         file_name = f'eval-outputs-ba{state.timestamp.batch.value}.tsv'
 
-        for benchmark in self.table:
-            cols, rows = self.table[benchmark]
-            rows = [[e.encode('unicode_escape') if isinstance(e, str) else e for e in row] for row in rows]
-            df = pd.DataFrame.from_records(data=rows, columns=cols)
-            df['benchmark'] = benchmark
+        if self.table:
+            for benchmark in self.table:
+                cols, rows = self.table[benchmark]
+                rows = [[e.encode('unicode_escape') if isinstance(e, str) else e for e in row] for row in rows]
+                df = pd.DataFrame.from_records(data=rows, columns=cols)
+                df['benchmark'] = benchmark
+                full_df = pd.concat([full_df, df], ignore_index=True)
+        else:
             full_df = pd.concat([full_df, df], ignore_index=True)
 
         with dist.local_rank_zero_download_and_wait(f'{tmp_dir}/{file_name}'):
@@ -103,6 +106,8 @@ class EvalOutputLogging(Callback):
         benchmark = state.dataloader_label
         for metric in state.eval_metrics[benchmark].values():
             if hasattr(metric, 'reset_response_cache'):
+                if not isinstance(metric.reset_response_cache, Callable):
+                    continue
                 metric.reset_response_cache(cache)
 
     def eval_start(self, state: State, logger: Logger) -> None:
