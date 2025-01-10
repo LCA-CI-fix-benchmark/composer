@@ -1,3 +1,4 @@
+# isort: skip_file
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 import copy
@@ -68,6 +69,7 @@ def _mistral_peft_config():
 
 @pytest.fixture
 def mistral_peft_config():
+    # isort: skip
     return _mistral_peft_config()
 
 
@@ -135,6 +137,7 @@ def test_hf_train_eval_predict(num_classes: int, tiny_bert_config):
         eval_dataloader=eval_dataloader,
     )
 
+    # isort: skip
     trainer.fit()
     trainer.eval()
 
@@ -191,6 +194,7 @@ def test_hf_train_eval_predict_regression(tiny_deberta_config):
         eval_dataloader=eval_dataloader,
     )
 
+    # isort: skip
     trainer.fit()
     trainer.eval()
 
@@ -212,6 +216,7 @@ def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
     """
     WARNING: Parameters are updated within the check so don't call check_hf_tokenizer_equivalence on the same
     params more than once
+    # isort: skip
 
     This is a best effort attempt to compare two tokenizers for equivalence
 
