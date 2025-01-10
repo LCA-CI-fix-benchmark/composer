@@ -78,13 +78,14 @@ class EvalOutputLogging(Callback):
 
         full_df = pd.DataFrame()
         file_name = f'eval-outputs-ba{state.timestamp.batch.value}.tsv'
-
+        benchmark_names = []
         for benchmark in self.table:
             cols, rows = self.table[benchmark]
             rows = [[e.encode('unicode_escape') if isinstance(e, str) else e for e in row] for row in rows]
             df = pd.DataFrame.from_records(data=rows, columns=cols)
             df['benchmark'] = benchmark
             full_df = pd.concat([full_df, df], ignore_index=True)
+            benchmark_names.append(benchmark)
 
         with dist.local_rank_zero_download_and_wait(f'{tmp_dir}/{file_name}'):
             if dist.get_local_rank() == 0:
@@ -98,6 +99,11 @@ class EvalOutputLogging(Callback):
 
         # delete tmp files
         os.rmdir(tmp_dir)
+        
+        # Log benchmark names
+        for destination in logger.destinations:
+            if not isinstance(destination, ConsoleLogger):
+                destination.log_text(f'Evaluated benchmarks: {", ".join(benchmark_names)}')
 
     def _prep_response_cache(self, state, cache):
         benchmark = state.dataloader_label
