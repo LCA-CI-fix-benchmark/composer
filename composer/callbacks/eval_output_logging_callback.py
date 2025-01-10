@@ -20,6 +20,11 @@ from composer.datasets.in_context_learning_evaluation import (InContextLearningC
                                                               InContextLearningSchemaTaskDataset)
 from composer.loggers import Logger
 from composer.loggers.console_logger import ConsoleLogger
+
+try:
+    import transformers
+except ImportError as e:
+    raise MissingConditionalImportError(extra_deps_group='nlp', conda_package='transformers', conda_channel='conda-forge') from e
 from composer.utils import MissingConditionalImportError, dist, maybe_create_object_store_from_uri, parse_uri
 
 ICLDatasetTypes = (InContextLearningLMTaskDataset, InContextLearningQATaskDataset,
