@@ -77,8 +77,8 @@ class HuggingFaceModel(ComposerModel):
                  tokenizer: Optional[Union[transformers.PreTrainedTokenizer,
                                            transformers.PreTrainedTokenizerFast]] = None,
                  use_logits: Optional[bool] = False,
-                 metrics: Optional[List[Metric]] = None,
-                 eval_metrics: Optional[List[Metric]] = None,
+                 metrics: Optional[List[Metric]] = None, 
+                 eval_metrics: Optional[List[Metric]] = None, 
                  shift_labels: Optional[bool] = None,
                  allow_embedding_resizing: bool = False,
                  peft_config: Optional['PeftConfig'] = None,
@@ -168,9 +168,7 @@ class HuggingFaceModel(ComposerModel):
 
     def state_dict(self, *args, **kwargs) -> Dict[str, Any]:
         """Returns the state dict of the model."""
-        full_state_dict = super().state_dict(*args, **kwargs)
-        
-        if self.peft_filter_state_dict_trainable:
+        full_state_dict = super().state_dict(*args, **kwargs)        if self.peft_filter_state_dict_trainable:
             full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
 
         return full_state_dict
