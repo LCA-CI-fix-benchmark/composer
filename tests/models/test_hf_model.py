@@ -288,8 +288,7 @@ def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
     tokenizer2.__dict__.pop('vocab_file', None)
     tokenizer1.__dict__['init_kwargs'].pop('vocab_file', None)
     tokenizer2.__dict__['init_kwargs'].pop('vocab_file', None)
-    tokenizer1.__dict__.pop('special_tokens_map_file', None)
-    tokenizer2.__dict__.pop('special_tokens_map_file', None)
+
 
     # The tokenizer name is changed in transformers 4.31 when changing the tokenizer mapping, so we remove it and compare
     # if necessary. Checks whether the names are subsets of each other.
