@@ -39,8 +39,6 @@ def _write(destination_path, src_file):
 
 
 class EvalOutputLogging(Callback):
-    """Logs eval outputs for each sample of each ICL evaluation dataset.
-
     ICL metrics are required to support caching the model's responses including information on whether model was correct.
     Metrics are also responsible for providing a method for rendering the cached responses as strings.
     This callback then accesses each eval benchmark during eval_end, retrieves the cached results,
@@ -48,15 +46,21 @@ class EvalOutputLogging(Callback):
 
     If subset_sample > 0, then only `subset_sample` of the outputs will be logged.
 
-    output_directory indicates where to write the tsv results, either can be a local directory or a cloud storage directory.
+    Args:
+        subset_sample (int, optional): Number of samples to log. If -1, log all samples. Defaults to -1.
+        output_directory (str, optional): Directory to write the TSV results. Can be a local directory or a cloud storage directory. Defaults to current working directory.
     """
 
     def __init__(self, subset_sample: int = -1, output_directory: Optional[str] = None):
         self.subset_sample = subset_sample
         self.table = {}
-        self.output_directory = output_directory if output_directory else os.getcwd()
+        if output_directory is None:
+            self.output_directory = os.getcwd()
+        else:
+            self.output_directory = output_directory
         self.hash = hashlib.sha256()
         self.destination_file = None
+        self.pandas_imported = False
 
     def _write_tables_to_output_dir(self, state: State):
 
@@ -72,7 +76,8 @@ class EvalOutputLogging(Callback):
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
 
         if not os.path.exists(tmp_dir):
-            with dist.local_rank_zero_download_and_wait(tmp_dir):
+            # Use os.makedirs instead of os.mkdir to create the directory and any necessary parent directories
+            with dist.local_rank_zero_download_and_wait(self.output_directory):
                 if dist.get_local_rank() == 0:
                     os.mkdir(tmp_dir)
 
@@ -100,6 +105,9 @@ class EvalOutputLogging(Callback):
         os.rmdir(tmp_dir)
 
     def _prep_response_cache(self, state, cache):
+        # Prepare the response cache for the current evaluation
+        # This is called before and after the evaluation to reset the cache
+        # if necessary
         benchmark = state.dataloader_label
         for metric in state.eval_metrics[benchmark].values():
             if hasattr(metric, 'reset_response_cache'):
@@ -112,11 +120,13 @@ class EvalOutputLogging(Callback):
     def eval_after_all(self, state: State, logger: Logger) -> None:
         # eval after all runs after all evaluators have completed during eval within training
         #  (either in training or eval)
+        # This writes the TSV file and clears the table
         self._write_tables_to_output_dir(state)
         self.table = {}
 
     def eval_standalone_end(self, state: State, logger: Logger) -> None:
         # eval standalone end runs after all evaluators have completed during a direct call to trainer.eval()
+        # This writes the TSV file and clears the table
         self._write_tables_to_output_dir(state)
         self.table = {}
 
@@ -125,15 +135,20 @@ class EvalOutputLogging(Callback):
         # during each eval, only a single dataloader/benchmark will be active
         assert state.dataloader is not None
         assert isinstance(state.dataloader, DataLoader)
+        # Check if the dataset is an ICL dataset type
         if hasattr(state.dataloader, 'dataset') and isinstance(state.dataloader.dataset, ICLDatasetTypes):
             assert isinstance(state.dataloader.dataset, ICLDatasetTypes)
+            # Get the tokenizer from the dataset
             if hasattr(state.dataloader.dataset, 'tokenizer'):
                 tokenizer = state.dataloader.dataset.tokenizer
                 benchmark = state.dataloader_label
                 assert benchmark is not None
                 assert isinstance(benchmark, str)
+                # Loop through the metrics for the current benchmark
                 for metric_name, metric in state.eval_metrics[benchmark].items():
+                    # Check if the metric has a format_response_cache method
                     if hasattr(metric, 'format_response_cache'):
+                        # Call the format_response_cache method to get the columns and rows
                         assert isinstance(metric.format_response_cache, Callable)
                         format_response_cache: Callable = metric.format_response_cache
                         columns, rows = format_response_cache(tokenizer)
