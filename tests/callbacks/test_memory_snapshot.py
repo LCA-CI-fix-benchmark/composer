@@ -1,15 +1,16 @@
 # Copyright 2022 MosaicML Composer authors
 # SPDX-License-Identifier: Apache-2.0
 
-import pytest
-from torch.utils.data import DataLoader
 import pathlib
 
-from composer.callbacks import MemorySnapshot
-from composer.trainer import Trainer
-from tests.common import RandomClassificationDataset, SimpleModel
-from composer.loggers import LoggerDestination
+import pytest
+from torch.utils.data import DataLoader
+
 from composer import State, Trainer
+from composer.callbacks import MemorySnapshot
+from composer.loggers import LoggerDestination
+from tests.common import RandomClassificationDataset, SimpleModel
+from torch.utils.data import DataLoader
 
 
 class FileUploaderTracker(LoggerDestination):
