@@ -173,6 +173,18 @@ class HuggingFaceModel(ComposerModel):
         if self.peft_filter_state_dict_trainable:
             full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
 
+        # For backwards compatibility, we should also save the tokenizer config
+        if self.tokenizer is not None:
+            tokenizer_state = {
+                'tokenizer_config.json': {
+                    'file_extension': '.json',
+                    'content': self.tokenizer.to_json_string()
+                }
+            }
+            full_state_dict['tokenizer'] = tokenizer_state
+        else:
+            full_state_dict['tokenizer'] = {}
+
         return full_state_dict
 
 
@@ -219,6 +231,7 @@ class HuggingFaceModel(ComposerModel):
                 tokenizer_file_path = Path(tokenizer_save_dir) / tokenizer_file_name
                 if saved_content['file_extension'] == '.json':
                     with open(tokenizer_file_path, 'w', encoding='utf-8') as _f:
+                        # For backwards compatibility, we may need to handle both dict and json string
                         json.dump(saved_content['content'], _f)
                 elif saved_content['file_extension'] == '.txt':
                     with open(tokenizer_file_path, 'w', encoding='utf-8') as _f:
