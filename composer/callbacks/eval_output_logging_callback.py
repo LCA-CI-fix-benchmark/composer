@@ -59,14 +59,13 @@ class EvalOutputLogging(Callback):
         self.destination_file = None
 
     def _write_tables_to_output_dir(self, state: State):
-
-        
         try:
             import pandas as pd
         except ImportError as e:
-            raise MissingConditionalImportError(extra_deps_group='pandas',
-                                                conda_package='pandas',
-                                                conda_channel='conda-forge') from e
+            raise MissingConditionalImportError(
+                extra_deps_group='pandas',
+                conda_package='pandas',
+                conda_channel='conda-forge') from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
@@ -125,7 +124,8 @@ class EvalOutputLogging(Callback):
         # during each eval, only a single dataloader/benchmark will be active
         assert state.dataloader is not None
         assert isinstance(state.dataloader, DataLoader)
-        if hasattr(state.dataloader, 'dataset') and isinstance(state.dataloader.dataset, ICLDatasetTypes):
+        if hasattr(state.dataloader,
+                  'dataset') and isinstance(state.dataloader.dataset, ICLDatasetTypes):
             assert isinstance(state.dataloader.dataset, ICLDatasetTypes)
             if hasattr(state.dataloader.dataset, 'tokenizer'):
                 tokenizer = state.dataloader.dataset.tokenizer
