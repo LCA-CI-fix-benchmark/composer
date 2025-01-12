@@ -76,12 +76,13 @@ class EvalOutputLogging(Callback):
                 if dist.get_local_rank() == 0:
                     os.mkdir(tmp_dir)
 
+        timestamp_str = state.timestamp.batch.to_datetime().isoformat()  # Convert to ISO 8601 string
         full_df = pd.DataFrame()
-        file_name = f'eval-outputs-ba{state.timestamp.batch.value}.tsv'
+        file_name = f'eval-outputs-{timestamp_str}.tsv'
 
         for benchmark in self.table:
             cols, rows = self.table[benchmark]
-            rows = [[e.encode('unicode_escape') if isinstance(e, str) else e for e in row] for row in rows]
+            rows = [[str(e).encode('unicode_escape').decode() if isinstance(e, str) else e for e in row] for row in rows]
             df = pd.DataFrame.from_records(data=rows, columns=cols)
             df['benchmark'] = benchmark
             full_df = pd.concat([full_df, df], ignore_index=True)
