@@ -15,6 +15,7 @@ from composer.callbacks.generate import Generate
 from composer.callbacks.health_checker import HealthChecker
 from composer.callbacks.image_visualizer import ImageVisualizer
 from composer.callbacks.lr_monitor import LRMonitor
+from composer.callbacks.memory_snapshot import MemorySnapshot
 from composer.callbacks.memory_monitor import MemoryMonitor
 from composer.callbacks.mlperf import MLPerfCallback
 from composer.callbacks.nan_monitor import NaNMonitor
