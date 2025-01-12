@@ -33,6 +33,40 @@ from tests.loggers.test_remote_uploader_downloader import DummyObjectStore
 if TYPE_CHECKING:
     from peft import PeftConfig
 
+def _gpt2_peft_config():
+    pytest.importorskip('peft')
+    from peft import get_peft_config
+
+    peft_config = get_peft_config({
+        'peft_type': 'LORA',
+        'task_type': 'CAUSAL_LM',
+        'target_modules': ['c_attn'],
+        'fan_in_fan_out': True,
+    })
+    return peft_config
+
+
+@pytest.fixture
+def gpt2_peft_config():
+    return _gpt2_peft_config()
+
+
+def _mistral_peft_config():
+    pytest.importorskip('peft')
+    from peft import get_peft_config
+
+    peft_config = get_peft_config({
+        'peft_type': 'LORA', 
+        'task_type': 'CAUSAL_LM',
+        'target_modules': ['up_proj'],
+    })
+    return peft_config
+
+
+@pytest.fixture
+def mistral_peft_config():
+    return _mistral_peft_config()
+
 
 def _gpt2_peft_config():
     pytest.importorskip('peft')
