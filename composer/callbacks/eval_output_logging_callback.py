@@ -13,7 +13,10 @@ from typing import Callable, Optional
 from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
-from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
+try:
+    from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
+except ModuleNotFoundError:
+    InContextLearningCodeEvalDataset = None
                                                               InContextLearningLMTaskDataset,
                                                               InContextLearningMultipleChoiceTaskDataset,
                                                               InContextLearningQATaskDataset,
@@ -40,7 +43,7 @@ def _write(destination_path, src_file):
 
 class EvalOutputLogging(Callback):
     """Logs eval outputs for each sample of each ICL evaluation dataset.
-
+     
     ICL metrics are required to support caching the model's responses including information on whether model was correct.
     Metrics are also responsible for providing a method for rendering the cached responses as strings.
     This callback then accesses each eval benchmark during eval_end, retrieves the cached results,
@@ -50,7 +53,7 @@ class EvalOutputLogging(Callback):
 
     output_directory indicates where to write the tsv results, either can be a local directory or a cloud storage directory.
     """
-
+    
     def __init__(self, subset_sample: int = -1, output_directory: Optional[str] = None):
         self.subset_sample = subset_sample
         self.table = {}
@@ -123,7 +126,7 @@ class EvalOutputLogging(Callback):
         # during each eval, only a single dataloader/benchmark will be active
         assert state.dataloader is not None
         assert isinstance(state.dataloader, DataLoader)
-        if hasattr(state.dataloader, 'dataset') and isinstance(state.dataloader.dataset, ICLDatasetTypes):
+        if InContextLearningCodeEvalDataset and hasattr(state.dataloader, 'dataset') and isinstance(state.dataloader.dataset, ICLDatasetTypes): 
             assert isinstance(state.dataloader.dataset, ICLDatasetTypes)
             if hasattr(state.dataloader.dataset, 'tokenizer'):
                 tokenizer = state.dataloader.dataset.tokenizer
