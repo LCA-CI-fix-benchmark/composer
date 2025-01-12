@@ -107,21 +107,20 @@ def test_hf_train_eval_predict(num_classes: int, tiny_bert_config):
     batch_size = 8
 
     train_dataset = RandomTextClassificationDataset(size=size,
+                                                  vocab_size=vocab_size,
+                                                  sequence_length=sequence_length,
+                                                  num_classes=num_classes,
+                                                  use_keys=True)
+    eval_dataset = RandomTextClassificationDataset(size=size,
+                                                 vocab_size=vocab_size,
+                                                 sequence_length=sequence_length,
+                                                 num_classes=num_classes,
+                                                 use_keys=True)
+    predict_dataset = RandomTextClassificationDataset(size=size,
                                                     vocab_size=vocab_size,
                                                     sequence_length=sequence_length,
                                                     num_classes=num_classes,
                                                     use_keys=True)
-    eval_dataset = RandomTextClassificationDataset(size=size,
-                                                   vocab_size=vocab_size,
-                                                   sequence_length=sequence_length,
-                                                   num_classes=num_classes,
-                                                   use_keys=True)
-    predict_dataset = RandomTextClassificationDataset(size=size,
-                                                      vocab_size=vocab_size,
-                                                      sequence_length=sequence_length,
-                                                      num_classes=num_classes,
-                                                      use_keys=True)
-
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, sampler=dist.get_sampler(train_dataset))
     eval_dataloader = DataLoader(eval_dataset, batch_size=batch_size, sampler=dist.get_sampler(eval_dataset))
     predict_dataloader = DataLoader(predict_dataset, batch_size=batch_size)

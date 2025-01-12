@@ -75,7 +75,7 @@ class HuggingFaceModel(ComposerModel):
     def __init__(self,
                  model: Union[transformers.PreTrainedModel, 'PeftModel'],
                  tokenizer: Optional[Union[transformers.PreTrainedTokenizer,
-                                           transformers.PreTrainedTokenizerFast]] = None,
+                                        transformers.PreTrainedTokenizerFast]] = None,
                  use_logits: Optional[bool] = False,
                  metrics: Optional[List[Metric]] = None,
                  eval_metrics: Optional[List[Metric]] = None,
@@ -116,8 +116,8 @@ class HuggingFaceModel(ComposerModel):
             if allow_embedding_resizing:
                 # when the embedding size is smaller than the tokenizer vocab size,
                 # the embeddings should get resized to match the tokenizer vocab size
-                log.warning(f'The number of tokens in the tokenizer is greater than the number of tokens in the model.'
-                            f' This would cause an error during training.'
+                log.warning(f'The number of tokens in the tokenizer is greater than the number of tokens in the model. '
+                          f'This would cause an error during training.'
                             f' Resizing the model embeddings to {len(tokenizer)} from {self.config.vocab_size}.')
                 self.model.resize_token_embeddings(len(tokenizer))
             else:
