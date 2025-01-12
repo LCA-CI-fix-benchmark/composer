@@ -28,8 +28,6 @@ from tests.common.markers import device, world_size
 from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_tokenizer, configure_tiny_gpt2_model,
                                  configure_tiny_gpt2_tokenizer, configure_tiny_mistral_model,
                                  configure_tiny_mistral_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
-from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_tokenizer, configure_tiny_gpt2_model,
-                                 configure_tiny_gpt2_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
 from tests.loggers.test_remote_uploader_downloader import DummyObjectStore
 
 if TYPE_CHECKING:
@@ -292,8 +290,7 @@ def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
     tokenizer2.__dict__.pop('vocab_file', None)
     tokenizer1.__dict__['init_kwargs'].pop('vocab_file', None)
     tokenizer2.__dict__['init_kwargs'].pop('vocab_file', None)
-    tokenizer1.__dict__.pop('special_tokens_map_file', None)
-    tokenizer2.__dict__.pop('special_tokens_map_file', None)
+    tokenizer1.__dict__.pop('special_tokens_map_file', None)2.__dict__.pop('special_tokens_map_file', None)
 
     # The tokenizer name is changed in transformers 4.31 when changing the tokenizer mapping, so we remove it and compare
     # if necessary. Checks whether the names are subsets of each other.
