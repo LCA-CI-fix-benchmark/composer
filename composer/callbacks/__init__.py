@@ -20,10 +20,10 @@ from composer.callbacks.mlperf import MLPerfCallback
 from composer.callbacks.nan_monitor import NaNMonitor
 from composer.callbacks.optimizer_monitor import OptimizerMonitor
 from composer.callbacks.runtime_estimator import RuntimeEstimator
+from composer.callbacks.memory_snapshot import MemorySnapshot
 from composer.callbacks.speed_monitor import SpeedMonitor
 from composer.callbacks.system_metrics_monitor import SystemMetricsMonitor
 from composer.callbacks.threshold_stopper import ThresholdStopper
-from composer.callbacks.memory_snapshot import MemorySnapshot
 
 __all__ = [
     'ActivationMonitor',
