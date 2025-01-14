@@ -66,7 +66,7 @@ class EvalOutputLogging(Callback):
         except ImportError as e:
             raise MissingConditionalImportError(extra_deps_group='pandas',
                                                 conda_package='pandas',
-                                                conda_channel='conda-forge') from e
+                                                conda_channel=None) from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
