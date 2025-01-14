@@ -166,12 +166,16 @@ class HuggingFaceModel(ComposerModel):
             self.model = get_peft_model(self.model, peft_config)
             log.info(f'PEFT model created. {self.model}')
 
-    def state_dict(self, *args, **kwargs) -> Dict[str, Any]:
+    def state_dict(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
         """Returns the state dict of the model."""
         full_state_dict = super().state_dict(*args, **kwargs)
         
         if self.peft_filter_state_dict_trainable:
-            full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
+            full_state_dict = filter_state_dict_peft(
+                full_state_dict,
+                self.model.peft_config[self.model.active_adapter],
+                False
+            )
 
         return full_state_dict
 
