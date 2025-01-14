@@ -48,6 +48,28 @@ def _gpt2_peft_config():
 
 
 @pytest.fixture
+def mistral_peft_config():
+    return _mistral_peft_config()
+
+
+@pytest.mark.parametrize('use_peft', [True, False])
+def test_hf_peft_state_dict_filter(tiny_gpt2_model, gpt2_peft_config, use_peft):
+    if use_peft:
+        with patch.object(tiny_gpt2_model, 'peft_config', new=gpt2_peft_config):
+            model = HuggingFaceModel(tiny_gpt2_model, peft_filter_state_dict_trainable=True)
+    else:
+        model = HuggingFaceModel(tiny_gpt2_model, peft_filter_state_dict_trainable=True)
+    
+    if use_peft:
+        state_dict = model.state_dict()
+        assert set(state_dict['peft_model.base_model.transformer.h.0.attn.c_attn.lora_A.weight'].shape) == {2, 768}
+        assert 'model.transformer.wte.weight' not in state_dict
+    else:
+        with pytest.raises(ValueError):
+            model.state_dict()
+
+
+@pytest.fixture
 def gpt2_peft_config():
     return _gpt2_peft_config()
 
