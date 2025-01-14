@@ -208,12 +208,13 @@ def test_hf_train_eval_predict_regression(tiny_deberta_config):
     assert predictions[0]['logits'].shape == (batch_size,)
 
 
-def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
+def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2, ignore_deprecation_warnings=True):
     """
     WARNING: Parameters are updated within the check so don't call check_hf_tokenizer_equivalence on the same
     params more than once
 
     This is a best effort attempt to compare two tokenizers for equivalence
+    ignore_deprecation_warnings (bool): flag to ignore deprecation warnings when comparing tokenizers
 
     This is not a perfect test, but it should catch most issues. We first check that the vocab is identical
     and that a string is tokenized the same one. Then we compare the __dict__ of the tokenizers, but we remove
@@ -244,8 +245,9 @@ def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
         tokenizer1.__dict__.pop('tokens_trie')
         tokenizer2.__dict__.pop('tokens_trie')
 
-    # extra key that is not important
-    if hasattr(tokenizer1, 'deprecation_warnings') or hasattr(tokenizer2, 'deprecation_warnings'):
+    # extra key that is not important unless we want to check deprecation warnings
+    if ignore_deprecation_warnings and (
+        hasattr(tokenizer1, 'deprecation_warnings') or hasattr(tokenizer2, 'deprecation_warnings')):
         tokenizer1.__dict__.pop('deprecation_warnings')
         tokenizer2.__dict__.pop('deprecation_warnings')
 
@@ -288,6 +290,8 @@ def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
 
     # vocab_file will be the path that the tokenizer was loaded from, which will just be a temporary directory for
     # the reloaded tokenizer, so we remove it and don't compare it between the two tokenizers
+    tokenizer1.__dict__.pop('vocab_files_names', None)  
+    tokenizer2.__dict__.pop('vocab_files_names', None)
     tokenizer1.__dict__.pop('vocab_file', None)
     tokenizer2.__dict__.pop('vocab_file', None)
     tokenizer1.__dict__['init_kwargs'].pop('vocab_file', None)
