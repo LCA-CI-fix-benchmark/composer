@@ -9,7 +9,10 @@ import os
 import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
+from packaging import version
 import torch
+from torch.utils.data import DataLoader, Dataset
+
 import transformers
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
@@ -19,6 +22,11 @@ from composer.core.data_spec import _default_split_batch, _split_list
 from composer.utils import MissingConditionalImportError, dist, get_file
 
 if TYPE_CHECKING:
+    try:
+        import transformers 
+    except ImportError:
+        pass
+
     import transformers
 
 # Allow models to have slightly more tokens than were used in the most verbose CoT in the dataset
@@ -161,7 +169,11 @@ class InContextLearningQATaskDataset(Dataset):
                                                 conda_package='datasets',
                                                 conda_channel='conda-forge') from e
         with dist.local_rank_zero_download_and_wait(destination_path):
-            if dist.get_local_rank() == 0:
+            if version.parse(transformers.__version__) >= version.parse("4.25.0"):
+                if dist.get_local_rank() == 0:
+                    get_file(dataset_uri, destination_path, overwrite=True)
+            else:
+                dist.barrier()
                 get_file(dataset_uri, destination_path, overwrite=True)
         dataset = load_dataset('json', data_files=destination_path, split='train', streaming=False)
 
