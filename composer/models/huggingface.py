@@ -112,6 +112,12 @@ class HuggingFaceModel(ComposerModel):
             log.warning(
                 'The tokenizer was not provided. This means the tokenizer config will not be saved in the checkpoint.')
 
+        if tokenizer is None and ('kwargs' in self.config.__dict__ and 'use_auth_token' in self.config.kwargs):
+            # In transformers v4.28+, use_auth_token is required to resize embeddings.
+            # If not provided, resize_token_embeddings() raises an error.
+            # Set a dummy auth token to avoid this.
+            self.config.kwargs['use_auth_token'] = True
+
         if tokenizer is not None and self.config.vocab_size < len(tokenizer):
             if allow_embedding_resizing:
                 # when the embedding size is smaller than the tokenizer vocab size,

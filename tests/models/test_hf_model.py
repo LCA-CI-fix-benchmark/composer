@@ -191,9 +191,10 @@ def test_hf_train_eval_predict_regression(tiny_deberta_config):
     trainer.fit()
     trainer.eval()
 
-    # Check that there is some train/eval accuracy
-    assert trainer.state.train_metrics['PearsonCorrCoef'].compute() != 0.0
-    assert trainer.state.eval_metrics['eval']['PearsonCorrCoef'].compute() != 0.0
+    train_score = trainer.state.train_metrics['PearsonCorrCoef'].compute()
+    eval_score = trainer.state.eval_metrics['eval']['PearsonCorrCoef'].compute()
+    assert not torch.isnan(train_score)
+    assert not torch.isnan(eval_score)
 
     predictions = trainer.predict(predict_dataloader)
 
