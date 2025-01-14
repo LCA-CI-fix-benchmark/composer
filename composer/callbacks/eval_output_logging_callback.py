@@ -13,6 +13,12 @@ from typing import Callable, Optional
 from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
+try:
+    import transformers
+except ImportError as e:
+    raise MissingConditionalImportError(extra_deps_group='nlp',
+                                        conda_package='transformers',
+                                        conda_channel='conda-forge') from e
 from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
                                                               InContextLearningLMTaskDataset,
                                                               InContextLearningMultipleChoiceTaskDataset,
