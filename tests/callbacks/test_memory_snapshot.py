@@ -17,7 +17,7 @@ class FileUploaderTracker(LoggerDestination):
     def __init__(self) -> None:
         self.uploaded_files = []
 
-    def upload_file(self, state: State, remote_file_name: str, file_path: pathlib.Path, *, overwrite: bool):
+    def post_file(self, state: State, log_name: str, file_path: pathlib.Path, overwrite: bool = False):
         del state, overwrite  # unused
         self.uploaded_files.append((remote_file_name, file_path))
 
@@ -40,5 +40,5 @@ def test_memory_snapshot(interval: str, tmp_path: pathlib.Path):
         train_dataloader=DataLoader(RandomClassificationDataset()),
         max_duration='10ba',
     )
-    trainer.fit()
+    trainer.run()
     assert len(file_tracker_destination.uploaded_files) == 1
