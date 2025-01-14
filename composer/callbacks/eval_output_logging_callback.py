@@ -60,7 +60,6 @@ class EvalOutputLogging(Callback):
 
     def _write_tables_to_output_dir(self, state: State):
 
-        
         try:
             import pandas as pd
         except ImportError as e:
@@ -68,6 +67,7 @@ class EvalOutputLogging(Callback):
                                                 conda_package='pandas',
                                                 conda_channel='conda-forge') from e
         # write tmp files
+
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
 
