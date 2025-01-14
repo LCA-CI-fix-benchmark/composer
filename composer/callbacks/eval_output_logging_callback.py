@@ -59,14 +59,12 @@ class EvalOutputLogging(Callback):
         self.destination_file = None
 
     def _write_tables_to_output_dir(self, state: State):
-
-        
         try:
             import pandas as pd
         except ImportError as e:
             raise MissingConditionalImportError(extra_deps_group='pandas',
-                                                conda_package='pandas',
-                                                conda_channel='conda-forge') from e
+                                              conda_package='pandas',
+                                              conda_channel='conda-forge') from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
@@ -142,7 +140,8 @@ class EvalOutputLogging(Callback):
                             if self.subset_sample > 0:
                                 rows = random.sample(rows, min(len(rows), self.subset_sample))
                             for destination in logger.destinations:
-                                if not isinstance(destination, ConsoleLogger):
+                                if not isinstance(destination,
+                                               ConsoleLogger):
                                     # don't log to console because it will pollute the console too much
                                     destination.log_table(columns, rows, f'icl_outputs/{benchmark}/{metric_name}')
 
