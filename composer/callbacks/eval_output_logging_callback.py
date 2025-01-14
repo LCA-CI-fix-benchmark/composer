@@ -54,6 +54,12 @@ class EvalOutputLogging(Callback):
     def __init__(self, subset_sample: int = -1, output_directory: Optional[str] = None):
         self.subset_sample = subset_sample
         self.table = {}
+        try:
+            import transformers
+        except ImportError as e:
+            raise MissingConditionalImportError(extra_deps_group='nlp',
+                                                conda_package='transformers',
+                                                conda_channel='conda-forge') from e
         self.output_directory = output_directory if output_directory else os.getcwd()
         self.hash = hashlib.sha256()
         self.destination_file = None
