@@ -43,5 +43,4 @@ __all__ = [
     'SystemMetricsMonitor',
     'Generate',
     'FreeOutputs',
-    'MemorySnapshot',
 ]
