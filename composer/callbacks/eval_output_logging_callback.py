@@ -63,7 +63,7 @@ class EvalOutputLogging(Callback):
         
         try:
             import pandas as pd
-        except ImportError as e:
+        except ImportError as e:  # pragma: no cover
             raise MissingConditionalImportError(extra_deps_group='pandas',
                                                 conda_package='pandas',
                                                 conda_channel='conda-forge') from e
@@ -72,7 +72,7 @@ class EvalOutputLogging(Callback):
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
 
         if not os.path.exists(tmp_dir):
-            with dist.local_rank_zero_download_and_wait(tmp_dir):
+            with dist.local_rank_zero_download_and_wait(tmp_dir):  # pragma: no cover
                 if dist.get_local_rank() == 0:
                     os.mkdir(tmp_dir)
 
