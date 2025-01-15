@@ -49,8 +49,8 @@ class HuggingFaceModel(ComposerModel):
         tokenizer (transformers.PreTrainedTokenizer, optional): The tokenizer used to prepare the dataset. Default ``None``.
 
             .. note:: If the tokenizer is provided, its config will be saved in the composer checkpoint, and it can be reloaded
-                using :meth:`HuggingFaceModel.hf_from_composer_checkpoint`. If the tokenizer is not provided here, it will not be saved in the composer checkpoint.
-        use_logits (bool, optional): If True, the model's output logits will be used to calculate validation metrics. Else, metrics will be inferred from the HuggingFaceModel directly. Default: ``False``
+                using :meth:`HuggingFaceModel.hf_from_composer_checkpoint`. If the tokenizer is not provided here, it will not be saved in the composer checkpoint. 
+        use_logits (bool, optional): If True, the model's output logits will be used to calculate validation metrics. Default: ``False``
         metrics (list[Metric], optional): list of torchmetrics to apply to the output of `eval_forward` during training. If ``eval_metrics`` is ``None``, these will also be used as ``eval_metrics``.  Default: ``None``.
         eval_metrics (list[Metric], optional): list of torchmetrics to compute on the eval_dataloader, or be accessible to :class:`Evaluator`s. Default: ``None``.
         shift_labels (bool, optional): If True, the batch's labels will be shifted before being used to calculate metrics. This should be set to true for CausalLM models and false otherwise. If not specified, `shift_labels` will be set automatically based on the model class name. Default: ``None``.
@@ -91,7 +91,7 @@ class HuggingFaceModel(ComposerModel):
                                                 conda_package='transformers',
                                                 conda_channel='conda-forge') from e
 
-        super().__init__()
+        super().__init__() 
         self.model = model
         self.config: PretrainedConfig = model.config
         self.model_forward_args = inspect.getfullargspec(self.model.forward).args
@@ -114,7 +114,7 @@ class HuggingFaceModel(ComposerModel):
 
         if tokenizer is not None and self.config.vocab_size < len(tokenizer):
             if allow_embedding_resizing:
-                # when the embedding size is smaller than the tokenizer vocab size,
+                # When the embedding size is smaller than the tokenizer vocab size,
                 # the embeddings should get resized to match the tokenizer vocab size
                 log.warning(f'The number of tokens in the tokenizer is greater than the number of tokens in the model.'
                             f' This would cause an error during training.'
