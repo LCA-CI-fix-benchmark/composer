@@ -98,6 +98,8 @@ class EvalOutputLogging(Callback):
 
         # delete tmp files
         os.rmdir(tmp_dir)
+        # Added an import statement
+        import os
 
     def _prep_response_cache(self, state, cache):
         benchmark = state.dataloader_label
