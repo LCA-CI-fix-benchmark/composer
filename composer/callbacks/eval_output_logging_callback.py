@@ -14,17 +14,22 @@ from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
 from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
-                                                              InContextLearningLMTaskDataset,
-                                                              InContextLearningMultipleChoiceTaskDataset,
-                                                              InContextLearningQATaskDataset,
-                                                              InContextLearningSchemaTaskDataset)
+                                                           InContextLearningLMTaskDataset,
+                                                           InContextLearningMultipleChoiceTaskDataset,
+                                                           InContextLearningQATaskDataset,
+                                                           InContextLearningSchemaTaskDataset)
 from composer.loggers import Logger
 from composer.loggers.console_logger import ConsoleLogger
-from composer.utils import MissingConditionalImportError, dist, maybe_create_object_store_from_uri, parse_uri
+from composer.utils import (MissingConditionalImportError, dist,
+                          maybe_create_object_store_from_uri, parse_uri)
 
-ICLDatasetTypes = (InContextLearningLMTaskDataset, InContextLearningQATaskDataset,
-                   InContextLearningMultipleChoiceTaskDataset, InContextLearningSchemaTaskDataset,
-                   InContextLearningCodeEvalDataset)
+ICLDatasetTypes = (
+    InContextLearningLMTaskDataset,
+    InContextLearningQATaskDataset,
+    InContextLearningMultipleChoiceTaskDataset,
+    InContextLearningSchemaTaskDataset,
+    InContextLearningCodeEvalDataset,
+)
 
 
 def _write(destination_path, src_file):
@@ -59,13 +64,11 @@ class EvalOutputLogging(Callback):
         self.destination_file = None
 
     def _write_tables_to_output_dir(self, state: State):
-
-        
         try:
             import pandas as pd
         except ImportError as e:
             raise MissingConditionalImportError(extra_deps_group='pandas',
-                                                conda_package='pandas',
+                                              conda_package='pandas',
                                                 conda_channel='conda-forge') from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
@@ -77,7 +80,8 @@ class EvalOutputLogging(Callback):
                     os.mkdir(tmp_dir)
 
         full_df = pd.DataFrame()
-        file_name = f'eval-outputs-ba{state.timestamp.batch.value}.tsv'
+        file_name = (
+            f'eval-outputs-ba{state.timestamp.batch.value}.tsv')
 
         for benchmark in self.table:
             cols, rows = self.table[benchmark]
@@ -143,8 +147,10 @@ class EvalOutputLogging(Callback):
                                 rows = random.sample(rows, min(len(rows), self.subset_sample))
                             for destination in logger.destinations:
                                 if not isinstance(destination, ConsoleLogger):
-                                    # don't log to console because it will pollute the console too much
-                                    destination.log_table(columns, rows, f'icl_outputs/{benchmark}/{metric_name}')
+                                    # don't log to console because it will pollute
+                                    # the console too much
+                                    destination.log_table(
+                                        columns, rows, f'icl_outputs/{benchmark}/{metric_name}')
 
                             self.table[f'{benchmark}_{metric_name}'] = (columns, rows)
         self._prep_response_cache(state, False)
