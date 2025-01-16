@@ -19,9 +19,11 @@ from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Tuple, Typ
 import torch
 from torchmetrics import Metric
 
-from composer.metrics import InContextLearningMetric, InContextLearningQAAccuracy
+from composer.metrics import (InContextLearningMetric,
+                               InContextLearningQAAccuracy)
 from composer.models.base import ComposerModel
-from composer.utils import MissingConditionalImportError, dist, get_file, import_object, is_model_fsdp, safe_torch_load
+from composer.utils import (MissingConditionalImportError, dist, get_file,
+                             import_object, is_model_fsdp, safe_torch_load)
 
 try:
     from peft import get_peft_model
@@ -67,8 +69,10 @@ class HuggingFaceModel(ComposerModel):
         import transformers
         from composer.models import HuggingFaceModel
 
-        hf_model = transformers.AutoModelForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=2)
-        hf_tokenizer = transformers.AutoTokenizer.from_pretrained('bert-base-uncased')
+        hf_model = transformers.AutoModelForSequenceClassification.from_pretrained(
+            'bert-base-uncased', num_labels=2)
+        hf_tokenizer = transformers.AutoTokenizer.from_pretrained(
+            'bert-base-uncased')
         model = HuggingFaceModel(hf_model, hf_tokenizer)
     """
 
