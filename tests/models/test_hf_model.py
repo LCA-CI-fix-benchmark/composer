@@ -18,18 +18,21 @@ from torchmetrics import Metric
 from torchmetrics.classification import MulticlassAccuracy
 from torchmetrics.regression import PearsonCorrCoef
 
+import transformers
+
 from composer.loggers import InMemoryLogger
 from composer.metrics import InContextLearningLMAccuracy, LanguageCrossEntropy, MaskedAccuracy
 from composer.models import HuggingFaceModel
 from composer.trainer import Trainer
 from composer.utils import dist, is_model_fsdp
-from tests.common.datasets import RandomTextClassificationDataset, RandomTextLMDataset, RandomTextRegressionDataset
+from tests.common.datasets import (RandomTextClassificationDataset, RandomTextLMDataset,
+                                 RandomTextRegressionDataset)
 from tests.common.markers import device, world_size
 from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_tokenizer, configure_tiny_gpt2_model,
-                                 configure_tiny_gpt2_tokenizer, configure_tiny_mistral_model,
-                                 configure_tiny_mistral_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
+                               configure_tiny_gpt2_tokenizer, configure_tiny_mistral_model,
+                               configure_tiny_mistral_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
 from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_tokenizer, configure_tiny_gpt2_model,
-                                 configure_tiny_gpt2_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
+                               configure_tiny_gpt2_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
 from tests.loggers.test_remote_uploader_downloader import DummyObjectStore
 
 if TYPE_CHECKING:
@@ -232,7 +235,7 @@ def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
     # we remove the actual _tokenizer object because it is an instantiated object and so does not pass equality
     # the tokenizers are not usable below these pops
     if hasattr(tokenizer1, '_tokenizer') or hasattr(tokenizer2, '_tokenizer'):
-        tokenizer1.__dict__.pop('_tokenizer')
+        tokenizer2.__dict__.pop('special_tokens_map_file', None)1.__dict__.pop('_tokenizer')
         tokenizer2.__dict__.pop('_tokenizer')
 
     # we remove a couple more objects because they are instantiated objects and so do not pass equality
