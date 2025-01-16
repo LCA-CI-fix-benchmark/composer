@@ -104,16 +104,19 @@ class EvalOutputLogging(Callback):
                 metric.reset_response_cache(cache)
 
     def eval_start(self, state: State, logger: Logger) -> None:
+        self.retry_count = 0
         # eval start runs before each benchmark's evaluator (either in training or eval)
         self._prep_response_cache(state, True)
 
     def eval_after_all(self, state: State, logger: Logger) -> None:
+        self.retry_count = 0
         # eval after all runs after all evaluators have completed during eval within training
         #  (either in training or eval)
         self._write_tables_to_output_dir(state)
         self.table = {}
 
     def eval_standalone_end(self, state: State, logger: Logger) -> None:
+        self.retry_count = 0
         # eval standalone end runs after all evaluators have completed during a direct call to trainer.eval()
         self._write_tables_to_output_dir(state)
         self.table = {}
@@ -146,3 +149,34 @@ class EvalOutputLogging(Callback):
 
                             self.table[f'{benchmark}_{metric_name}'] = (columns, rows)
         self._prep_response_cache(state, False)
+
+    def retry(self):
+        self.retry_count += 1
+
+    def eval_end(self, state: State, logger: Logger) -> None:
+        if self.retry_count < 3:
+            # eval start runs after each benchmark's evaluator
+            # during each eval, only a single dataloader/benchmark will be active
+            assert state.dataloader is not None
+            assert isinstance(state.dataloader, DataLoader)
+            if hasattr(state.dataloader, 'dataset') and isinstance(state.dataloader.dataset, ICLDatasetTypes):
+                assert isinstance(state.dataloader.dataset, ICLDatasetTypes)
+                benchmark = state.dataloader_label
+                assert benchmark is not None
+                assert isinstance(benchmark, str)
+                for metric_name, metric in state.eval_metrics[benchmark].items():
+                    if hasattr(metric, 'format_response_cache'):
+                        assert isinstance(metric.format_response_cache, Callable)
+                        format_response_cache: Callable = metric.format_response_cache
+                        columns, rows = format_response_cache(state.dataloader.device)
+                        if columns is not None and rows is not None:
+                            if self.subset_sample > 0:
+                                rows = random.sample(rows, min(len(rows), self.subset_sample))
+                            for destination in logger.destinations:
+                                if not isinstance(destination, ConsoleLogger):
+                                    destination.log_table(columns, rows, f'icl_outputs/{benchmark}/{metric_name}')
+                                    self.retry()
+                            else:
+                                destination.log_table(columns, rows, f'icl_outputs/{benchmark}/{metric_name} (failed after 3 retries)')
+                            self.table[f'{benchmark}_{metric_name}'] = (columns, rows)
+                    self._prep_response_cache(state, False)
