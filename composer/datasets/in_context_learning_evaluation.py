@@ -10,13 +10,20 @@ import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch
-import transformers
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
 from composer.core import DataSpec
 from composer.core.data_spec import _default_split_batch, _split_list
 from composer.utils import MissingConditionalImportError, dist, get_file
+
+try:
+    import transformers
+except ImportError as e:
+    raise MissingConditionalImportError(
+        extra_deps_group='transformers',
+        conda_package='transformers',
+        conda_channel='conda-forge') from e
 
 if TYPE_CHECKING:
     import transformers
