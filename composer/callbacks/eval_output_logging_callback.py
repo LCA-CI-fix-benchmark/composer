@@ -60,14 +60,12 @@ class EvalOutputLogging(Callback):
 
     def _write_tables_to_output_dir(self, state: State):
 
-        
         try:
             import pandas as pd
         except ImportError as e:
             raise MissingConditionalImportError(extra_deps_group='pandas',
                                                 conda_package='pandas',
                                                 conda_channel='conda-forge') from e
-        # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
 
@@ -91,12 +89,10 @@ class EvalOutputLogging(Callback):
                 with open(f'{tmp_dir}/{file_name}', 'wb') as f:
                     full_df.to_csv(f, sep='\t', index=False)
 
-        # copy/upload tmp files
         _write(destination_path=f'{self.output_directory}/{file_name}', src_file=f'{tmp_dir}/{file_name}')
         os.remove(f'{tmp_dir}/{file_name}')
         self.destination_file = f'{self.output_directory}/{file_name}'
 
-        # delete tmp files
         os.rmdir(tmp_dir)
 
     def _prep_response_cache(self, state, cache):
