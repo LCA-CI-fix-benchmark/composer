@@ -110,15 +110,18 @@ class HuggingFaceModel(ComposerModel):
 
         if self.tokenizer is None:
             log.warning(
-                'The tokenizer was not provided. This means the tokenizer config will not be saved in the checkpoint.')
+                'The tokenizer was not provided. This means the tokenizer config will not be saved in the checkpoint.'
+            )
 
         if tokenizer is not None and self.config.vocab_size < len(tokenizer):
             if allow_embedding_resizing:
                 # when the embedding size is smaller than the tokenizer vocab size,
                 # the embeddings should get resized to match the tokenizer vocab size
-                log.warning(f'The number of tokens in the tokenizer is greater than the number of tokens in the model.'
-                            f' This would cause an error during training.'
-                            f' Resizing the model embeddings to {len(tokenizer)} from {self.config.vocab_size}.')
+                log.warning(
+                    f'The number of tokens in the tokenizer is greater than the number of tokens in the model.'
+                    f' This would cause an error during training.'
+                    f' Resizing the model embeddings to {len(tokenizer)} from {self.config.vocab_size}.'
+                )
                 self.model.resize_token_embeddings(len(tokenizer))
             else:
                 raise ValueError(
@@ -169,9 +172,13 @@ class HuggingFaceModel(ComposerModel):
     def state_dict(self, *args, **kwargs) -> Dict[str, Any]:
         """Returns the state dict of the model."""
         full_state_dict = super().state_dict(*args, **kwargs)
-        
+
         if self.peft_filter_state_dict_trainable:
-            full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
+            full_state_dict = filter_state_dict_peft(
+                full_state_dict,
+                self.model.peft_config[self.model.active_adapter],
+                False
+            )
 
         return full_state_dict
 
