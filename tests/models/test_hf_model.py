@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 import copy
 import json
-import os
 import tempfile
 from contextlib import nullcontext
 from pathlib import Path
@@ -25,12 +24,11 @@ from composer.trainer import Trainer
 from composer.utils import dist, is_model_fsdp
 from tests.common.datasets import RandomTextClassificationDataset, RandomTextLMDataset, RandomTextRegressionDataset
 from tests.common.markers import device, world_size
-from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_tokenizer, configure_tiny_gpt2_model,
-                                 configure_tiny_gpt2_tokenizer, configure_tiny_mistral_model,
-                                 configure_tiny_mistral_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
-from tests.common.models import (configure_tiny_bert_model, configure_tiny_bert_tokenizer, configure_tiny_gpt2_model,
-                                 configure_tiny_gpt2_tokenizer, configure_tiny_t5_model, configure_tiny_t5_tokenizer)
-from tests.loggers.test_remote_uploader_downloader import DummyObjectStore
+from tests.common.models import (
+    configure_tiny_bert_model, configure_tiny_bert_tokenizer, configure_tiny_gpt2_model,
+    configure_tiny_gpt2_tokenizer, configure_tiny_mistral_model, configure_tiny_mistral_tokenizer,
+    configure_tiny_t5_model, configure_tiny_t5_tokenizer
+)
 
 if TYPE_CHECKING:
     from peft import PeftConfig
