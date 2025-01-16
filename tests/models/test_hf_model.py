@@ -261,6 +261,10 @@ def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
         assert model_max_length_1 == model_max_length_2
     tokenizer1.__dict__['init_kwargs'].pop('model_max_length', None)
     tokenizer2.__dict__['init_kwargs'].pop('model_max_length', None)
+    def test_hf_retry_limit():
+        tokenizer = HuggingFaceModel.tokenizer
+        assert tokenizer.retry_limit == 3
+        assert tokenizer.retry_attempts == 0
 
     spaces_1 = tokenizer1.init_kwargs.get('clean_up_tokenization_spaces', None)
     spaces_2 = tokenizer2.init_kwargs.get('clean_up_tokenization_spaces', None)
