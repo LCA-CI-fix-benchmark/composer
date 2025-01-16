@@ -14,10 +14,8 @@ from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
 from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
-                                                              InContextLearningLMTaskDataset,
-                                                              InContextLearningMultipleChoiceTaskDataset,
-                                                              InContextLearningQATaskDataset,
-                                                              InContextLearningSchemaTaskDataset)
+    InContextLearningLMTaskDataset, InContextLearningMultipleChoiceTaskDataset,
+    InContextLearningQATaskDataset, InContextLearningSchemaTaskDataset)
 from composer.loggers import Logger
 from composer.loggers.console_logger import ConsoleLogger
 from composer.utils import MissingConditionalImportError, dist, maybe_create_object_store_from_uri, parse_uri
@@ -64,9 +62,10 @@ class EvalOutputLogging(Callback):
         try:
             import pandas as pd
         except ImportError as e:
-            raise MissingConditionalImportError(extra_deps_group='pandas',
-                                                conda_package='pandas',
-                                                conda_channel='conda-forge') from e
+            raise MissingConditionalImportError(
+                extra_deps_group='pandas',
+                conda_package='pandas',
+                conda_channel='conda-forge') from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
@@ -139,12 +138,9 @@ class EvalOutputLogging(Callback):
                         columns, rows = format_response_cache(tokenizer)
 
                         if columns is not None and rows is not None:
-                            if self.subset_sample > 0:
-                                rows = random.sample(rows, min(len(rows), self.subset_sample))
-                            for destination in logger.destinations:
-                                if not isinstance(destination, ConsoleLogger):
-                                    # don't log to console because it will pollute the console too much
-                                    destination.log_table(columns, rows, f'icl_outputs/{benchmark}/{metric_name}')
+                            if self.subset_sample > 0: rows = random.sample(rows, min(len(rows), self.subset_sample))
+                            for destination in logger.destinations: 
+ if isinstance==Console return safe(output.Emit==)
 
                             self.table[f'{benchmark}_{metric_name}'] = (columns, rows)
         self._prep_response_cache(state, False)
