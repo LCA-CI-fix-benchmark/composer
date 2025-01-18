@@ -167,6 +167,83 @@ class HuggingFaceModel(ComposerModel):
             log.info(f'PEFT model created. {self.model}')
 
     def state_dict(self, *args, **kwargs) -> Dict[str, Any]:
+        full_state_dict = super().state_dict(*args, **kwargs)
+        if self.peft_filter_state_dict_trainable:
+            full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
+
+        return full_state_dict
+
+    @staticmethod
+    def load_huggingface_tokenizer_from_saved_state(
+            hf_state: Dict[str, Any],
+            trust_remote_code: bool = False,
+            tokenizer_save_dir: Optional[str] = None) -> Optional[transformers.PreTrainedTokenizer]:
+        """A helper function that loads a HuggingFace tokenizer from a loaded in hf state.
+        
+        Args:
+            hf_state (Dict[str, Any]): HF state loaded from a Composer checkpoint.
+            trust_remote_code (bool, optional): Whether to trust the remote code when loading the tokenizer. Defaults to False.
+            tokenizer_save_dir (Optional[str], optional): If specified, where to save the tokenizer files to locally. If not specified,
+                a folder with a unique suffix will be saved in the current working directory. Defaults to None.
+
+        Returns:
+            Optional[transformers.PreTrainedTokenizer]: The loaded HuggingFace tokenizer
+        """
+        try:
+            import transformers
+        except ImportError as e:
+            raise MissingConditionalImportError(extra_deps_group='nlp',
+                                                conda_package='transformers',
+                                                conda_channel='conda-forge') from e
+        hf_tokenizer = None
+        hf_tokenizer_state = hf_state['tokenizer']
+        if hf_tokenizer_state != {}:
+            if tokenizer_save_dir is None:
+                unique_suffix = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+                tokenizer_save_dir = os.path.join(os.getcwd(), f'tokenizer-save-dir-{unique_suffix}')
+            os.makedirs(tokenizer_save_dir, exist_ok=True)
+            for filename, saved_content in hf_tokenizer_state.items():
+                # This cannot be a temporary directory because huggingface relies on the slow tokenizer file
+                # being persistent on disk
+                # For backwards compatibility, check if the filename already has the file extension
+                if filename.endswith(saved_content['file_extension']):
+                    tokenizer_file_name = filename
+                else:
+                    tokenizer_file_name = filename + saved_content['file_extension']
+                tokenizer_file_path = Path(tokenizer_save_dir) / tokenizer_file_name
+                if saved_content['file_extension'] == '.json':
+                    with open(tokenizer_file_path, 'w', encoding='utf-8') as _f:
+                        json.dump(saved_content['content'], _f)
+                elif saved_content['file_extension'] == '.txt':
+                    with open(tokenizer_file_path, 'w', encoding='utf-8') as _f:
+                        for line in saved_content['content']:
+                            _f.write(line)
+                            _f.write('\n')
+                elif saved_content['file_extension'] == '.py':
+                    with open(tokenizer_file_path, 'w', encoding='utf-8') as _f:
+                        _f.write(saved_content['content'])
+                elif saved_content['file_extension'] == '.model':
+                    try:
+                        import sentencepiece as spm
+                    except ImportError as e:
+                        raise MissingConditionalImportError(extra_deps_group='sentencepiece',
+                                                            conda_package='sentencepiece') from e
+                    s = spm.SentencePieceProcessor()
+                    s.load_from_serialized_proto(saved_content['content'])
+                    with open(tokenizer_file_path, 'wb') as _f:
+                        _f.write(s.serialized_model_proto())
+            hf_tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_save_dir,
+                                                                      trust_remote_code=trust_remote_code)
+            # we need to set the name_or_path back because otherwise it is the tmp dir we are loading from here
+            # For backwards compatibility we try both the old and new key
+            tokenizer_config_key = 'tokenizer_config.json' if 'tokenizer_config.json' in hf_tokenizer_state else 'tokenizer_config'
+            hf_tokenizer.name_or_path = hf_tokenizer_state[tokenizer_config_key]['content'].get('name_or_path', '')
+            hf_tokenizer.init_kwargs['name_or_path'] = hf_tokenizer.name_or_path
+            # for an unknown reason this key is missing when loading the saved tokenizer, but present with a value of None
+            # for the original tokenizer, so we default it to None
+            hf_tokenizer.init_kwargs['tokenizer_file'] = hf_tokenizer.init_kwargs.get('tokenizer_file', None)
+
+        return hf_tokenizer
         """Returns the state dict of the model."""
         full_state_dict = super().state_dict(*args, **kwargs)
         
