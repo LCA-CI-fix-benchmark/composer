@@ -1,5 +1,12 @@
-# Copyright 2022 MosaicML Composer authors
-# SPDX-License-Identifier: Apache-2.0
+title: Tests Failed After New Commit
+
+## Overview
+A recent commit caused one or more tests to fail in the repository. We need to investigate the relevant logs, determine the problem, and propose a fix.
+
+## Relevant Logs
+Below is a focused snippet of the CI logs surrounding the failure:
+
+
 
 """Log model outputs and expected outputs during ICL evaluation."""
 
