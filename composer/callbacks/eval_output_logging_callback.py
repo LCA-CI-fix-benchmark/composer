@@ -13,11 +13,13 @@ from typing import Callable, Optional
 from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
-from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
-                                                              InContextLearningLMTaskDataset,
-                                                              InContextLearningMultipleChoiceTaskDataset,
-                                                              InContextLearningQATaskDataset,
-                                                              InContextLearningSchemaTaskDataset)
+from composer.datasets.in_context_learning_evaluation import (
+    InContextLearningCodeEvalDataset,
+    InContextLearningLMTaskDataset,
+    InContextLearningMultipleChoiceTaskDataset,
+    InContextLearningQATaskDataset,
+    InContextLearningSchemaTaskDataset,
+)
 from composer.loggers import Logger
 from composer.loggers.console_logger import ConsoleLogger
 from composer.utils import MissingConditionalImportError, dist, maybe_create_object_store_from_uri, parse_uri
@@ -25,7 +27,6 @@ from composer.utils import MissingConditionalImportError, dist, maybe_create_obj
 ICLDatasetTypes = (InContextLearningLMTaskDataset, InContextLearningQATaskDataset,
                    InContextLearningMultipleChoiceTaskDataset, InContextLearningSchemaTaskDataset,
                    InContextLearningCodeEvalDataset)
-
 
 def _write(destination_path, src_file):
     obj_store = maybe_create_object_store_from_uri(destination_path)
@@ -60,13 +61,12 @@ class EvalOutputLogging(Callback):
 
     def _write_tables_to_output_dir(self, state: State):
 
-        
         try:
             import pandas as pd
         except ImportError as e:
             raise MissingConditionalImportError(extra_deps_group='pandas',
-                                                conda_package='pandas',
-                                                conda_channel='conda-forge') from e
+                                              conda_package='pandas',
+                                              conda_channel='conda-forge') from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
