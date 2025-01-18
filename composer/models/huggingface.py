@@ -75,7 +75,7 @@ class HuggingFaceModel(ComposerModel):
     def __init__(self,
                  model: Union[transformers.PreTrainedModel, 'PeftModel'],
                  tokenizer: Optional[Union[transformers.PreTrainedTokenizer,
-                                           transformers.PreTrainedTokenizerFast]] = None,
+                                        transformers.PreTrainedTokenizerFast]] = None,
                  use_logits: Optional[bool] = False,
                  metrics: Optional[List[Metric]] = None,
                  eval_metrics: Optional[List[Metric]] = None,
@@ -88,7 +88,7 @@ class HuggingFaceModel(ComposerModel):
             del transformers  # unused
         except ImportError as e:
             raise MissingConditionalImportError(extra_deps_group='nlp',
-                                                conda_package='transformers',
+                                              conda_package='transformers',
                                                 conda_channel='conda-forge') from e
 
         super().__init__()
@@ -100,8 +100,8 @@ class HuggingFaceModel(ComposerModel):
         self.peft_filter_state_dict_trainable = peft_filter_state_dict_trainable
         if peft_config is not None:
             if not _peft_installed:
-                raise MissingConditionalImportError(extra_deps_group='peft',
-                                                    conda_package='peft',
+                raise MissingConditionalImportError(extra_deps_group='peft', 
+                                                    conda_package='peft', 
                                                     conda_channel='conda-forge')
 
         if peft_config is not None and peft_config.peft_type != 'LORA':
@@ -115,8 +115,8 @@ class HuggingFaceModel(ComposerModel):
         if tokenizer is not None and self.config.vocab_size < len(tokenizer):
             if allow_embedding_resizing:
                 # when the embedding size is smaller than the tokenizer vocab size,
-                # the embeddings should get resized to match the tokenizer vocab size
-                log.warning(f'The number of tokens in the tokenizer is greater than the number of tokens in the model.'
+                # the embeddings should get resized to match the tokenizer vocab size 
+                log.warning(f'The number of tokens in the tokenizer is greater than the number of tokens in the model.' 
                             f' This would cause an error during training.'
                             f' Resizing the model embeddings to {len(tokenizer)} from {self.config.vocab_size}.')
                 self.model.resize_token_embeddings(len(tokenizer))
@@ -172,7 +172,7 @@ class HuggingFaceModel(ComposerModel):
         
         if self.peft_filter_state_dict_trainable:
             full_state_dict = filter_state_dict_peft(full_state_dict, self.model.peft_config[self.model.active_adapter], False)
-
+            
         return full_state_dict
 
 
