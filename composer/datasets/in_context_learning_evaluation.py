@@ -7,12 +7,15 @@ from __future__ import annotations
 import json
 import os
 import random
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, TYPE_CHECKING
 
 import torch
-import transformers
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+try:
+    import transformers
+except ImportError:
+    transformers = None
 
 from composer.core import DataSpec
 from composer.core.data_spec import _default_split_batch, _split_list
@@ -152,6 +155,11 @@ class InContextLearningQATaskDataset(Dataset):
         destination_path: str,
         question_prelimiter: str,
         fewshot_random_seed: int,
+    ):
+        if transformers is None:
+            raise MissingConditionalImportError(
+                extra_deps_group='nlp',
+                conda_package='transformers')
         cot_delimiter: str = '',
     ):
         try:
