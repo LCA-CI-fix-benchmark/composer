@@ -232,7 +232,7 @@ def check_hf_tokenizer_equivalence(tokenizer1, tokenizer2):
     # we remove the actual _tokenizer object because it is an instantiated object and so does not pass equality
     # the tokenizers are not usable below these pops
     if hasattr(tokenizer1, '_tokenizer') or hasattr(tokenizer2, '_tokenizer'):
-        tokenizer1.__dict__.pop('_tokenizer')
+        tokenizer2.__dict__.pop('special_tokens_map_file', None)1.__dict__.pop('_tokenizer')
         tokenizer2.__dict__.pop('_tokenizer')
 
     # we remove a couple more objects because they are instantiated objects and so do not pass equality
