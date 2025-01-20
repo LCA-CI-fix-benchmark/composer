@@ -14,10 +14,8 @@ from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
 from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
-                                                              InContextLearningLMTaskDataset,
-                                                              InContextLearningMultipleChoiceTaskDataset,
-                                                              InContextLearningQATaskDataset,
-                                                              InContextLearningSchemaTaskDataset)
+    InContextLearningLMTaskDataset, InContextLearningMultipleChoiceTaskDataset,
+    InContextLearningQATaskDataset, InContextLearningSchemaTaskDataset)
 from composer.loggers import Logger
 from composer.loggers.console_logger import ConsoleLogger
 from composer.utils import MissingConditionalImportError, dist, maybe_create_object_store_from_uri, parse_uri
@@ -69,7 +67,7 @@ class EvalOutputLogging(Callback):
                                                 conda_channel='conda-forge') from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
-        tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
+        tmp_dir = os.path.join(os.getcwd(), self.hash.hexdigest())
 
         if not os.path.exists(tmp_dir):
             with dist.local_rank_zero_download_and_wait(tmp_dir):
@@ -93,16 +91,17 @@ class EvalOutputLogging(Callback):
 
         # copy/upload tmp files
         _write(destination_path=f'{self.output_directory}/{file_name}', src_file=f'{tmp_dir}/{file_name}')
-        os.remove(f'{tmp_dir}/{file_name}')
+        os.remove(os.path.join(tmp_dir, file_name))
         self.destination_file = f'{self.output_directory}/{file_name}'
 
         # delete tmp files
         os.rmdir(tmp_dir)
+        
 
     def _prep_response_cache(self, state, cache):
         benchmark = state.dataloader_label
         for metric in state.eval_metrics[benchmark].values():
-            if hasattr(metric, 'reset_response_cache'):
+            if hasattr(metric, 'reset_response_cache'): 
                 metric.reset_response_cache(cache)
 
     def eval_start(self, state: State, logger: Logger) -> None:
