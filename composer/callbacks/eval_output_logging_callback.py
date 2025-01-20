@@ -64,9 +64,10 @@ class EvalOutputLogging(Callback):
         try:
             import pandas as pd
         except ImportError as e:
-            raise MissingConditionalImportError(extra_deps_group='pandas',
-                                                conda_package='pandas',
-                                                conda_channel='conda-forge') from e
+            raise MissingConditionalImportError(
+                extra_deps_group='pandas',
+                conda_package='pandas',
+                conda_channel='conda-forge') from e
         # write tmp files
         self.hash.update((str(time.time()) + str(random.randint(0, 1_000_000))).encode('utf-8'))
         tmp_dir = os.getcwd() + '/' + self.hash.hexdigest()
@@ -82,14 +83,21 @@ class EvalOutputLogging(Callback):
         for benchmark in self.table:
             cols, rows = self.table[benchmark]
             rows = [[e.encode('unicode_escape') if isinstance(e, str) else e for e in row] for row in rows]
-            df = pd.DataFrame.from_records(data=rows, columns=cols)
+            df = pd.DataFrame.from_records(
+                data=rows,
+                columns=cols,
+            )
             df['benchmark'] = benchmark
             full_df = pd.concat([full_df, df], ignore_index=True)
 
         with dist.local_rank_zero_download_and_wait(f'{tmp_dir}/{file_name}'):
             if dist.get_local_rank() == 0:
                 with open(f'{tmp_dir}/{file_name}', 'wb') as f:
-                    full_df.to_csv(f, sep='\t', index=False)
+                    full_df.to_csv(
+                        f,
+                        sep='\t',
+                        index=False,
+                    )
 
         # copy/upload tmp files
         _write(destination_path=f'{self.output_directory}/{file_name}', src_file=f'{tmp_dir}/{file_name}')
@@ -144,7 +152,13 @@ class EvalOutputLogging(Callback):
                             for destination in logger.destinations:
                                 if not isinstance(destination, ConsoleLogger):
                                     # don't log to console because it will pollute the console too much
-                                    destination.log_table(columns, rows, f'icl_outputs/{benchmark}/{metric_name}')
+                                    destination.log_table(
+                columns,
+                rows,
+                f'icl_outputs/{benchmark}/{metric_name}',
+            )
 
-                            self.table[f'{benchmark}_{metric_name}'] = (columns, rows)
+                            self.table[
+                f'{benchmark}_{metric_name}'
+            ] = (columns, rows)
         self._prep_response_cache(state, False)
