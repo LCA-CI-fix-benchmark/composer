@@ -11,6 +11,10 @@ from unittest.mock import patch
 from urllib.parse import urlparse
 
 import pytest
+import importlib
+importlib.import_module('transformers')
+from transformers import AutoTokenizer
+from transformers import AutoModelForSequenceClassification
 import torch
 from packaging import version
 from torch.utils.data import DataLoader
