@@ -10,7 +10,10 @@ import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch
-import transformers
+try:
+    import transformers
+except ImportError as e:
+    raise ImportError("The 'transformers' package is required for this module. Please install it via 'pip install transformers'.") from e
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
