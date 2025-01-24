@@ -10,9 +10,14 @@ import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch
-import transformers
+try:
+    import transformers
+except ImportError:
+    transformers = None
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+if transformers is None:
+    raise ImportError("The 'transformers' library is required but not installed. Please install it using 'pip install transformers'.")
 
 from composer.core import DataSpec
 from composer.core.data_spec import _default_split_batch, _split_list
