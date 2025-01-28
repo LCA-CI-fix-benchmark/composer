@@ -12,7 +12,6 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 import torch
 import transformers
 from torch.utils.data import DataLoader, Dataset
-from tqdm import tqdm
 
 from composer.core import DataSpec
 from composer.core.data_spec import _default_split_batch, _split_list
@@ -238,7 +237,7 @@ class InContextLearningQATaskDataset(Dataset):
         has_cot = False
         examples = []
         for sample_idx in tqdm(range(len(self.samples))):
-            encoded_example = {}
+            encoded_example: Dict[str, Any] = {}
 
             prompt_and_fewshot = self._format_prompt_and_fewshot(num_fewshot, prompt_string, example_delimiter,
                                                                  continuation_delimiter, question_prelimiter,
