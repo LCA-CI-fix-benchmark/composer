@@ -34,6 +34,8 @@ def _write(destination_path, src_file):
         obj_store.upload_object(object_name=save_path, filename=src_file)
     else:
         with dist.local_rank_zero_download_and_wait(destination_path):
+            directory = os.path.dirname(destination_path)
+            os.makedirs(directory, exist_ok=True)
             if dist.get_local_rank() == 0:
                 shutil.copy(src_file, destination_path)
 
