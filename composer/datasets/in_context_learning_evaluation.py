@@ -12,7 +12,6 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 import torch
 import transformers
 from torch.utils.data import DataLoader, Dataset
-from tqdm import tqdm
 
 from composer.core import DataSpec
 from composer.core.data_spec import _default_split_batch, _split_list
@@ -218,7 +217,7 @@ class InContextLearningQATaskDataset(Dataset):
         """Prepares a set of language modeling tasks into tokenized format with prompt and fewshot examples.
 
         Each task consists of a context and a continuation as well as an optional prompt and optional list of
-        example context/continuation pairs which precede the test context/continuation pair.
+        example context pairs which precede the test context pair.
 
         Args:
             num_fewshot (int): Number of examples context/continuation pairs to prepend to the test pair
@@ -237,7 +236,7 @@ class InContextLearningQATaskDataset(Dataset):
         max_answer_length = 0
         has_cot = False
         examples = []
-        for sample_idx in tqdm(range(len(self.samples))):
+        for sample_idx in range(len(self.samples)):
             encoded_example = {}
 
             prompt_and_fewshot = self._format_prompt_and_fewshot(num_fewshot, prompt_string, example_delimiter,
@@ -406,7 +405,7 @@ class InContextLearningLMTaskDataset(Dataset):
                       fewshot_rng: random.Random):
         """Prepares a set of language modeling tasks into tokenized format with prompt and fewshot examples.
 
-        Each task consists of a context and a continuation as well as an optional prompt and optional list of
+        Each task consists of a context, continuation as well as an optional prompt and optional list of
         example context/continuation pairs which precede the test context/continuation pair.
 
         Args:
@@ -420,7 +419,7 @@ class InContextLearningLMTaskDataset(Dataset):
             dict: Contains the context, the continuation, and the preamble (prompt + fewshot examples)
         """
         examples = []
-        for sample_idx in tqdm(range(len(self.samples))):
+        for sample_idx in range(len(self.samples)):
             encoded_example = {}
 
             preamble = prompt_string
@@ -570,7 +569,7 @@ class InContextLearningMultipleChoiceTaskDataset(Dataset):
                                                   fewshot_rng)
 
     def prep_examples(self, num_fewshot: int, prompt_string: str, example_delimiter: str, continuation_delimiter: str,
-                      fewshot_rng: random.Random):
+                      fewshot_rng: random.Random) -> List[dict]:
         """Prepares a set of multiple choice questions into tokenized format with prompt and few shot examples.
 
         Each question consists of a query and set of answer choices, only one of which is correct. At inference time
@@ -592,7 +591,7 @@ class InContextLearningMultipleChoiceTaskDataset(Dataset):
                 the index of the correct answer choice.
         """
         examples = []
-        for sample_idx in tqdm(range(len(self.samples))):
+        for sample_idx in range(len(self.samples)):
 
             preamble = prompt_string
             if num_fewshot > 0:
@@ -798,7 +797,7 @@ class InContextLearningSchemaTaskDataset(InContextLearningMultipleChoiceTaskData
         self.encoded_dataset = self.prep_examples(num_fewshot, prompt_string, example_delimiter, continuation_delimiter,
                                                   fewshot_rng)
 
-    def prep_examples(self, num_fewshot: int, prompt_string: str, example_delimiter: str, continuation_delimiter: str,
+    def prep_examples(self, num_fewshot: int, prompt_string: str, example_delimiter: str, continuation_delimiter: str, fewshot_rng: random.Random) -> List[dict]:
                       fewshot_rng: random.Random):
         """Prepares a set of schema questions into tokenized format with prompt and few shot examples.
         Each question consists of a set of possible contexts followed by a continuation, only one of the contexts would logically permit the continuation.
@@ -818,7 +817,7 @@ class InContextLearningSchemaTaskDataset(InContextLearningMultipleChoiceTaskData
         """
 
         examples = []
-        for sample_idx in tqdm(range(len(self.samples))):
+        for sample_idx in range(len(self.samples)):
 
             preamble = prompt_string
             if num_fewshot > 0:
@@ -1011,7 +1010,7 @@ class InContextLearningCodeEvalDataset(Dataset):
         """
         max_prompt_length = 0
         examples = []
-        for sample_idx in tqdm(range(len(self.samples))):
+        for sample_idx in range(len(self.samples)):
             encoded_example = {}
 
             preamble = prompt_string
