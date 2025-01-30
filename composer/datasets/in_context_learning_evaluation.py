@@ -10,7 +10,10 @@ import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch
-import transformers
+try:
+    import transformers
+except ImportError as e:
+    raise MissingConditionalImportError(extra_deps_group='nlp', conda_package='transformers', conda_channel='conda-forge') from e
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
@@ -726,7 +729,7 @@ class InContextLearningMultipleChoiceTaskDataset(Dataset):
         return [{k: v[idx] for k, v in chunked.items()} for idx in range(num_chunks)]
 
 
-class InContextLearningSchemaTaskDataset(InContextLearningMultipleChoiceTaskDataset):
+class InContextLearningSchemaTaskDataset(Dataset):
     """A dataset that constructs batches for in-context learning schema evaluation
     A schema task involves sentences with a fill-in-the-blank where the user needs to choose the correct word
     to fill in from a set of N options. We use the partial evaluation technique from https://arxiv.org/abs/1806.02847
