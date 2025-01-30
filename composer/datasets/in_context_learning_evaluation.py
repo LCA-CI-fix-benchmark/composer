@@ -10,7 +10,10 @@ import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch
-import transformers
+try:
+    import transformers
+except ImportError as e:
+    raise MissingConditionalImportError(extra_deps_group='nlp', conda_package='transformers', conda_channel='conda-forge') from e
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
@@ -141,7 +144,7 @@ class InContextLearningQATaskDataset(Dataset):
 
     def __init__(
         self,
-        dataset_uri: str,
+        dataset_uri: str,        
         tokenizer: Union[transformers.PreTrainedTokenizer, transformers.PreTrainedTokenizerFast],
         max_seq_len: int,
         pad_tok_id: int,
