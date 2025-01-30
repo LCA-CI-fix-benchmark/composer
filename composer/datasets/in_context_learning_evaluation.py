@@ -14,6 +14,11 @@ import transformers
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
+try:
+    import transformers
+except ImportError as e:
+    raise MissingConditionalImportError(extra_deps_group='nlp', conda_package='transformers>=4.17.0') from e
+
 from composer.core import DataSpec
 from composer.core.data_spec import _default_split_batch, _split_list
 from composer.utils import MissingConditionalImportError, dist, get_file
