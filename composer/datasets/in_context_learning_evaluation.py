@@ -10,7 +10,7 @@ import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch
-import transformers
+from transformers import PreTrainedTokenizer, PreTrainedTokenizerFast
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
@@ -142,7 +142,7 @@ class InContextLearningQATaskDataset(Dataset):
     def __init__(
         self,
         dataset_uri: str,
-        tokenizer: Union[transformers.PreTrainedTokenizer, transformers.PreTrainedTokenizerFast],
+        tokenizer: Union[PreTrainedTokenizer, PreTrainedTokenizerFast],
         max_seq_len: int,
         pad_tok_id: int,
         num_fewshot: int,
@@ -365,7 +365,7 @@ class InContextLearningLMTaskDataset(Dataset):
     def __init__(
         self,
         dataset_uri: str,
-        tokenizer: Union[transformers.PreTrainedTokenizer, transformers.PreTrainedTokenizerFast],
+        tokenizer: Union[PreTrainedTokenizer, PreTrainedTokenizerFast],
         max_seq_len: int,
         pad_tok_id: int,
         num_fewshot: int,
@@ -529,7 +529,7 @@ class InContextLearningMultipleChoiceTaskDataset(Dataset):
     def __init__(
         self,
         dataset_uri: str,
-        tokenizer: Union[transformers.PreTrainedTokenizer, transformers.PreTrainedTokenizerFast],
+        tokenizer: Union[PreTrainedTokenizer, PreTrainedTokenizerFast],
         max_seq_len: int,
         pad_tok_id: int,
         num_fewshot: int,
@@ -1304,7 +1304,7 @@ def partition_dataset_by_category(dataset_uri: str, destination_path: str) -> Di
 def get_icl_task_dataloader(
         icl_task_type: str,
         dataset_uri: str,
-        tokenizer: Union[transformers.PreTrainedTokenizer, transformers.PreTrainedTokenizerFast],
+        tokenizer: Union[PreTrainedTokenizer, PreTrainedTokenizerFast],
         batch_size: int,
         max_seq_len: int,
         pad_tok_id: int,
