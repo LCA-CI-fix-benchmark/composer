@@ -10,7 +10,12 @@ import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import torch
-import transformers
+try:
+    import transformers
+except ImportError as e:
+    transformers = None  
+    print(f"Failed to import transformers: {e}")
+
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
