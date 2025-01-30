@@ -13,7 +13,7 @@ from typing import Callable, Optional
 from torch.utils.data import DataLoader
 
 from composer.core import Callback, State
-from composer.datasets.in_context_learning_evaluation import (InContextLearningCodeEvalDataset,
+from composer.datasets.in_context_learning_evaluation import (incontextlearningcodeevaldataset,
                                                               InContextLearningLMTaskDataset,
                                                               InContextLearningMultipleChoiceTaskDataset,
                                                               InContextLearningQATaskDataset,
